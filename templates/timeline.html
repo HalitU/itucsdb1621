@@ -5,6 +5,7 @@
     <title>Timeline</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet"  href="{{ url_for('static', filename='font-awesome-4.6.3/css/font-awesome.min.css')}}">
     <style>
         .logo {
             color:white;
@@ -19,24 +20,38 @@
         }
 
         .top{
-            margin-top:20px;
-            margin-bottom:20px;
+            padding-top:20px;
+            padding-bottom:20px;
+            margin-bottom:10px;
+        }
+
+        .circle{
+            border:2px solid white;
+            border-radius:22px;
+            font-size:25px;
+            padding-left:5px;
+            padding-right:5px;
+        }
+
+        .circle span{
+            font-size:25px;
+            color:white;
         }
     </style>
 </head>
 <body>
     <div class="container-fluid">
-        <div class="row top">
+        <div class="row top"  style="background:#ff7963">
             <div class="col-md-offset-2 col-md-1">
-                <h3 class="logo">post<span>ITU</span></h3>
+                <img src="{{url_for('static', filename='logo.png')}}" class="center-block img-responsive" width=50 alt="">
             </div>
 
             <div class="col-md-offset-6 col-md-2">
                 <a href="{{url_for('home_page')}}" class="btn btn-info">Home</a>
                 <a href="{{url_for('timeline')}}" class="btn">Timeline</a>
+                <a href="#" class="circle"><span class="fa fa-user"></span> </a>
             </div>
         </div>
-        <hr />
         <div class="row">
             <div class="col-md-offset-4 col-md-4 well">
                 <img src="http://lorempixel.com/600/450/" class="img-responsive" />
