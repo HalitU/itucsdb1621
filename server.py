@@ -22,6 +22,16 @@ def timeline():
 @app.route('/login')
 def login():
     return render_template('login.html')
+
+@app.route('/notification')
+def notification():
+    context = []
+    context.append("https://scontent-cdg2-1.cdninstagram.com/t51.2885-19/s150x150/12530676_203139496730851_641566517_a.jpg")
+    context.append("http://www.drawingnow.com/file/videos/image/how-to-sketch-short-anime-female-hair.jpg")
+    image_list = {
+                  'image': context,
+                                    }
+    return render_template('notification.html', image = image_list)
 	
 if __name__ == '__main__':
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')

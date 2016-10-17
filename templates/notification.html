@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+<style type="text/css">
+	#notificborder{
+		border: 1px solid black;
+		height: 100px;
+		width: 440px;
+		margin-bottom: 2px;
+	}
+	#notific_upper{
+		margin: 4px;
+	}
+	#notific_down{
+		margin: 4px;
+	}
+	#notific{
+		height:40px;
+		width:40px;
+	}
+	#notes{
+		height:40px;
+		line-height:10px;
+		width:300px;
+		display:inline-block;
+	}
+	#centeredScreen{
+	  position: relative;
+	  z-index: 0;
+	  left: 50%;
+	  margin: 0 0 0 -150px;
+	}
+	#leavebutton{
+	  display:inline-block;
+	}
+</style>
+{% endblock %}
+{% block content %}
+<div id="centeredScreen">
+	<h1>Notification Page</h1>
+	{% if image %}
+		{% for im in image.image %}
+		<div id="notificborder">
+			<div id="notific_upper">
+				<img src={{im}}
+				id="notific">
+				<p id="notes">Notifier Info</p>
+				<button type="button" class="btn btn-primary leavebutton">Unfollow</button>
+			</div>
+			<div id="notific_down">
+				Notification details
+			</div>
+		</div>
+		{% endfor %}
+	{% endif %}
+</div>
+{% endblock %}
+{% block footer %}
+{{ super()}}
+{% endblock %}
