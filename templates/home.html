@@ -1,27 +1,20 @@
-﻿<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Home</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-  </head>
-  <body>
-    <h1>Hello, Flask!</h1>
+{% extends "layout.html" %}
+{% block content %}
+<div class="row">
+	<div class="col-md-offset-4 col-xs-offset-4 col-md-4 well">
+		<img src="http://lorempixel.com/600/450/" class="img-responsive" />
 
-      <a href="{{ url_for('timeline') }}">To go timeline</a>
+		<hr />
+		<p>@person comment</p>
+	</div>
+</div>
 
+<div class="row">
+	<div class="col-md-offset-4 col-md-4 well">
+		<img src="http://lorempixel.com/600/450/" class="img-responsive" />
 
-
-      <p>Test commit</p>
-      <p>Second test commit for username change</p>
-      <p>Sıddık was here.</p>
-      <p>Third test commit for username change sddkacil.1</p>
-      <p>Rumeysa was here.</p>
-      <p>Hello! Is there anybody in there?</p>
-	  <p>Halit was here</p>
-	  <p>Ömer was here.</p>
-    <footer>
-      <div id="datetime">{{ current_time }}</div>
-    </footer>
-  </body>
-</html>
+		<hr />
+		<p>@person comment</p>
+	</div>
+</div>
+{% endblock %}

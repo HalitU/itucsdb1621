@@ -37,7 +37,6 @@ div#datetime {
             padding-top:20px;
             padding-bottom:20px;
             margin:0px;
-            margin-bottom:10px;
             border-bottom:1px solid #ddd;
         }
 
@@ -55,6 +54,7 @@ div#datetime {
         }
 
         .main{
+          padding-top:10px;
           background-color: #fafafa;
         }
         .navlink{
