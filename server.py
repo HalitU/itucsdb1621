@@ -19,6 +19,10 @@ def timeline():
     now =datetime.datetime.now()
     return render_template('timeline.html', current_time=now.ctime())    
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+	
 if __name__ == '__main__':
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')
     if VCAP_APP_PORT is not None:
