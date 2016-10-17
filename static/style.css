@@ -3,7 +3,6 @@ body {
   color: #6F6F6F;
   font-family: 'Droid Sans', 'Helvetica', 'sans';
   font-size: 12pt;
-  margin: 2ex 2em;
 }
 
 h1, h2, h3, h4 {
@@ -18,4 +17,63 @@ a {
 div#datetime {
   font-size: 80%;
   text-align: right;
+}
+
+
+
+        .logo {
+            color:white;
+            background:#5bc0de;
+            text-align:center;
+            margin:10px;
+        }
+
+        .logo span{
+            color:black;
+            font-weight:bold;
+        }
+
+        .top{
+            padding-top:20px;
+            padding-bottom:20px;
+            margin:0px;
+            margin-bottom:10px;
+            border-bottom:1px solid #ddd;
+        }
+
+        .circle{
+            border:2px solid white;
+            border-radius:22px;
+            font-size:25px;
+            padding-left:5px;
+            padding-right:5px;
+        }
+
+        .circle span{
+            font-size:25px;
+            color:white;
+        }
+
+        .main{
+          background-color: #fafafa;
+        }
+        .navlink{
+          margin-right:20px;
+          margin-right: 20px;
+        }
+        .navlink > span{
+          color:black !important;
+        }
+        .logo-image{
+          display: inline-block !important;
+          
+        }
+        .logo-text{
+          display:inline-block;
+          font-weight: bold;
+          font-size:20px;
+        }
+.container-fluid{
+  padding-left:0px;
+  padding-right: 0px;
 }
