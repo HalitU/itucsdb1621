@@ -17,7 +17,7 @@ def home_page():
 @app.route('/timeline')
 def timeline():
     now =datetime.datetime.now()
-    return render_template('timeline.html', current_time=now.ctime())    
+    return render_template('timeline.html', current_time=now.ctime())
 
 @app.route('/login')
 def login():
@@ -26,6 +26,10 @@ def login():
 @app.route('/profile')
 def profile():
     return render_template('profile.html')
+
+@app.route('/upload')
+def upload():
+    return render_template('upload.html')
 
 
 @app.route('/notification')
@@ -37,7 +41,7 @@ def notification():
                   'image': context,
                                     }
     return render_template('notification.html', image = image_list)
-	
+
 if __name__ == '__main__':
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')
     if VCAP_APP_PORT is not None:
