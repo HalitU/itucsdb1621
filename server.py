@@ -23,6 +23,11 @@ def timeline():
 def login():
     return render_template('login.html')
 
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')
+
+
 @app.route('/notification')
 def notification():
     context = []

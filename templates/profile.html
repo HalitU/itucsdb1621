@@ -1,0 +1,66 @@
+
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+<style type="text/css">
+#profile_photo{
+left:50%;
+border-radius:300px;
+}
+</style>
+{% endblock %}
+{% block content %}
+<br>
+<br>
+<div class="col-md-3">
+    <div class="col-md-offset-1  row">
+    <img id="profile_photo" class="img-responsive center-block" src="http://lorempixel.com/300/300/" class="img-responsive" />
+    </div>
+     <div class="col-md-offset-1 row">
+         <br>
+        <p class="lead">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        </p>
+    </div>
+     <div class="col-md-offset-1 row">
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dapibus sodales leo vitae ultricies. Nam tincidunt luctus diam sed congue. Donec sodales ut dui sit amet aliquet
+        </p>
+    </div>
+
+</div>
+<div class="col-md-9">
+    <div class="row">
+        <div class="col-md-3">
+           <img src="http://lorempixel.com/600/450/" class="img-responsive" />
+        </div>
+         <div class="col-md-3">
+           <img src="http://lorempixel.com/600/450/" class="img-responsive" />
+        </div>
+         <div class="col-md-3">
+           <img src="http://lorempixel.com/600/450/" class="img-responsive" />
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-3">
+           <img src="http://lorempixel.com/600/450/" class="img-responsive" />
+        </div>
+         <div class="col-md-3">
+           <img src="http://lorempixel.com/600/450/" class="img-responsive" />
+        </div>
+         <div class="col-md-3">
+           <img src="http://lorempixel.com/600/450/" class="img-responsive" />
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-3">
+           <img src="http://lorempixel.com/600/450/" class="img-responsive" />
+        </div>
+         <div class="col-md-3">
+           <img src="http://lorempixel.com/600/450/" class="img-responsive" />
+        </div>
+    </div>
+</div>
+{% endblock %}
