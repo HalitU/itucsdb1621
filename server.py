@@ -13,6 +13,10 @@ def home_page():
     now = datetime.datetime.now()
     return render_template('home.html', current_time=now.ctime())
 
+@app.route('/activity')
+def activity():
+    return render_template('activity.html')
+
 #test page to obtain some design ideas
 @app.route('/timeline')
 def timeline():
