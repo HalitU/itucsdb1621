@@ -1,17 +1,57 @@
 import datetime
 import os
+import psycopg2
 
 from flask import Flask
 from flask import render_template
 
+
+#os.environ.setdefault('psql_uri', 'null')
+#os.environ.setdefault('psql_host', 'null')
+#os.environ.setdefault('psql_user', 'null')
+#os.environ.setdefault('psql_dbname', 'null')
+#os.environ.setdefault('psql_password', 'null')
+    
+
+try:
+    #Get database information from enviroment
+    _database = os.environ.get('psql_uri')
+    _host = os.environ.get('psql_host')
+    _user = os.environ.get('psql_user')
+    _dbname = os.environ.get('psql_dbname')
+    _password = os.environ.get('psql_password')
+    #Connection for database
+    conn = psycopg2.connect(database = _database,
+    host = _host,
+    user= _user,
+    dbname= _dbname,
+    password= _password)
+except expression as identifier:
+    raise "database error"
+
+
+## execute image table query
+#cmd = """"""
+
+#_crs=conn.cursor()
+#_crs.execute(cmd)
+#conn.commit()
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def home_page():
-    now = datetime.datetime.now()
-    return render_template('home.html', current_time=now.ctime())
+    ##now = datetime.datetime.now()
+    
+    ##crs=conn.cursor()
+    ##crs.execute("insert into images (user_id, path, time, text) values (1, 'path', now(), 'hello world')")
+    ##conn.commit()
+
+    ##crs.execute("select * from images")
+    ##data = crs.fetchall()
+    result = getScriptFileAsString()
+    return render_template('home.html', current_time=result)
 
 @app.route('/activity')
 def activity():
@@ -46,6 +86,22 @@ def notification():
                                     }
     return render_template('notification.html', image = image_list)
 
+#Read script.sql file as a single string
+def getScriptFileAsString():
+
+    #open script.sql file
+    with open('script.sql') as f:
+        #Read all lines
+        content = f.readlines()
+    #Clear the whitespaces
+    for i in range(len(content)):
+        content[i] = content[i].strip()
+
+    #Merge all lines as one string
+    result = ' '.join(content)
+
+    return result
+
 if __name__ == '__main__':
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')
     if VCAP_APP_PORT is not None:
@@ -53,3 +109,4 @@ if __name__ == '__main__':
     else:
         port, debug = 5000, True
     app.run(host='0.0.0.0', port=port, debug=debug)
+
