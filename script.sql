@@ -6,3 +6,10 @@ CREATE TABLE IF NOT EXISTS images(
     text text 
 )
 
+CREATE TABLE IF NOT EXISTS users(
+    ID INTEGER,
+    UserName VARCHAR(50),
+    Password CHAR(9),
+    photo_path text,
+    email text,
+)
