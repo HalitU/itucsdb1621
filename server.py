@@ -5,14 +5,6 @@ import psycopg2
 from flask import Flask
 from flask import render_template
 
-
-#os.environ.setdefault('psql_uri', 'null')
-#os.environ.setdefault('psql_host', 'null')
-#os.environ.setdefault('psql_user', 'null')
-#os.environ.setdefault('psql_dbname', 'null')
-#os.environ.setdefault('psql_password', 'null')
-    
-
 try:
     #Get database information from enviroment
     _database = os.environ.get('psql_uri')
@@ -85,6 +77,17 @@ def notification():
                   'image': context,
                                     }
     return render_template('notification.html', image = image_list)
+    
+@app.route('/createDatabase')
+def createDatabase():
+    scripts = getScriptFileAsString()
+    
+    crs = conn.cursor()
+    print(scripts)
+    crs.executemany(scripts)
+    result = conn.commit()
+
+    return render_template('message.html', message = "Script is commited, the result is " + result)
 
 #Read script.sql file as a single string
 def getScriptFileAsString():
