@@ -20,5 +20,5 @@ insert into images (user_id, path, time, text) values (1, '/img1.jpg', now(), 'h
 insert into images (user_id, path, time, text) values (1, '/profile1.jpg', now(), 'My profile');
 insert into images (user_id, path, time, text) values (1, '/lovely_cat.jpg', now(), 'for fun');
 
-insert into users (ID, UserName, Password, photo_path, email) values ('sailormoon', 'abc999', '/photo.jpg', 'sailor@gmail.com' );
-insert into users (ID, UserName, Password, photo_path, email) values ('sunflower', 'defg123', '/photo.jpg', 'sunbb@gmail.com');
+insert into users (UserName, Password, photo_path, email) values ('sailormoon', 'abc999', '/photo.jpg', 'sailor@gmail.com' );
+insert into users (UserName, Password, photo_path, email) values ('sunflower', 'defg123', '/photo.jpg', 'sunbb@gmail.com');
