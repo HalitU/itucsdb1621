@@ -6,7 +6,7 @@ from flask import Flask
 from flask import render_template
 
 try:
-    #Get database information from enviroment
+    #Get database information from environment
     _database = os.environ.get('psql_uri')
     _host = os.environ.get('psql_host')
     _user = os.environ.get('psql_user')

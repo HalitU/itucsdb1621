@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS images(
 CREATE TABLE IF NOT EXISTS users(
     ID INTEGER,
     UserName VARCHAR(50),
-    Password CHAR(9),
+    Password text,
     photo_path text,
     email text
 );
@@ -19,3 +19,6 @@ CREATE TABLE IF NOT EXISTS users(
 insert into images (user_id, path, time, text) values (1, '/img1.jpg', now(), 'hello world #1');
 insert into images (user_id, path, time, text) values (1, '/profile1.jpg', now(), 'My profile');
 insert into images (user_id, path, time, text) values (1, '/lovely_cat.jpg', now(), 'for fun');
+
+insert into users (ID, UserName, Password, photo_path, email) values ('sailormoon', 'abc999', '/photo.jpg', 'sailor@gmail.com' );
+insert into users (ID, UserName, Password, photo_path, email) values ('sunflower', 'defg123', '/photo.jpg', 'sunbb@gmail.com');
