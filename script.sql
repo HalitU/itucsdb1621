@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS images(
 );
 
 CREATE TABLE IF NOT EXISTS users(
-    ID INTEGER,
+    ID INTEGER, /* would be better with serial primary key identifier*/
     UserName VARCHAR(50),
     Password text,
     photo_path text,
@@ -23,7 +23,13 @@ CREATE TABLE IF NOT EXISTS notifications(
     details text,
     follow_status int,
 );
-
+CREATE TABLE IF NOT EXISTS comments{
+    comment_id serial primary key,
+    user_id int,
+    image_id int,
+    time date,
+    comment text
+};
 
 insert into images (user_id, path, time, text) values (1, '/img1.jpg', now(), 'hello world #1');
 insert into images (user_id, path, time, text) values (1, '/profile1.jpg', now(), 'My profile');
@@ -33,3 +39,5 @@ insert into users (UserName, Password, photo_path, email) values ('sailormoon', 
 insert into users (UserName, Password, photo_path, email) values ('sunflower', 'defg123', '/photo.jpg', 'sunbb@gmail.com');
 
 insert into notifications(user_id, notifier_name, icon, details, follow_status) values (1,'some_company' ,'/company_icon.jpg', 'Thanks for all followers!' ,0);
+
+insert into comments(user_id,image_id,time,comment) values (1,1,now(),"Hey! This photo is awesome");

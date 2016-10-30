@@ -5,9 +5,12 @@ import psycopg2
 from flask import Flask
 from flask import render_template
 
+class DB_Error(Exception):
+    pass
 try:
     #Get database information from environment
     _database = os.environ.get('psql_uri')
+    print(_database)
     _host = os.environ.get('psql_host')
     _user = os.environ.get('psql_user')
     _dbname = os.environ.get('psql_dbname')
@@ -18,7 +21,8 @@ try:
     user= _user,
     dbname= _dbname,
     password= _password)
-except expression as identifier:
+
+except DB_Error:
     raise "database error"
 
 
