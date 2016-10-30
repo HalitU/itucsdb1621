@@ -36,19 +36,22 @@
 </style>
 {% endblock %}
 {% block content %}
-<div id="centeredScreen">
-	<h1>Notification Page</h1>
+<div id="container-fluid">
+		<div class="col-md-offset-4  col-md-5">
+			<h1>Notification Page</h1>
+		</div>
 	{% if image %}
 		{% for im in image.image %}
-		<div id="notificborder">
-			<div id="notific_upper">
-				<img src={{im}}
-				id="notific">
-				<p id="notes">Notifier Info</p>
-				<button type="button" class="btn btn-primary leavebutton">Unfollow</button>
-			</div>
-			<div id="notific_down">
-				Notification details
+		<div class="row">
+			<div class="col-md-offset-4 col-md-5 well">
+				<div id="notific_upper">
+					<img src={{im}}	id="notific">
+					<p id="notes">Notifier Info</p>
+					<button type="button" class="btn btn-primary leavebutton pull-right clearfix">Unfollow</button>
+				</div>
+				<div id="notific_down">
+					Notification details
+				</div>
 			</div>
 		</div>
 		{% endfor %}
