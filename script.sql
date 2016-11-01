@@ -48,4 +48,4 @@ insert into notifications(user_id, notifier_name, icon, details, follow_status) 
 
 insert into comments(user_id,image_id,time,comment) values (1,1,now(),'Hey! This photo is awesome');
 
-insert into users (time, description) values (now(), 'You should know that all your strength lies in sincerity and truth');
+insert into upload(time, description) values (now(), 'You should know that all your strength lies in sincerity and truth');
