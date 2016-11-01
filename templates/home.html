@@ -1,20 +1,22 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="row">
-	<div class="col-md-offset-4 col-xs-offset-4 col-md-4 well">
-		<img src="http://lorempixel.com/600/450/" class="img-responsive" />
+{{ super() }}
 
-		<hr />
-		<p>@person comment</p>
-	</div>
-</div>
+{% if list %}
+	 {% for i in list %}
+		<div class="row" id="{{i[0]}}">
+			<div class="col-md-offset-4 col-xs-offset-4 col-md-4 well">
+				<a href="{{url_for('images_app.image_delete', id = i[0])}}" class="pull-right"><span class="fa fa-close"></span></a>
+				<div>
 
-<div class="row">
-	<div class="col-md-offset-4 col-md-4 well">
-		<img src="http://lorempixel.com/600/450/" class="img-responsive" />
+					<img src="static/uploads/{{i[2]}}" class="img-responsive" />
 
-		<hr />
-		<p>@person comment</p>
-	</div>
-</div>
+					<hr />
+					<p>@{{i[1]}} {{i[4]}} {{i[3]}}</p>
+				</div>
+			</div>
+		</div>
+
+	{% endfor %}
+{% endif %}
 {% endblock %}

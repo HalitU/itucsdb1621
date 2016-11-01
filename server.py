@@ -1,9 +1,15 @@
 import datetime
 import os
 import psycopg2
+from images import images_app
 
 from flask import Flask
 from flask import render_template
+
+
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = '/static/uploads'
+app.register_blueprint(images_app)
 
 class DB_Error(Exception):
     pass
@@ -14,41 +20,26 @@ try:
     _user = os.environ.get('psql_user')
     _dbname = os.environ.get('psql_dbname')
     _password = os.environ.get('psql_password')
+
+    _port = 5432
+    dsn = """user='{}' password='{}' host='{}' port={}
+        dbname='{}'""".format(_user, _password, _host, _port, _dbname) 
+    app.config['dsn'] = dsn
     #Connection for database
-    conn = psycopg2.connect(database = _database,
-    host = _host,
-    user= _user,
-    dbname= _dbname,
-    password= _password)
 
 except DB_Error:
     raise "database error"
 
-
-## execute image table query
-#cmd = """"""
-
-#_crs=conn.cursor()
-#_crs.execute(cmd)
-#conn.commit()
-
-app = Flask(__name__)
-
-
 @app.route('/')
 def home_page():
-    ##now = datetime.datetime.now()
-    
-    crs=conn.cursor()
-    ##crs.execute("insert into images (user_id, path, time, text) values (1, 'path', now(), 'hello world')")
-    ##conn.commit()
 
-    crs.execute("select * from comments")
-    data = crs.fetchall()
-    #result = getScriptFileAsString()
-    #queries = result.split(';')
+    with psycopg2.connect(app.config['dsn']) as conn:
+        crs=conn.cursor()
+        crs.execute("select * from images order by time desc")
+        data = crs.fetchall()
     
-    return render_template('home.html', current_time=data)
+    now =datetime.datetime.now()
+    return render_template('home.html', current_time=now.ctime(), list = data, images_app = images_app)
 
 @app.route('/activity')
 def activity():
@@ -68,11 +59,6 @@ def login():
 def profile():
     return render_template('profile.html')
 
-@app.route('/upload')
-def upload():
-    return render_template('upload.html')
-
-
 @app.route('/notification')
 def notification():
     context = []
@@ -88,14 +74,16 @@ def createDatabase():
     scripts = getScriptFileAsString()
     queries = scripts.split(';')
     
-    for i in queries:
-        t = i.strip()
-        if t:
-            crs = conn.cursor()    
-            crs.execute(t)
+    with psycopg2.connect(app.config['dsn']) as conn:
+        for i in queries:
+            t = i.strip()
+            if t:
+                print(t)
+                crs = conn.cursor()    
+                crs.execute(t)
             conn.commit()
 
-    return render_template('message.html', message = "Script is commited, the result is " + result)
+    return render_template('message.html', message = "Script is commited, the result is ")
 
 #Read script.sql file as a single string
 def getScriptFileAsString():

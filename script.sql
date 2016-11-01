@@ -1,3 +1,9 @@
+DROP TABLE IF EXISTS images;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS notifications;
+DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS upload;
+
 
 CREATE TABLE IF NOT EXISTS images(
     image_id serial primary key,
@@ -37,9 +43,7 @@ CREATE TABLE IF NOT EXISTS upload(
     description text
 );
 
-insert into images (user_id, path, time, text) values (1, '/img1.jpg', now(), 'hello world #1');
-insert into images (user_id, path, time, text) values (1, '/profile1.jpg', now(), 'My profile');
-insert into images (user_id, path, time, text) values (1, '/lovely_cat.jpg', now(), 'for fun');
+insert into images (user_id, path, time, text) values (1, 'sample.jpg', now(), 'hello world #1');
 
 insert into users (UserName, Password, photo_path, email) values ('sailormoon', 'abc999', '/photo.jpg', 'sailor@gmail.com' );
 insert into users (UserName, Password, photo_path, email) values ('sunflower', 'defg123', '/photo.jpg', 'sunbb@gmail.com');
