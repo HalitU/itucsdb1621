@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS images(
     user_id int ,
     path text ,
     time date ,
-    text text 
+    text text
 );
 
 CREATE TABLE IF NOT EXISTS users(
@@ -31,6 +31,12 @@ CREATE TABLE IF NOT EXISTS comments (
     comment text
 );
 
+CREATE TABLE IF NOT EXISTS upload(
+    ID INTEGER,
+    time date,
+    description text
+);
+
 insert into images (user_id, path, time, text) values (1, '/img1.jpg', now(), 'hello world #1');
 insert into images (user_id, path, time, text) values (1, '/profile1.jpg', now(), 'My profile');
 insert into images (user_id, path, time, text) values (1, '/lovely_cat.jpg', now(), 'for fun');
@@ -41,3 +47,5 @@ insert into users (UserName, Password, photo_path, email) values ('sunflower', '
 insert into notifications(user_id, notifier_name, icon, details, follow_status) values (1,'some_company' ,'/company_icon.jpg', 'Thanks for all followers!' ,0);
 
 insert into comments(user_id,image_id,time,comment) values (1,1,now(),'Hey! This photo is awesome');
+
+insert into users (time, description) values (now(), 'You should know that all your strength lies in sincerity and truth');
