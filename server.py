@@ -10,7 +10,6 @@ class DB_Error(Exception):
 try:
     #Get database information from environment
     _database = os.environ.get('psql_uri')
-    print(_database)
     _host = os.environ.get('psql_host')
     _user = os.environ.get('psql_user')
     _dbname = os.environ.get('psql_dbname')
@@ -40,14 +39,16 @@ app = Flask(__name__)
 def home_page():
     ##now = datetime.datetime.now()
     
-    ##crs=conn.cursor()
+    crs=conn.cursor()
     ##crs.execute("insert into images (user_id, path, time, text) values (1, 'path', now(), 'hello world')")
     ##conn.commit()
 
-    ##crs.execute("select * from images")
-    ##data = crs.fetchall()
-    result = getScriptFileAsString()
-    return render_template('home.html', current_time=result)
+    crs.execute("select * from comments")
+    data = crs.fetchall()
+    #result = getScriptFileAsString()
+    #queries = result.split(';')
+    
+    return render_template('home.html', current_time=data)
 
 @app.route('/activity')
 def activity():
@@ -85,11 +86,14 @@ def notification():
 @app.route('/createDatabase')
 def createDatabase():
     scripts = getScriptFileAsString()
+    queries = scripts.split(';')
     
-    crs = conn.cursor()
-    print(scripts)
-    crs.executemany(scripts)
-    result = conn.commit()
+    for i in queries:
+        t = i.strip()
+        if t:
+            crs = conn.cursor()    
+            crs.execute(t)
+            conn.commit()
 
     return render_template('message.html', message = "Script is commited, the result is " + result)
 
