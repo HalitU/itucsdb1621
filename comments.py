@@ -30,3 +30,13 @@ def comment_delete(id):
             data = conn.commit()
 
     return render_template('message.html', message = "Comment deleted..")
+
+@comment_app.route("/comment_update/<id>",methods=["POST"])
+def comment_update(id):
+    new_comment = request.form["new_comment"]
+    with psycopg2.connect(current_app.config["dsn"]) as conn:
+        crs = conn.cursor()
+        crs.execute('update comments set time=now(),comment=%s where comment_id=%s ',(new_comment,id))
+        conn.commit()
+
+    return render_template("message.html",message="You have changed your comment successfully")

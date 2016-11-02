@@ -2,33 +2,53 @@
 {% block content %}
 {{ super() }}
 
+<style type="text/css">
+	.commentDiv{
+		border-style:solid black;
+		border-top: 10px;
+
+	}
+
+</style>
 {% if list %}
 	 {% for i in list %}
 		<div class="row" id="{{i[0]}}">
-			<div class="col-md-offset-4 col-xs-offset-4 col-md-4 well">
+			<div class="col-md-offset-4 col-xs-offset-4 col-md-4 well col-xs-12 col-xs-offset-0">
 				<a href="{{url_for('images_app.image_delete', id = i[0])}}" class="pull-right"><span class="fa fa-close"></span></a>
 				<div>
 
 					<img src="static/uploads/{{i[2]}}" class="img-responsive" />
 
 					<hr />
-					<p>@{{i[1]}} {{i[4]}} {{i[3]}}</p>
-					<div style="border: 2px;">
+					<p>{{i[1]}} {{i[4]}} {{i[3]}}</p>
 						{% for comment in comment_list %}
-						<div>
-							<p>{{ comment[0]}} {{comment[1]}} {{comment[3]}} {{comment[4]}}</p>
+						<div class="row commentDiv ">
+						<div class="col-md-10 col-xs-10 ">
+							<p id="p_{{comment[0]}}">{{ comment[0]}} {{comment[1]}} {{comment[3]}} {{comment[4]}}</p>
+							<form method="post" action="{{url_for('comment_app.comment_update',id=comment[0])}}">
+								<textarea name="new_comment" style="display:none;" id="text_{{comment[0]}}"></textarea>
+								<button style="display:none;" id="button_{{comment[0]}}">Edit!</button>
+							</form>
+						</div>
+						<div class="col-md-1 col-xs-1 ">
+							<a href="#" onclick="showUpdateDialog({{comment[0]}})" class="pull-right"><span class="fa fa-pencil-square-o"></span> </a>
+						</div>
+						<div class="col-md-1 col-xs-1 ">
 							<a href="{{url_for('comment_app.comment_delete',id=comment[0])}}" class="pull-right"><span class="fa fa-close"></span> </a>
 						</div>
 						<hr />
+						</div>
 						{% endfor %}
-					</div>
+
 					<form method="post" action="{{url_for('comment_app.comment',image_id = i[0])}}">
 						<!-- currently getting userid from images data because we have only one user -->
 						<div class ="form-group">
-
-							<textarea name="comment">
+							<textarea class="form-element " name="comment">
 							</textarea>
+						</div>
+						<div>
 							<button type="submit" class = "btn btn-success">
+								Comment!
 							</button>
 						</div>
 					</form><!-- comment form -->
@@ -38,4 +58,27 @@
 
 	{% endfor %}
 {% endif %}
+		<script type="text/javascript">
+			function showUpdateDialog(id){
+				var idStr=id.toString();
+				var para_id = "p_".concat(idStr);
+				var textarea_id = "text_".concat(idStr);
+				var button_id = "button_".concat(idStr);
+
+				var textarea_handle = _(textarea_id);
+				var button_handle = _(button_id);
+				var para_handle = _(para_id);
+
+				textarea_handle.style.display = "block";
+				button_handle.style.display = "block";
+				para_handle.style.display= "none";
+				var comment_split = para_handle.innerText.split(" ");
+				var text_to_render = comment_split[comment_split.length-1];
+				textarea_handle.innerText=text_to_render;
+			}
+
+			function _(element){
+				return document.getElementById(element);
+			}
+		</script>
 {% endblock %}
