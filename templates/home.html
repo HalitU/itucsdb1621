@@ -73,7 +73,7 @@
 				button_handle.style.display = "block";
 				para_handle.style.display= "none";
 				var comment_split = para_handle.innerText.split(" ");
-				var text_to_render = comment_split[comment_split.length-1];
+				var text_to_render = comment_split.slice(3);
 				textarea_handle.innerText=text_to_render;
 			}
 
