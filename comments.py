@@ -5,10 +5,10 @@ from flask import render_template, request
 from flask import Blueprint, current_app
 
 #declaring sub app with blueprint
-images_app = Blueprint('images_app', __name__)
+comment_app = Blueprint('comment_app', __name__)
 
 
-@images_app.route('/comment/<user_id>/<image_id>', methods = ['POST'])
+@comment_app.route('/comment/<user_id>/<image_id>', methods = ['POST'])
 def comment(user_id,image_id):
     ## insert
     comment = request.form['comment']
@@ -19,7 +19,7 @@ def comment(user_id,image_id):
 
     return render_template('message.html', message = "Successfully commented..")
 
-@images_app.route('/comment_delete/<id>')
+@comment_app.route('/comment_delete/<id>')
 def comment_delete(id):
     ## delete
     #id = request.args.get('id')
