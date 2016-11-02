@@ -1,36 +1,29 @@
 import datetime
 import os
 import psycopg2
+
 from images import images_app
-<<<<<<< HEAD
-from flask import Flask, render_template, request
+from notifications import notific_app
 from register import RegisterForm
 from register import register_app
-=======
 from comments import comment_app
-from notifications import notific_app
-from flask import Flask
-from flask import render_template
 
->>>>>>> 62b6614c7f4646d911a6513c648b87dfad296bc5
+from flask import Flask, render_template, request
+
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = '/static/uploads'
 app.register_blueprint(images_app)
-<<<<<<< HEAD
 app.register_blueprint(register_app)
 app.secret_key = 'kiymetlimiss'
-=======
 app.register_blueprint(comment_app) ## added comment bluprint
 app.register_blueprint(notific_app)
 
->>>>>>> 62b6614c7f4646d911a6513c648b87dfad296bc5
 class DB_Error(Exception):
     pass
 try:
     #Get database information from environment
-    _database = os.environ.get('$psql_uri')
-    print(_database)
+    _database = os.environ.get('psql_uri')
     _host = os.environ.get('psql_host')
     _user = os.environ.get('psql_user')
     _dbname = os.environ.get('psql_dbname')
@@ -136,4 +129,3 @@ if __name__ == '__main__':
     else:
         port, debug = 5000, True
     app.run(host='0.0.0.0', port=port, debug=debug)
-

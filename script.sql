@@ -49,7 +49,7 @@ insert into images (user_id, path, time, text) values (1, 'sample.jpg', now(), '
 
 insert into users (UserName, Password, photo_path, email) values ('sailormoon', 'abc999', '/photo.jpg', 'sailor@gmail.com' );
 
-insert into notifications(user_id, notifier_id, notifier_name, icon, details, read_status, follow_status) values (1, 2, 'some_company' ,'notific_sample.jpg', 'Thanks for all followers!' , 'FALSE', 'TRUE');
+insert into notifications(user_id, notifier_name, icon, details, read_status, follow_status) values (1,'some_company' ,'notific_sample.jpg', 'Thanks for all followers!' , FALSE, TRUE);
 
 insert into comments(user_id,image_id,time,comment) values (1,1,now(),'Hey! This photo is awesome');
 
