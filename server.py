@@ -18,7 +18,8 @@ class DB_Error(Exception):
     pass
 try:
     #Get database information from environment
-    _database = os.environ.get('psql_uri')
+    _database = os.environ.get('$psql_uri')
+    print(_database)
     _host = os.environ.get('psql_host')
     _user = os.environ.get('psql_user')
     _dbname = os.environ.get('psql_dbname')
@@ -42,6 +43,7 @@ def home_page():
         data = crs.fetchall()
         ## get all comment need to change this sql statement later
         crs.execute("select * from comments order by time desc")
+        ## group by then 2ds array
         comments = crs.fetchall()
 
     now =datetime.datetime.now()

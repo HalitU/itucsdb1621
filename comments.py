@@ -8,13 +8,14 @@ from flask import Blueprint, current_app
 comment_app = Blueprint('comment_app', __name__)
 
 
-@comment_app.route('/comment/<user_id>/<image_id>', methods = ['POST'])
-def comment(user_id,image_id):
+@comment_app.route('/comment/<image_id>',methods=["POST"])
+def comment(image_id):
+    print("Hey")
     ## insert
     comment = request.form['comment']
     with psycopg2.connect(current_app.config['dsn']) as conn:
             crs=conn.cursor()
-            crs.execute("insert into comments (user_id, image_id, time, text) values (%s, %s, now(), %s)", (user_id, image_id, comment))
+            crs.execute("insert into comments (user_id, image_id, time, comment) values (%s, %s, now(), %s)", (1, image_id, comment))
             data = conn.commit()
 
     return render_template('message.html', message = "Successfully commented..")

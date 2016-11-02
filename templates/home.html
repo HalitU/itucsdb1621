@@ -16,18 +16,21 @@
 					<div style="border: 2px;">
 						{% for comment in comment_list %}
 						<div>
-							<p>@{{ comment[0]}} {{comment[1]}} {{comment[3]}} {{comment[4]}}</p>
+							<p>{{ comment[0]}} {{comment[1]}} {{comment[3]}} {{comment[4]}}</p>
 							<a href="{{url_for('comment_app.comment_delete',id=comment[0])}}" class="pull-right"><span class="fa fa-close"></span> </a>
 						</div>
 						<hr />
 						{% endfor %}
 					</div>
-					<form target="{{url_for('comment_app.comment',user_id=i[1],image_id=i[0])}}">
+					<form method="post" action="{{url_for('comment_app.comment',image_id = i[0])}}">
 						<!-- currently getting userid from images data because we have only one user -->
-						<textarea name="comment">
-						</textarea>
-						<button type="submit">
-						</button>
+						<div class ="form-group">
+
+							<textarea name="comment">
+							</textarea>
+							<button type="submit" class = "btn btn-success">
+							</button>
+						</div>
 					</form><!-- comment form -->
 				</div>
 			</div>
