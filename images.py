@@ -27,6 +27,8 @@ def upload_post():
     with psycopg2.connect(current_app.config['dsn']) as conn:           
             crs=conn.cursor()
             crs.execute("insert into images (user_id, path, time, text) values (%s, %s, now(), %s)", (2, upload_file.filename, comment))
+            #notification insertion will use the logged user's information after the respective functionality is added - Halit
+            crs.execute("insert into notifications(user_id, notifier_id, notifier_name, icon, details, read_status, follow_status) values (%s, %s, %s, %s, %s, %s, %s)", (1, 2, 'some_company' ,'notific_sample.jpg', 'Thanks for all followers!' , 'FALSE', 'TRUE'))
             data = conn.commit()
 
     return render_template('message.html', message = "Uploaded..")

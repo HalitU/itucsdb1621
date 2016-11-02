@@ -2,20 +2,35 @@ import datetime
 import os
 import psycopg2
 from images import images_app
+<<<<<<< HEAD
 from flask import Flask, render_template, request
 from register import RegisterForm
 from register import register_app
+=======
+from comments import comment_app
+from notifications import notific_app
+from flask import Flask
+from flask import render_template
+
+>>>>>>> 62b6614c7f4646d911a6513c648b87dfad296bc5
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = '/static/uploads'
 app.register_blueprint(images_app)
+<<<<<<< HEAD
 app.register_blueprint(register_app)
 app.secret_key = 'kiymetlimiss'
+=======
+app.register_blueprint(comment_app) ## added comment bluprint
+app.register_blueprint(notific_app)
+
+>>>>>>> 62b6614c7f4646d911a6513c648b87dfad296bc5
 class DB_Error(Exception):
     pass
 try:
     #Get database information from environment
-    _database = os.environ.get('psql_uri')
+    _database = os.environ.get('$psql_uri')
+    print(_database)
     _host = os.environ.get('psql_host')
     _user = os.environ.get('psql_user')
     _dbname = os.environ.get('psql_dbname')
@@ -37,9 +52,14 @@ def home_page():
         crs=conn.cursor()
         crs.execute("select * from images order by time desc")
         data = crs.fetchall()
-    
+        ## get all comment need to change this sql statement later
+        crs.execute("select * from comments order by time desc")
+        ## group by then 2ds array
+        comments = crs.fetchall()
+
     now =datetime.datetime.now()
-    return render_template('home.html', current_time=now.ctime(), list = data, images_app = images_app)
+    ## pass values
+    return render_template('home.html', current_time=now.ctime(), list = data, images_app = images_app, comment_app = comment_app,comment_list=comments)
 
 @app.route('/activity')
 def activity():
@@ -70,13 +90,12 @@ def profile():
 
 @app.route('/notification')
 def notification():
-    context = []
-    context.append("https://scontent-cdg2-1.cdninstagram.com/t51.2885-19/s150x150/12530676_203139496730851_641566517_a.jpg")
-    context.append("http://www.drawingnow.com/file/videos/image/how-to-sketch-short-anime-female-hair.jpg")
-    image_list = {
-                  'image': context,
-                                    }
-    return render_template('notification.html', image = image_list)
+    with psycopg2.connect(app.config['dsn']) as conn:
+        crs=conn.cursor()
+        crs.execute("select * from notifications")
+        data = crs.fetchall()
+
+    return render_template('notification.html', image = data, notific_app = notific_app)
     
 @app.route('/createDatabase')
 def createDatabase():
