@@ -10,7 +10,7 @@ images_app = Blueprint('images_app', __name__)
 @images_app.route('/upload')
 def upload():
     with psycopg2.connect(current_app.config['dsn']) as conn:           
-            crs=conn.cursor()
+            crs = conn.cursor()
             crs.execute("select * from images")
             data = crs.fetchall()
             print(data)

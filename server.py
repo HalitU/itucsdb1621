@@ -2,15 +2,15 @@ import datetime
 import os
 import psycopg2
 from images import images_app
-
-from flask import Flask
-from flask import render_template
-
+from flask import Flask, render_template, request
+from register import RegisterForm
+from register import register_app
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = '/static/uploads'
 app.register_blueprint(images_app)
-
+app.register_blueprint(register_app)
+app.secret_key = 'kiymetlimiss'
 class DB_Error(Exception):
     pass
 try:
@@ -54,6 +54,15 @@ def timeline():
 @app.route('/login')
 def login():
     return render_template('login.html')
+
+@app.route('/signup', methods = ['GET', 'POST'])
+def signup():
+    form = RegisterForm()
+    if request.method == 'POST':
+        return 'Registered.'
+
+    elif request.method == 'GET':
+        return render_template('signup.html', form=form)
 
 @app.route('/profile')
 def profile():
