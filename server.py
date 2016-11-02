@@ -3,6 +3,7 @@ import os
 import psycopg2
 from images import images_app
 from comments import comment_app
+from notifications import notific_app
 from flask import Flask
 from flask import render_template
 
@@ -11,6 +12,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = '/static/uploads'
 app.register_blueprint(images_app)
 app.register_blueprint(comment_app) ## added comment bluprint
+app.register_blueprint(notific_app)
 
 class DB_Error(Exception):
     pass
@@ -66,13 +68,12 @@ def profile():
 
 @app.route('/notification')
 def notification():
-    context = []
-    context.append("https://scontent-cdg2-1.cdninstagram.com/t51.2885-19/s150x150/12530676_203139496730851_641566517_a.jpg")
-    context.append("http://www.drawingnow.com/file/videos/image/how-to-sketch-short-anime-female-hair.jpg")
-    image_list = {
-                  'image': context,
-                                    }
-    return render_template('notification.html', image = image_list)
+    with psycopg2.connect(app.config['dsn']) as conn:
+        crs=conn.cursor()
+        crs.execute("select * from notifications")
+        data = crs.fetchall()
+
+    return render_template('notification.html', image = data, notific_app = notific_app)
     
 @app.route('/createDatabase')
 def createDatabase():
