@@ -2,7 +2,7 @@ import datetime
 import os
 import psycopg2
 from images import images_app
-
+from comments import comment_app
 from flask import Flask
 from flask import render_template
 
@@ -10,6 +10,7 @@ from flask import render_template
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = '/static/uploads'
 app.register_blueprint(images_app)
+app.register_blueprint(comment_app) ## added comment bluprint
 
 class DB_Error(Exception):
     pass
@@ -37,9 +38,13 @@ def home_page():
         crs=conn.cursor()
         crs.execute("select * from images order by time desc")
         data = crs.fetchall()
-    
+        ## get all comment need to change this sql statement later
+        crs.execute("select * from comments order by time desc")
+        comments = crs.fetchall()
+
     now =datetime.datetime.now()
-    return render_template('home.html', current_time=now.ctime(), list = data, images_app = images_app)
+    ## pass values
+    return render_template('home.html', current_time=now.ctime(), list = data, images_app = images_app, comment_app = comment_app,comment_list=comments)
 
 @app.route('/activity')
 def activity():
