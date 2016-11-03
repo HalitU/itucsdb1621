@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block content %}
+{{ super() }}
+	{% for i in list %}
+		{% for dmessage in dmessage_list %}
+						<div class="row dmessageDiv ">
+						<div class="col-md-10 col-xs-10 ">
+							<p id="p_{{dmessage[0]}}">{{ dmessage[0]}} {{dmessage[2]}} {{dmessage[3]}} {{dmessage[4]}}</p>
+							<form method="post" action="{{url_for('dmessage_app.dmessage_update',id=dmessage[0])}}">
+								<textarea name="new_dmessage" style="display:none;" id="text_{{dmessage[0]}}"></textarea>
+								<button style="display:none;" id="button_{{dmessage[0]}}">Edit!</button>
+							</form>
+						</div>
+						<div class="col-md-1 col-xs-1 ">
+							<a href="#" onclick="showUpdateDialog({{dmessage[0]}})" class="pull-right"><span class="fa fa-pencil-square-o"></span> </a>
+						</div>
+						<div class="col-md-1 col-xs-1 ">
+							<a href="{{url_for('dmessage_app.dmessage_delete',id=dmessage[0])}}" class="pull-right"><span class="fa fa-close"></span> </a>
+						</div>
+						<hr />
+						</div>
+		{% endfor %}
+
+					<form method="post" action="{{url_for('dmessage_app.dmessage')}}">
+						<div class ="form-group">
+							<textarea class="form-element form-control" name="dmessage">
+							</textarea>
+						</div>
+						<div>
+							<button type="submit" class = "btn btn-success">Send a new message.</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+		<script type="text/javascript">
+			function showUpdateDialog(id){
+				var idStr=id.toString();
+				var para_id = "p_".concat(idStr);
+				var textarea_id = "text_".concat(idStr);
+				var button_id = "button_".concat(idStr);
+
+				var textarea_handle = _(textarea_id);
+				var button_handle = _(button_id);
+				var para_handle = _(para_id);
+
+				textarea_handle.style.display = "block";
+				button_handle.style.display = "block";
+				para_handle.style.display= "none";
+				var dmessage_split = para_handle.innerText.split(" ");
+				var text_to_render = dmessage_split[dmessage_split.length-1];
+				textarea_handle.innerText=text_to_render;
+			}
+
+			function _(element){
+				return document.getElementById(element);
+			}
+		</script>
+{% endblock %}
+{% block styles %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap3-editable/css/bootstrap-editable.css') }}" />
+{% endblock %}
+{% block scripts %}
+	<script src="{{ url_for('static', filename='plugins/jquery-3.1.1.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/bootstrap3-editable/js/bootstrap-editable.js') }}"></script>
+	<script>
+		var dmessage = $("a[id^='editable_dmessage']");
+		$.fn.editable.defaults.mode = 'inline';
+
+		$.each(dmessage, function(i, e){
+
+		});
+	</script>
+{% endblock %}

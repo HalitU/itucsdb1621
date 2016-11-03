@@ -7,6 +7,7 @@ from notifications import notific_app
 from register import RegisterForm
 from register import register_app
 from comments import comment_app
+from directmessages import dmessage_app
 
 from flask import Flask, render_template, request
 
@@ -18,6 +19,7 @@ app.register_blueprint(register_app)
 app.secret_key = 'kiymetlimiss'
 app.register_blueprint(comment_app) ## added comment bluprint
 app.register_blueprint(notific_app)
+app.register_blueprint(dmessage_app)
 
 class DB_Error(Exception):
     pass
@@ -31,7 +33,7 @@ try:
 
     _port = 5432
     dsn = """user='{}' password='{}' host='{}' port={}
-        dbname='{}'""".format(_user, _password, _host, _port, _dbname) 
+        dbname='{}'""".format(_user, _password, _host, _port, _dbname)
     app.config['dsn'] = dsn
     #Connection for database
 
@@ -77,6 +79,17 @@ def signup():
     elif request.method == 'GET':
         return render_template('signup.html', form=form)
 
+@app.route('/dmessage')
+def dmessage():
+    with psycopg2.connect(app.config['dsn']) as conn:
+        crs=conn.cursor()
+        crs.execute("select * from directmessages order by time desc")
+        dmessages = crs.fetchall()
+
+    now =datetime.datetime.now()
+
+    return render_template('dmessage.html', current_time=now.ctime(), dmessage_app = dmessage_app, dmessage_list=dmessages)
+
 @app.route('/profile')
 def profile():
     return render_template('profile.html')
@@ -89,18 +102,18 @@ def notification():
         data = crs.fetchall()
 
     return render_template('notification.html', image = data, notific_app = notific_app)
-    
+
 @app.route('/createDatabase')
 def createDatabase():
     scripts = getScriptFileAsString()
     queries = scripts.split(';')
-    
+
     with psycopg2.connect(app.config['dsn']) as conn:
         for i in queries:
             t = i.strip()
             if t:
                 print(t)
-                crs = conn.cursor()    
+                crs = conn.cursor()
                 crs.execute(t)
             conn.commit()
 

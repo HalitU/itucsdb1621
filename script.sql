@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS notifications;
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS upload;
+DROP TABLE IF EXISTS directmessages;
 
 
 CREATE TABLE IF NOT EXISTS images(
@@ -39,6 +40,14 @@ CREATE TABLE IF NOT EXISTS comments (
     comment text
 );
 
+CREATE TABLE IF NOT EXISTS directmessages (
+    dmessage_id serial primary key,
+    sender_id int,
+    receiver_id int,
+    time date,
+    dmessage text
+);
+
 CREATE TABLE IF NOT EXISTS upload(
     ID INTEGER,
     time date,
@@ -52,5 +61,9 @@ insert into users (UserName, Password, photo_path, email) values ('sailormoon', 
 insert into notifications(user_id, notifier_id, notifier_name, icon, details, read_status, follow_status) values (1, 2, 'some_company' ,'notific_sample.jpg', 'Thanks for all followers!' , FALSE, TRUE);
 
 insert into comments(user_id,image_id,time,comment) values (1,1,now(),'Hey! This photo is awesome');
+
+insert into directmessages(sender_id,receiver_id,time,dmessage) values (1,1,now(),'So long mans dirty hand does not interfere, there is no true uncleanliness or ugliness in anything.');
+insert into directmessages(sender_id,receiver_id,time,dmessage) values (1,1,now(),'Selam!');
+
 
 insert into upload(time, description) values (now(), 'You should know that all your strength lies in sincerity and truth');
