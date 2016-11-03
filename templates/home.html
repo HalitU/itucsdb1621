@@ -6,21 +6,27 @@
 	.commentDiv{
 		border-style:solid black;
 		border-top: 10px;
-
 	}
-
+	.image-control-panel *{
+		margin-left:4px;
+	}
 </style>
 {% if list %}
 	 {% for i in list %}
 		<div class="row" id="{{i[0]}}">
 			<div class="col-md-offset-4 col-xs-offset-4 col-md-4 well col-xs-12 col-xs-offset-0">
-				<a href="{{url_for('images_app.image_delete', id = i[0])}}" class="pull-right"><span class="fa fa-close"></span></a>
+				<p class="pull-left">{{i[3]}}</p>
+				<div  class="pull-right image-control-panel">
+					<a href="{{url_for('images_app.image_delete', id = i[0])}}"><span class="fa fa-close"></span></a>
+				</div>
 				<div>
-
+					<input type="hidden" name="image_id" value="{{i[0]}}"></div>
 					<img src="static/uploads/{{i[2]}}" class="img-responsive" />
 
 					<hr />
-					<p>{{i[1]}} {{i[4]}} {{i[3]}}</p>
+					<p>@User{{i[1]}}  </p>
+					<a href="javascript:;" data-type="textarea" id="editable_comment_{{i[0]}}" data-pk="{{i[0]}}">{{i[4]}}</a>
+					<hr style="border-color:#ccc" />
 						{% for comment in comment_list %}
 						<div class="row commentDiv ">
 						<div class="col-md-10 col-xs-10 ">
@@ -43,7 +49,7 @@
 					<form method="post" action="{{url_for('comment_app.comment',image_id = i[0])}}">
 						<!-- currently getting userid from images data because we have only one user -->
 						<div class ="form-group">
-							<textarea class="form-element " name="comment">
+							<textarea class="form-element form-control" name="comment">
 							</textarea>
 						</div>
 						<div>
@@ -81,4 +87,23 @@
 				return document.getElementById(element);
 			}
 		</script>
+{% endblock %}
+{% block styles %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap3-editable/css/bootstrap-editable.css') }}" />
+{% endblock %}
+{% block scripts %}
+	<script src="{{ url_for('static', filename='plugins/jquery-3.1.1.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/bootstrap3-editable/js/bootstrap-editable.js') }}"></script>
+	<script>
+		var comments = $("a[id^='editable_comment']");
+		$.fn.editable.defaults.mode = 'inline';
+
+		$.each(comments, function(i, e){
+			$(e).editable({
+				url:"{{url_for('images_app.image_update')}}",
+				title:'yorumu düzenle',
+				rows: 5
+			});
+		});
+	</script>
 {% endblock %}

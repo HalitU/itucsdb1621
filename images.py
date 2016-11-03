@@ -1,7 +1,7 @@
 import os
 import psycopg2
 from flask import Flask
-from flask import render_template, request
+from flask import render_template, request, jsonify
 from flask import Blueprint, current_app
 
 #declaring sub app with blueprint
@@ -42,3 +42,18 @@ def image_delete(id):
             data = conn.commit()
     
     return render_template('message.html', message = "Image deleted..")
+
+
+@images_app.route('/image_update', methods = ['POST'])
+def image_update():
+    #inline editable plugin gives pk and value
+    id = request.form['pk']
+    newText = request.form['value']
+    data = ""
+    with psycopg2.connect(current_app.config['dsn']) as conn:           
+            crs=conn.cursor()
+            crs.execute("update images set text=%s where image_id = %s", (newText, id))
+            data = conn.commit()
+            return jsonify(data)
+
+    return jsonify(0)

@@ -10,6 +10,11 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='font-awesome-4.6.3/css/font-awesome.min.css')}}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 	{% endblock %}
+
+
+	{% block styles %}
+
+	{% endblock %}
 </head>
 
 <body>
@@ -49,6 +54,10 @@
 	<footer>
 		<div id="datetime">{{ current_time }}</div>
 	</footer>
+
+	{% block scripts %}
+
+	{% endblock %}
 </body>
 
 </html>
