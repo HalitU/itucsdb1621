@@ -77,7 +77,7 @@ def signup():
         return 'Registered.'
 
     elif request.method == 'GET':
-        return render_template('signup.html', form=form)
+        return render_template('signup.html', form=form,current_app=app)
 
 @app.route('/dmessage')
 def dmessage():
@@ -92,7 +92,20 @@ def dmessage():
 
 @app.route('/profile')
 def profile():
-    return render_template('profile.html')
+
+    with psycopg2.connect(app.config['dsn']) as conn:
+        crs = conn.cursor()
+        crs.execute("select * from users order by username desc")
+        usernames = crs.fetchall()
+    return render_template('profile.html',usernames= usernames,register_app=register_app)
+
+@app.route('/remove')
+def remove():
+    return render_template("remove.html",register_app=register_app)
+
+@app.route('/update')
+def update():
+    return render_template("update.html",register_app=register_app)
 
 @app.route('/notification')
 def notification():
@@ -117,7 +130,7 @@ def createDatabase():
                 crs.execute(t)
             conn.commit()
 
-    return render_template('message.html', message = "Script is commited, the result is ")
+    return render_template('message.html', message = "Script is committed, the result is ")
 
 #Read script.sql file as a single string
 def getScriptFileAsString():

@@ -15,9 +15,9 @@ CREATE TABLE IF NOT EXISTS images(
 );
 
 CREATE TABLE IF NOT EXISTS users(
-    ID INTEGER,
-    UserName VARCHAR(50) NOT NULL,
-    Password text NOT NULL,
+    ID serial primary key,
+    username VARCHAR(50) NOT NULL,
+    password text NOT NULL,
     photo_path text,
     email text NOT NULL UNIQUE
 );
