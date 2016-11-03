@@ -39,12 +39,13 @@ def updateUser():
 
     return render_template('update.html',message="Successfully updated")
 
+
 @register_app.route('/remove_user',methods=["POST"])
 def removeUser():
     data_username = request.form["username"]
     with psycopg2.connect(current_app.config['dsn']) as conn:
-            crs = conn.cursor()
-            crs.execute("delete from users where username = %s", data_username)
-            data = conn.commit()
+        crs = conn.cursor()
+        crs.execute("delete from users where username = %s",(data_username,))
+        data = conn.commit()
 
     return render_template('message.html', message="Account deleted")
