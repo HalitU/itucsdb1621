@@ -10,7 +10,6 @@ dmessage_app = Blueprint('dmessage_app', __name__)
 
 @dmessage_app.route('/dmessage',methods=["POST"])
 def dmessage():
-    print("message adding")
     dmessage = request.form['dmessage']
     with psycopg2.connect(current_app.config['dsn']) as conn:
             crs=conn.cursor()
