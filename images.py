@@ -21,12 +21,34 @@ def upload():
 def upload_post():
 
     comment = request.form['comment']
+    location = request.form['location']
     upload_file = request.files['image']
-    upload_file.save(os.path.join('static/uploads', upload_file.filename))
-
+    if upload_file:
+        upload_file.save(os.path.join('static/uploads', upload_file.filename))
+    else:
+        return render_template('message.html', message = "Please select an image..")
     with psycopg2.connect(current_app.config['dsn']) as conn:           
             crs=conn.cursor()
-            crs.execute("insert into images (user_id, path, time, text) values (%s, %s, now(), %s)", (2, upload_file.filename, comment))
+            crs.execute("insert into images (user_id, path, time, text) values (%s, %s, now(), %s) RETURNING image_id", (2, upload_file.filename, comment))
+            image_id = crs.fetchone()[0] #Get image id
+            locs = location.split(',')
+
+            #location check
+            for loc in locs:
+                #print(loc)
+                crs.execute("select * from locations where name = %s", (loc,))
+                loc_data = crs.fetchone()
+                loc_id = 0
+                #get location id with insert or select
+                if loc_data:
+                    loc_id = loc_data[0]
+                else:
+                    crs.execute('insert into locations (name, rating) values (%s, %s) RETURNING Id', (loc_data, 1))
+                    loc_id = crs.fetchone()[0] #Get last insertion id
+                print(loc_id)
+                #add it to image_locations relation table
+                crs.execute('insert into image_locations (image_id, location_id) values (%s, %s)', (image_id, loc_id))
+
             #notification insertion will use the logged user's information after the respective functionality is added - Halit
             crs.execute("insert into notifications(user_id, notifier_id, notifier_name, icon, details, read_status, follow_status) values (%s, %s, %s, %s, %s, %s, %s)", (1, 2, 'some_company' ,'notific_sample.jpg', 'Thanks for all followers!' , 'FALSE', 'TRUE'))
             data = conn.commit()

@@ -1,10 +1,15 @@
-DROP TABLE IF EXISTS images;
+
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS notifications;
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS upload;
 DROP TABLE IF EXISTS directmessages;
 
+DROP TABLE IF EXISTS user_likes;
+DROP TABLE IF EXISTS image_locations;
+DROP TABLE IF EXISTS locations;
+
+DROP TABLE IF EXISTS images;
 
 CREATE TABLE IF NOT EXISTS images(
     image_id serial primary key,
@@ -56,7 +61,7 @@ CREATE TABLE IF NOT EXISTS upload(
 
 CREATE TABLE IF NOT EXISTS user_likes(
     user_id int,
-    image_id int REFERENCES images (image_id),
+    image_id int REFERENCES images (image_id) ON DELETE CASCADE,
     time date,
     primary key(image_id)
 );
@@ -68,8 +73,8 @@ CREATE TABLE IF NOT EXISTS locations(
 );
 
 CREATE TABLE IF NOT EXISTS image_locations(
-    image_id int REFERENCES images (image_id),
-    location_id int REFERENCES locations (Id),
+    image_id int REFERENCES images (image_id) ON DELETE CASCADE,
+    location_id int REFERENCES locations (Id) ON DELETE CASCADE,
     primary key (image_id, location_id)
 );
 

@@ -10,8 +10,12 @@
             </div>
             <div class="form-group">
                 <label for="">Comment on your picture</label>
-				<input type="textarea" class="form-control" name="comment" placeholder="comment">
+                <textarea name="comment"  class="form-control" placeholder="Comment.."></textarea>
             </div>
+            <div class="form-group">
+                <label for="">Location</label>
+				<input type="text" data-role="tagsinput" class="form-control" id="location" name="location" placeholder="Location..">
+            </div> 
             <div class="pull-right">
                  <button type="submit" class="btn btn-success">Upload</button>
             </div>
@@ -20,4 +24,13 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block styles %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap-tagsinput-latest/dist/bootstrap-tagsinput.css') }}" />
+{% endblock %}
+{% block scripts %}
+	<script src="{{ url_for('static', filename='plugins/jquery-3.1.1.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/bootstrap-tagsinput-latest/dist/bootstrap-tagsinput.min.js') }}"></script>
+    
 {% endblock %}
