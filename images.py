@@ -57,3 +57,10 @@ def image_update():
             return jsonify(data)
 
     return jsonify(0)
+
+@images_app.route('/image_like', methods = ['POST'])
+def image_like():
+
+    
+
+    return jsonify(0)

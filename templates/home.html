@@ -15,8 +15,9 @@
 	 {% for i in list %}
 		<div class="row" id="{{i[0]}}">
 			<div class="col-md-offset-4 col-xs-offset-4 col-md-4 well col-xs-12 col-xs-offset-0">
-				<p class="pull-left">{{i[3]}}</p>
+				<p class="pull-left"><span class="fa fa-map-marker"></span> Locations</p>
 				<div  class="pull-right image-control-panel">
+					{{i[3]}}
 					<a href="{{url_for('images_app.image_delete', id = i[0])}}"><span class="fa fa-close"></span></a>
 				</div>
 				<div>
@@ -24,8 +25,17 @@
 					<img src="static/uploads/{{i[2]}}" class="img-responsive" />
 
 					<hr />
-					<p>@User{{i[1]}}  </p>
+					
+					<div class="likes">
+						@User{{i[1]}}  
+						<div class="pull-right">
+							<a href="javascript:;" class="like" data-id="{{i[0]}}"><span class="fa fa-heart-o fa-2x"></span></a>
+							<span>3 Kişi beğendi.</span>
+						</div>
+					</div>
+					<div class="clearfix"></div>
 					<a href="javascript:;" data-type="textarea" id="editable_comment_{{i[0]}}" data-pk="{{i[0]}}">{{i[4]}}</a>
+					
 					<hr style="border-color:#ccc" />
 						{% for comment in comment_list %}
 						<div class="row commentDiv ">
@@ -105,5 +115,26 @@
 				rows: 5
 			});
 		});
+		$(document).ready(function(){
+
+			$(document).on("click", ".like", function(){
+				var link = $(this);
+				var imageid = link.data('id');
+				link.attr("disabled", true);
+				$.ajax({
+					url: "{{url_for('images_app.image_like')}}",
+					data : {id : imageid },
+					success:function(){
+
+
+
+						link.removeAttr("disabled");
+					}
+				})
+
+			});
+
+		});
+
 	</script>
 {% endblock %}
