@@ -54,6 +54,25 @@ CREATE TABLE IF NOT EXISTS upload(
     description text
 );
 
+CREATE TABLE IF NOT EXISTS user_likes(
+    user_id int,
+    image_id int REFERENCES images (image_id),
+    time date,
+    primary key(image_id)
+);
+
+CREATE TABLE IF NOT EXISTS locations(
+    Id serial primary key,
+    name text,
+    rating real
+);
+
+CREATE TABLE IF NOT EXISTS image_locations(
+    image_id int REFERENCES images (image_id),
+    location_id int REFERENCES locations (Id),
+    primary key (image_id, location_id)
+);
+
 insert into images (user_id, path, time, text) values (1, 'sample.jpg', now(), 'hello world #1');
 
 insert into users (UserName, Password, photo_path, email) values ('sailormoon', 'abc999', '/photo.jpg', 'sailor@gmail.com' );
