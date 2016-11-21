@@ -96,7 +96,12 @@ def update_delete_loc(id):
         crs=conn.cursor()
         crs.execute("select string_agg(locations.name, ', ') from image_locations inner join locations on locations.id = image_locations.location_id where image_id = %s group by image_id", (id))
         locations = crs.fetchone()
-    return render_template('update_loc.html', image_id = id, locs = locations[0])
+    
+    if locations:
+        data = locations[0]
+    else:
+        data = ""
+    return render_template('update_loc.html', image_id = id, locs = data)
 
 @images_app.route('/update_delete_loc_save', methods = ['POST'])
 def update_delete_loc_save():
@@ -145,4 +150,24 @@ def update_delete_loc_save():
         for u in updateLocs:
             crs.execute('update image_locations set order_val = %s where image_id = %s', (order, id))
             order = order + 1
+        conn.commit()
     return render_template('message.html', message = "Locations updated..")
+
+@images_app.route("/locations")
+def locations():
+    
+    with psycopg2.connect(current_app.config['dsn']) as conn:           
+        crs=conn.cursor()
+        crs.execute('select * from locations order by rating desc')
+        data = crs.fetchall()
+    return render_template('locations.html', list = data)
+
+@images_app.route('/remove_location/<id>')
+def remove_location(id):
+
+    with psycopg2.connect(current_app.config['dsn']) as conn:           
+        crs=conn.cursor()
+        crs.execute('delete from locations where Id = %s', (id))
+        conn.commit()
+
+    return render_template('message.html', message = "Location has been removed from database")
