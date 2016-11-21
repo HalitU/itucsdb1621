@@ -32,7 +32,7 @@ def upload_post():
             crs.execute("insert into images (user_id, path, time, text) values (%s, %s, now(), %s) RETURNING image_id", (2, upload_file.filename, comment))
             image_id = crs.fetchone()[0] #Get image id
             locs = location.split(',')
-
+            order = 0
             #location check
             for loc in locs:
                 #print(loc)
@@ -41,13 +41,15 @@ def upload_post():
                 loc_id = 0
                 #get location id with insert or select
                 if loc_data:
+                    crs.execute('update locations set rating = rating + 1 where Id=%s', ([loc_data[0]]))
                     loc_id = loc_data[0]
                 else:
-                    crs.execute('insert into locations (name, rating) values (%s, %s) RETURNING Id', (loc_data, 1))
+                    crs.execute('insert into locations (name, rating) values (%s, %s) RETURNING Id', (loc, 1))
                     loc_id = crs.fetchone()[0] #Get last insertion id
-                print(loc_id)
+                
                 #add it to image_locations relation table
-                crs.execute('insert into image_locations (image_id, location_id) values (%s, %s)', (image_id, loc_id))
+                crs.execute('insert into image_locations (image_id, location_id, order_val) values (%s, %s, %s)', (image_id, loc_id, order))
+                order = order + 1
 
             #notification insertion will use the logged user's information after the respective functionality is added - Halit
             crs.execute("insert into notifications(user_id, notifier_id, notifier_name, icon, details, read_status, follow_status) values (%s, %s, %s, %s, %s, %s, %s)", (1, 2, 'some_company' ,'notific_sample.jpg', 'Thanks for all followers!' , 'FALSE', 'TRUE'))
@@ -86,3 +88,61 @@ def image_like():
     
 
     return jsonify(0)
+
+
+@images_app.route('/update_delete_loc/<id>')
+def update_delete_loc(id):
+    with psycopg2.connect(current_app.config['dsn']) as conn:           
+        crs=conn.cursor()
+        crs.execute("select string_agg(locations.name, ', ') from image_locations inner join locations on locations.id = image_locations.location_id where image_id = %s group by image_id", (id))
+        locations = crs.fetchone()
+    return render_template('update_loc.html', image_id = id, locs = locations[0])
+
+@images_app.route('/update_delete_loc_save', methods = ['POST'])
+def update_delete_loc_save():
+    id = request.form['id']
+    locs = request.form['locs']
+    locations = locs.split(',')
+    
+    #collect updated or inserted ids
+    collect = []
+
+    with psycopg2.connect(current_app.config['dsn']) as conn:           
+        crs=conn.cursor()
+        for loc in locations:
+            crs.execute("select * from locations where name = %s", (loc,))
+            loc_data = crs.fetchone()
+            if loc_data:
+                crs.execute('update locations set rating = rating + 1 where Id = %s', ([loc_data[0]]))
+                collect.append(loc_data[0])
+            else:
+                crs.execute('insert into locations (name, rating) values (%s, %s) RETURNING Id', (loc, 1))
+                loc_id = crs.fetchone()[0] #Get last insertion id
+                collect.append(loc_id)
+
+        crs.execute('select location_id from image_locations where image_id = %s', (id))
+        currentLocs = crs.fetchall()
+        
+        #tuple array to int array
+        currentLocsInt = []
+        for cur in currentLocs:
+            currentLocsInt.append(cur[0])
+
+        finded = []
+        for cur in collect:
+            if cur not in currentLocsInt:
+                crs.execute('insert into image_locations (image_id, location_id) values (%s, %s)', (id, cur))
+                finded.append(cur)
+        #Delete from database that not match
+        for cur in currentLocsInt:
+            if cur not in collect:
+                crs.execute('delete from image_locations where image_id = %s and location_id = %s', (id, cur))
+        
+        #get all locations and update order
+        crs.execute('select location_id from image_locations where image_id = %s', (id))
+        updateLocs = crs.fetchall()
+        order = 0
+        for u in updateLocs:
+            crs.execute('update image_locations set order_val = %s where image_id = %s', (order, id))
+            order = order + 1
+    return render_template('message.html', message = "Locations updated..")

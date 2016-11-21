@@ -42,11 +42,21 @@ except DB_Error:
 
 @app.route('/')
 def home_page():
-
+    images = []
     with psycopg2.connect(app.config['dsn']) as conn:
         crs=conn.cursor()
         crs.execute("select * from images order by time desc")
         data = crs.fetchall()
+        
+        for img in data:
+            crs.execute("select string_agg(locations.name, ', ') from image_locations inner join locations on locations.id = image_locations.location_id where image_id = %s group by image_id", ([img[0]]))
+            locs = crs.fetchone()
+            if locs:
+                img = img + (locs) #add new value to tuple
+                images.append(img)
+            else:
+                images.append(img)
+
         ## get all comment need to change this sql statement later
         crs.execute("select * from comments order by time desc")
         ## group by then 2ds array
@@ -54,7 +64,7 @@ def home_page():
 
     now =datetime.datetime.now()
     ## pass values
-    return render_template('home.html', current_time=now.ctime(), list = data, images_app = images_app, comment_app = comment_app,comment_list=comments)
+    return render_template('home.html', current_time=now.ctime(), list = images, images_app = images_app, comment_app = comment_app,comment_list=comments)
 
 @app.route('/activity')
 def activity():

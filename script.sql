@@ -75,6 +75,7 @@ CREATE TABLE IF NOT EXISTS locations(
 CREATE TABLE IF NOT EXISTS image_locations(
     image_id int REFERENCES images (image_id) ON DELETE CASCADE,
     location_id int REFERENCES locations (Id) ON DELETE CASCADE,
+    order_val int DEFAULT 0,
     primary key (image_id, location_id)
 );
 
