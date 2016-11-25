@@ -69,6 +69,9 @@ CREATE TABLE IF NOT EXISTS user_likes(
 CREATE TABLE IF NOT EXISTS locations(
     Id serial primary key,
     name text,
+    latitude numeric,
+    longitude numeric,
+    formatted_address text,
     rating real
 );
 

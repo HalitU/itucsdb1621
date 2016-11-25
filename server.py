@@ -49,6 +49,7 @@ def home_page():
         data = crs.fetchall()
         
         for img in data:
+            #get all locations in one string that the image have
             crs.execute("select string_agg(locations.name, ', ') from image_locations inner join locations on locations.id = image_locations.location_id where image_id = %s group by image_id", ([img[0]]))
             locs = crs.fetchone()
             if locs:

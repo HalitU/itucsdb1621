@@ -1,5 +1,6 @@
 import os
 import psycopg2
+import googlemaps
 from flask import Flask
 from flask import render_template, request, jsonify
 from flask import Blueprint, current_app
@@ -27,6 +28,8 @@ def upload_post():
         upload_file.save(os.path.join('static/uploads', upload_file.filename))
     else:
         return render_template('message.html', message = "Please select an image..")
+
+    gmaps = googlemaps.Client(key='AIzaSyDurbt3tU9F8lDMqyHAnXVjCPphapNu0FM')
     with psycopg2.connect(current_app.config['dsn']) as conn:           
             crs=conn.cursor()
             crs.execute("insert into images (user_id, path, time, text) values (%s, %s, now(), %s) RETURNING image_id", (2, upload_file.filename, comment))
@@ -44,7 +47,12 @@ def upload_post():
                     crs.execute('update locations set rating = rating + 1 where Id=%s', ([loc_data[0]]))
                     loc_id = loc_data[0]
                 else:
-                    crs.execute('insert into locations (name, rating) values (%s, %s) RETURNING Id', (loc, 1))
+                    gcode = gmaps.geocode(loc)
+                    formatted = gcode[0]['formatted_address']
+                    location = gcode[0]['geometry']['location']
+                    lng = location['lng']
+                    lat = location['lat']
+                    crs.execute('insert into locations (name, latitude, longitude, formatted_address, rating) values (%s, %s, %s, %s, %s) RETURNING Id', (loc, lat, lng, formatted, 1))
                     loc_id = crs.fetchone()[0] #Get last insertion id
                 
                 #add it to image_locations relation table
@@ -109,6 +117,7 @@ def update_delete_loc_save():
     locs = request.form['locs']
     locations = locs.split(',')
     
+    gmaps = googlemaps.Client(key='AIzaSyDurbt3tU9F8lDMqyHAnXVjCPphapNu0FM')
     #collect updated or inserted ids
     collect = []
 
@@ -121,7 +130,12 @@ def update_delete_loc_save():
                 crs.execute('update locations set rating = rating + 1 where Id = %s', ([loc_data[0]]))
                 collect.append(loc_data[0])
             else:
-                crs.execute('insert into locations (name, rating) values (%s, %s) RETURNING Id', (loc, 1))
+                gcode = gmaps.geocode(loc)
+                formatted = gcode[0]['formatted_address']
+                location = gcode[0]['geometry']['location']
+                lng = location['lng']
+                lat = location['lat']
+                crs.execute('insert into locations (name, latitude, longitude, formatted_address, rating) values (%s, %s, %s, %s, %s) RETURNING Id', (loc, lat, lng, formatted, 1))
                 loc_id = crs.fetchone()[0] #Get last insertion id
                 collect.append(loc_id)
 
@@ -171,3 +185,21 @@ def remove_location(id):
         conn.commit()
 
     return render_template('message.html', message = "Location has been removed from database")
+
+@images_app.route('/geoloc')
+def geoloc():
+    gmaps = googlemaps.Client(key='AIzaSyDurbt3tU9F8lDMqyHAnXVjCPphapNu0FM')
+    geocode = gmaps.geocode('Beylikdüzü istanbul')
+    location = geocode[0]['geometry']['location']
+    lng = location['lng']
+    lat = location['lat']
+    return render_template('message.html', message = geocode[0]['formatted_address'])
+
+@images_app.route('/location/<name>')
+def location(name):
+    with psycopg2.connect(current_app.config['dsn']) as conn:           
+        crs=conn.cursor()
+        crs.execute('select * from locations where name = %s', (name))
+        data = crs.fetchone()
+    print(data)
+    return render_template('location.html', data = data)
