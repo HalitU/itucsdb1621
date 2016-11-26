@@ -60,10 +60,10 @@ CREATE TABLE IF NOT EXISTS upload(
 );
 
 CREATE TABLE IF NOT EXISTS user_likes(
-    user_id int,
+    user_id int REFERENCES users (ID) ON DELETE CASCADE,
     image_id int REFERENCES images (image_id) ON DELETE CASCADE,
     time date,
-    primary key(image_id)
+    primary key(image_id, user_id)
 );
 
 CREATE TABLE IF NOT EXISTS locations(

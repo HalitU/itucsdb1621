@@ -21,8 +21,10 @@
                 {% if list %} 
                     {% for i in list %} 
                         <tr>
-                            <td>{{i[1]}}</td>
-                            <td>{{i[2]}}</td>
+                            <td>
+                                <a href="{{url_for('images_app.location', name=i[1])}}">{{i[1]}}</a>
+                                </td>
+                            <td>{{i[5]}}</td>
                             <td><a href="{{url_for('images_app.remove_location', id = i[0])}}"><span class="fa fa-times"></span> Remove it</a></td>
                         </tr>
 

@@ -20,7 +20,7 @@
 						<span class="fa fa-pencil-square-o"></span>
 					</a>
 				{% if i[5] %}
-					<span class="fa fa-map-marker"></span> {{i[5]}}
+					<span class="fa fa-map-marker"></span> {{i[5] | safe}}
 				{% endif %}
 				</p>
 				<div  class="pull-right image-control-panel">
@@ -37,6 +37,7 @@
 						@User{{i[1]}}  
 						<div class="pull-right">
 							<a href="javascript:;" class="like" data-id="{{i[0]}}"><span class="fa fa-heart-o fa-2x"></span></a>
+							<a href="javascript:;" class="unlike" data-id="{{i[0]}}"><span class="fa fa-heart fa-2x"></span></a>
 							<span>3 Kişi beğendi.</span>
 						</div>
 					</div>
@@ -131,8 +132,32 @@
 				$.ajax({
 					url: "{{url_for('images_app.image_like')}}",
 					data : {id : imageid },
-					success:function(){
+					type : 'POST',
+					success:function(result){
+						if(result == -1)
+							alert('Already liked.');
+						else
+							alert('Liked.');
 
+						link.removeAttr("disabled");
+					}
+				})
+
+			});
+
+			$(document).on("click", ".unlike", function(){
+				var link = $(this);
+				var imageid = link.data('id');
+				link.attr("disabled", true);
+				$.ajax({
+					url: "{{url_for('images_app.image_unlike')}}",
+					data : {id : imageid },
+					type : 'POST',
+					success:function(result){
+						if(result == -1)
+							alert('Image is not liked yet.');
+						else
+							alert('Unliked.');
 
 						link.removeAttr("disabled");
 					}

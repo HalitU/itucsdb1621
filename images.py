@@ -92,11 +92,35 @@ def image_update():
 
 @images_app.route('/image_like', methods = ['POST'])
 def image_like():
+    id = request.form['id']    
+    user_id = 1 #since there is no user system yet, it is 1 for now.
+    #after user system it will be something like that user_id = session['user_id']
+    with psycopg2.connect(current_app.config['dsn']) as conn:           
+        crs=conn.cursor()
+        crs.execute("select * from user_likes where user_id = %s and image_id = %s", (user_id, id))
+        exist = crs.fetchone()
+        if exist:
+            return jsonify(-1) #already liked.
+        else:
+            crs.execute("insert into user_likes (user_id, image_id, time) values (%s, %s, now())", (user_id, id))
+            data = conn.commit()
+    return jsonify(1)
 
-    
-
-    return jsonify(0)
-
+@images_app.route('/image_unlike', methods = ['POST'])
+def image_unlike():
+    id = request.form['id']    
+    user_id = 1 #since there is no user system yet, it is 1 for now.
+    #after user system it will be something like that user_id = session['user_id']
+    with psycopg2.connect(current_app.config['dsn']) as conn:           
+        crs=conn.cursor()
+        crs.execute("select * from user_likes where user_id = %s and image_id = %s", (user_id, id))
+        exist = crs.fetchone()
+        if exist:
+            crs.execute("delete from user_likes where user_id = %s and image_id = %s", (user_id, id))
+            data = conn.commit()
+        else:
+            return jsonify(-1)
+    return jsonify(1)
 
 @images_app.route('/update_delete_loc/<id>')
 def update_delete_loc(id):
@@ -199,7 +223,11 @@ def geoloc():
 def location(name):
     with psycopg2.connect(current_app.config['dsn']) as conn:           
         crs=conn.cursor()
-        crs.execute('select * from locations where name = %s', (name))
+        crs.execute('select * from locations where name = %s', (name,))
         data = crs.fetchone()
-    print(data)
-    return render_template('location.html', data = data)
+        if data:
+            crs.execute('select count(*) from image_locations where location_id = %s', ([data[0]]))
+            count = crs.fetchone()[0]
+        else:
+            return render_template('message.html', message="No location with '{}' name".format(name))
+    return render_template('location.html', data = data, count = count)

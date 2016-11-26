@@ -50,10 +50,17 @@ def home_page():
         
         for img in data:
             #get all locations in one string that the image have
-            crs.execute("select string_agg(locations.name, ', ') from image_locations inner join locations on locations.id = image_locations.location_id where image_id = %s group by image_id", ([img[0]]))
+            crs.execute("select string_agg(locations.name, ',') from image_locations inner join locations on locations.id = image_locations.location_id where image_id = %s group by image_id", ([img[0]]))
             locs = crs.fetchone()
+
             if locs:
-                img = img + (locs) #add new value to tuple
+
+                marks = locs[0].split(',')
+                for i in range(len(marks)):
+                    marks[i] = '<a href="/location/{}">{}</a>'.format(marks[i], marks[i])
+                
+                locs = ','.join(marks)
+                img = img + (locs,) #add new value to tuple
                 images.append(img)
             else:
                 images.append(img)
