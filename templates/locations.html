@@ -1,0 +1,37 @@
+{% extends "layout.html" %} {% block content %}
+<div class="row">
+    <div class="col-md-offset-2 col-md-8">
+
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+
+                    <th>
+                        Location Name
+                    </th>
+                    <th>
+                        Location Rating
+                    </th>
+                    <th>
+                        Operation
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if list %} 
+                    {% for i in list %} 
+                        <tr>
+                            <td>
+                                <a href="{{url_for('images_app.location', name=i[1])}}">{{i[1]}}</a>
+                                </td>
+                            <td>{{i[5]}}</td>
+                            <td><a href="{{url_for('images_app.remove_location', id = i[0])}}"><span class="fa fa-times"></span> Remove it</a></td>
+                        </tr>
+
+                    {% endfor %} 
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

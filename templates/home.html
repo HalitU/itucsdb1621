@@ -6,21 +6,71 @@
 	.commentDiv{
 		border-style:solid black;
 		border-top: 10px;
-
 	}
-
+	.image-control-panel *{
+		margin-left:4px;
+	}
+	.no-link-a{
+		text-decoration:none;
+	}
+	.btn-primary-outline {
+ 	 background-color: transparent;
+	}
 </style>
 {% if list %}
 	 {% for i in list %}
 		<div class="row" id="{{i[0]}}">
 			<div class="col-md-offset-4 col-xs-offset-4 col-md-4 well col-xs-12 col-xs-offset-0">
-				<a href="{{url_for('images_app.image_delete', id = i[0])}}" class="pull-right"><span class="fa fa-close"></span></a>
-				<div>
+				<p class="pull-left">
+					{{i[3]}}
+				{% if i[5] %}
+					<span class="fa fa-map-marker"></span> {{i[5] | safe}}
+				{% endif %}
+				</p>
+				<div class="dropdown pull-right">
+					<button class="btn btn-primary-outline dropdown-toggle " type="button" data-toggle="dropdown">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="{{url_for('reports_app.initiate_report',content_id= i[0])}}" class="no-link-a">
+								<span class="fa fa-envelope-o"></span> Report
+							</a>
+						</li>
+						<li>
+							<a href="{{url_for('images_app.update_delete_loc', id = i[0])}}" class="no-link-a">
+								<span class="fa fa-pencil-square-o"></span> Edit
+							</a>
+						</li>
+						<li>
+							<a href="{{url_for('images_app.image_delete', id = i[0])}}" class="no-link-a">
+								<span class="fa fa-close"></span> Delete
+							</a>
+						</li>
+					</ul>
+				</div>
 
+				<div  class="pull-right image-control-panel">
+
+					<div>
+						<input type="hidden" name="image_id" value="{{i[0]}}">
+					</div>
 					<img src="static/uploads/{{i[2]}}" class="img-responsive" />
 
 					<hr />
-					<p>{{i[1]}} {{i[4]}} {{i[3]}}</p>
+					
+					<div class="likes">
+						@User{{i[1]}}  
+						<div class="pull-right">
+							<a href="javascript:;" class="like" data-id="{{i[0]}}"><span class="fa fa-heart-o fa-2x"></span></a>
+							<a href="javascript:;" class="unlike" data-id="{{i[0]}}"><span class="fa fa-heart fa-2x"></span></a>
+							<span>3 Kişi beğendi.</span>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<a href="javascript:;" data-type="textarea" id="editable_comment_{{i[0]}}" data-pk="{{i[0]}}">{{i[4]}}</a>
+					
+					<hr style="border-color:#ccc" />
 						{% for comment in comment_list %}
 						<div class="row commentDiv ">
 						<div class="col-md-10 col-xs-10 ">
@@ -43,7 +93,7 @@
 					<form method="post" action="{{url_for('comment_app.comment',image_id = i[0])}}">
 						<!-- currently getting userid from images data because we have only one user -->
 						<div class ="form-group">
-							<textarea class="form-element " name="comment">
+							<textarea class="form-element form-control" name="comment">
 							</textarea>
 						</div>
 						<div>
@@ -81,4 +131,68 @@
 				return document.getElementById(element);
 			}
 		</script>
+{% endblock %}
+{% block styles %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap3-editable/css/bootstrap-editable.css') }}" />
+{% endblock %}
+{% block scripts %}
+	<script src="{{ url_for('static', filename='plugins/jquery-3.1.1.min.js') }}"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="{{ url_for('static', filename='plugins/bootstrap3-editable/js/bootstrap-editable.js') }}"></script>
+	<script>
+		var comments = $("a[id^='editable_comment']");
+		$.fn.editable.defaults.mode = 'inline';
+
+		$.each(comments, function(i, e){
+			$(e).editable({
+				url:"{{url_for('images_app.image_update')}}",
+				title:'yorumu düzenle',
+				rows: 5
+			});
+		});
+		$(document).ready(function(){
+
+			$(document).on("click", ".like", function(){
+				var link = $(this);
+				var imageid = link.data('id');
+				link.attr("disabled", true);
+				$.ajax({
+					url: "{{url_for('images_app.image_like')}}",
+					data : {id : imageid },
+					type : 'POST',
+					success:function(result){
+						if(result == -1)
+							alert('Already liked.');
+						else
+							alert('Liked.');
+
+						link.removeAttr("disabled");
+					}
+				})
+
+			});
+
+			$(document).on("click", ".unlike", function(){
+				var link = $(this);
+				var imageid = link.data('id');
+				link.attr("disabled", true);
+				$.ajax({
+					url: "{{url_for('images_app.image_unlike')}}",
+					data : {id : imageid },
+					type : 'POST',
+					success:function(result){
+						if(result == -1)
+							alert('Image is not liked yet.');
+						else
+							alert('Unliked.');
+
+						link.removeAttr("disabled");
+					}
+				})
+
+			});
+
+		});
+
+	</script>
 {% endblock %}

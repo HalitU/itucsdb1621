@@ -82,3 +82,15 @@ div#datetime {
   margin-left:0px;
   margin-right: 0px;
 }
+
+.removeAeffects{
+  text-decoration: none;
+}
+.removeAeffects:hover{
+  color:inherit !important;
+  text-decoration: none;  
+}
+
+.likes{
+  margin-top:5px;
+}

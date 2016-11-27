@@ -62,5 +62,11 @@ border-radius:300px;
            <img src="http://lorempixel.com/600/450/" class="img-responsive" />
         </div>
     </div>
+
+    <div class="row" >
+        {% for username in usernames %}
+        <p> {{username[1]}} {{username[4]}} </p>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

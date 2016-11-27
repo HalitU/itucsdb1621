@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-offset-4 col-md-4 well">
+        {% for issue in data %}
+            <div class="row">
+                <p>
+                    {{issue[0]}} has reported {{issue[1]}} at {{issue[3]}}.
+                </p>
+                <p>
+                    Report is as follows:
+                </p>
+                <blockquote>
+                    {{issue[2]}}
+                </blockquote>
+                {% if issue[3]=="pending" %}
+                <form action="{{url_for('report.app.issue_approval',content_id=issue[1])}}" method="post">
+                    <button type="submit" class="btn btn-danger" >
+                    </button>
+                </form>
+                <form action="{{url_for(report.app.issue_reject,content_id=issue[1])}}" method="post">
+                    <button type="submit" class="btn btn-primary" >
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
