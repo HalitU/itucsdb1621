@@ -134,6 +134,23 @@ def notification():
 
     return render_template('notification.html', image = data, notific_app = notific_app)
 
+@app.route('/issues')
+def issues():
+    with psycopg2.connect(app.config['dsn']) as conn:
+        crs = conn.cursor()
+        crs.execute("select (user_id,image_id,report_comment,status,time) from content_reports order by time")
+        conn.commit()
+        data = []
+        ret = crs.fetchall()
+        for tp in ret:
+            str = tp[0]
+            tmplist= []
+            for s in str.split(','):
+                tmplist.append(s)
+            data.append(tmplist)
+        print(data)
+    return render_template("issues.html",data=data)
+
 @app.route('/createDatabase')
 def createDatabase():
     scripts = getScriptFileAsString()

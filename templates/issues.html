@@ -4,9 +4,9 @@
 <div class="row">
     <div class="col-md-offset-4 col-md-4 well">
         {% for issue in data %}
-            <div class="row">
+            <div class="row well">
                 <p>
-                    {{issue[0]}} has reported {{issue[1]}} at {{issue[3]}}.
+                    {{issue[0]}} has reported {{issue[1]}} at {{issue[4]}}.
                 </p>
                 <p>
                     Report is as follows:
@@ -15,12 +15,14 @@
                     {{issue[2]}}
                 </blockquote>
                 {% if issue[3]=="pending" %}
-                <form action="{{url_for('report.app.issue_approval',content_id=issue[1])}}" method="post">
+                <form class="col-md-6" style="display:inline;" action="{{url_for('reports_app.issue_approval',content_id=issue[1])}}" method="post">
                     <button type="submit" class="btn btn-danger" >
+                        Approve Content Removal
                     </button>
                 </form>
-                <form action="{{url_for(report.app.issue_reject,content_id=issue[1])}}" method="post">
+                <form class="col-md-6" style="display:inline;" action="{{url_for('reports_app.issue_reject',content_id=issue[1])}}" method="post">
                     <button type="submit" class="btn btn-primary" >
+                        Reject Content Removal
                     </button>
                 </form>
                 {% endif %}

@@ -1,19 +1,20 @@
-DROP TABLE IF EXISTS user_likes;
+DROP TABLE IF EXISTS user_likes CASCADE;
 
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS notifications;
-DROP TABLE IF EXISTS comments;
-DROP TABLE IF EXISTS upload;
-DROP TABLE IF EXISTS directmessages;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS notifications CASCADE;
+DROP TABLE IF EXISTS comments CASCADE;
+DROP TABLE IF EXISTS upload CASCADE;
+DROP TABLE IF EXISTS directmessages CASCADE;
 
-DROP TABLE IF EXISTS user_likes;
-DROP TABLE IF EXISTS image_locations;
-DROP TABLE IF EXISTS locations;
+DROP TABLE IF EXISTS user_likes CASCADE;
+DROP TABLE IF EXISTS image_locations CASCADE;
+DROP TABLE IF EXISTS locations CASCADE;
 
-DROP TABLE IF EXISTS image_locations;
-DROP TABLE IF EXISTS locations;
+DROP TABLE IF EXISTS image_locations CASCADE;
+DROP TABLE IF EXISTS locations CASCADE;
 
-DROP TABLE IF EXISTS images;
+DROP TABLE IF EXISTS images CASCADE;
+DROP TABLE IF EXISTS content_reports CASCADE;
 
 CREATE TABLE IF NOT EXISTS images(
     image_id serial primary key,
@@ -86,14 +87,14 @@ CREATE TABLE IF NOT EXISTS image_locations(
     primary key (image_id, location_id)
 );
 
-CREATE TABLE IF NOT EXISTS content_reports{
-    report_id INT,
+CREATE TABLE IF NOT EXISTS content_reports(
+    report_id serial primary key,
     user_id INT REFERENCES users (ID) ON DELETE CASCADE,
     image_id INT REFERENCES images (image_id) ON DELETE RESTRICT,
     report_comment text,
     status text,
     time date
-}
+);
 
 insert into images (user_id, path, time, text) values (1, 'sample.jpg', now(), 'hello world #1');
 
@@ -108,3 +109,5 @@ insert into directmessages(sender_id,receiver_id,time,dmessage) values (1,1,now(
 
 
 insert into upload(time, description) values (now(), 'You should know that all your strength lies in sincerity and truth');
+
+insert into content_reports (report_id,user_id,image_id,report_comment,status,time) VALUES (DEFAULT,1,1,'Unsuitable','pending',now());
