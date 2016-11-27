@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS user_likes;
 
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS notifications;
@@ -7,9 +6,6 @@ DROP TABLE IF EXISTS upload;
 DROP TABLE IF EXISTS directmessages;
 
 DROP TABLE IF EXISTS user_likes;
-DROP TABLE IF EXISTS image_locations;
-DROP TABLE IF EXISTS locations;
-
 DROP TABLE IF EXISTS image_locations;
 DROP TABLE IF EXISTS locations;
 

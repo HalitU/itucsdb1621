@@ -10,23 +10,33 @@
 	.image-control-panel *{
 		margin-left:4px;
 	}
+<<<<<<< HEAD
 	.no-link-a{
 		text-decoration:none;
 	}
 	.btn-primary-outline {
  	 background-color: transparent;
 	}
+=======
+>>>>>>> f04a3cdc709d28839236ad6e2e2478ba7a8ef3f1
 </style>
 {% if list %}
 	 {% for i in list %}
 		<div class="row" id="{{i[0]}}">
 			<div class="col-md-offset-4 col-xs-offset-4 col-md-4 well col-xs-12 col-xs-offset-0">
 				<p class="pull-left">
+<<<<<<< HEAD
 					{{i[3]}}
+=======
+					<a href="{{url_for('images_app.update_delete_loc', id = i[0])}}">					
+						<span class="fa fa-pencil-square-o"></span>
+					</a>
+>>>>>>> f04a3cdc709d28839236ad6e2e2478ba7a8ef3f1
 				{% if i[5] %}
 					<span class="fa fa-map-marker"></span> {{i[5] | safe}}
 				{% endif %}
 				</p>
+<<<<<<< HEAD
 				<div class="dropdown pull-right">
 					<button class="btn btn-primary-outline dropdown-toggle " type="button" data-toggle="dropdown">
 						<span class="caret"></span>
@@ -51,9 +61,18 @@
 				</div>
 
 				<div  class="pull-right image-control-panel">
+
 					<div>
 						<input type="hidden" name="image_id" value="{{i[0]}}">
 					</div>
+=======
+				<div  class="pull-right image-control-panel">
+					{{i[3]}}
+					<a href="{{url_for('images_app.image_delete', id = i[0])}}"><span class="fa fa-close"></span></a>
+				</div>
+				<div>
+					<input type="hidden" name="image_id" value="{{i[0]}}"></div>
+>>>>>>> f04a3cdc709d28839236ad6e2e2478ba7a8ef3f1
 					<img src="static/uploads/{{i[2]}}" class="img-responsive" />
 
 					<hr />
@@ -136,7 +155,10 @@
 {% endblock %}
 {% block scripts %}
 	<script src="{{ url_for('static', filename='plugins/jquery-3.1.1.min.js') }}"></script>
+<<<<<<< HEAD
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+=======
+>>>>>>> f04a3cdc709d28839236ad6e2e2478ba7a8ef3f1
 	<script src="{{ url_for('static', filename='plugins/bootstrap3-editable/js/bootstrap-editable.js') }}"></script>
 	<script>
 		var comments = $("a[id^='editable_comment']");

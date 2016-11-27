@@ -1,4 +1,7 @@
+<<<<<<< HEAD
+=======
 DROP TABLE IF EXISTS user_likes;
+>>>>>>> f04a3cdc709d28839236ad6e2e2478ba7a8ef3f1
 
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS notifications;
@@ -6,10 +9,10 @@ DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS upload;
 DROP TABLE IF EXISTS directmessages;
 
+<<<<<<< HEAD
 DROP TABLE IF EXISTS user_likes;
-DROP TABLE IF EXISTS image_locations;
-DROP TABLE IF EXISTS locations;
-
+=======
+>>>>>>> f04a3cdc709d28839236ad6e2e2478ba7a8ef3f1
 DROP TABLE IF EXISTS image_locations;
 DROP TABLE IF EXISTS locations;
 
@@ -86,6 +89,7 @@ CREATE TABLE IF NOT EXISTS image_locations(
     primary key (image_id, location_id)
 );
 
+<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS content_reports{
     report_id INT,
     user_id INT REFERENCES users (ID) ON DELETE CASCADE,
@@ -95,6 +99,8 @@ CREATE TABLE IF NOT EXISTS content_reports{
     time date
 }
 
+=======
+>>>>>>> f04a3cdc709d28839236ad6e2e2478ba7a8ef3f1
 insert into images (user_id, path, time, text) values (1, 'sample.jpg', now(), 'hello world #1');
 
 insert into users (UserName, Password, photo_path, email) values ('sailormoon', 'abc999', '/photo.jpg', 'sailor@gmail.com' );

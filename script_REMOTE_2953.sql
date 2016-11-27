@@ -6,10 +6,6 @@ DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS upload;
 DROP TABLE IF EXISTS directmessages;
 
-DROP TABLE IF EXISTS user_likes;
-DROP TABLE IF EXISTS image_locations;
-DROP TABLE IF EXISTS locations;
-
 DROP TABLE IF EXISTS image_locations;
 DROP TABLE IF EXISTS locations;
 
@@ -85,15 +81,6 @@ CREATE TABLE IF NOT EXISTS image_locations(
     order_val int DEFAULT 0,
     primary key (image_id, location_id)
 );
-
-CREATE TABLE IF NOT EXISTS content_reports{
-    report_id INT,
-    user_id INT REFERENCES users (ID) ON DELETE CASCADE,
-    image_id INT REFERENCES images (image_id) ON DELETE RESTRICT,
-    report_comment text,
-    status text,
-    time date
-}
 
 insert into images (user_id, path, time, text) values (1, 'sample.jpg', now(), 'hello world #1');
 
