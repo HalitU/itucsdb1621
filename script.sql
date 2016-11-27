@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS image_locations(
 CREATE TABLE IF NOT EXISTS content_reports(
     report_id serial primary key,
     user_id INT REFERENCES users (ID) ON DELETE CASCADE,
-    image_id INT REFERENCES images (image_id) ON DELETE RESTRICT,
+    image_id INT REFERENCES images (image_id) ON DELETE CASCADE,
     report_comment text,
     status text,
     time date
