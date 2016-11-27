@@ -1,4 +1,7 @@
+
 DROP TABLE IF EXISTS user_likes CASCADE;
+DROP TABLE IF EXISTS user_likes;
+DROP TABLE IF EXISTS bids;
 
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS notifications CASCADE;
@@ -42,6 +45,17 @@ CREATE TABLE IF NOT EXISTS notifications(
     read_status boolean,
     follow_status boolean
 );
+
+CREATE TABLE IF NOT EXISTS bids(
+    bid_id serial primary key,
+    header text,
+    details text,
+    image int REFERENCES images(image_id) ON DELETE CASCADE,
+    current_price numeric,
+    seller_id int REFERENCES users(ID) ON DELETE RESTRICT,
+    current_holder int REFERENCES users(ID) ON DELETE RESTRICT
+);
+
 CREATE TABLE IF NOT EXISTS comments (
     comment_id serial primary key,
     user_id int,

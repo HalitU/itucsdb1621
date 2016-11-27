@@ -30,7 +30,7 @@ def upload_post():
         return render_template('message.html', message = "Please select an image..")
 
     gmaps = googlemaps.Client(key='AIzaSyDurbt3tU9F8lDMqyHAnXVjCPphapNu0FM')
-    with psycopg2.connect(current_app.config['dsn']) as conn:           
+    with psycopg2.connect(current_app.config['dsn']) as conn:
             crs=conn.cursor()
             crs.execute("insert into images (user_id, path, time, text) values (%s, %s, now(), %s) RETURNING image_id", (2, upload_file.filename, comment))
             image_id = crs.fetchone()[0] #Get image id
