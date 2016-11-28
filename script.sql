@@ -111,10 +111,12 @@ CREATE TABLE IF NOT EXISTS content_reports(
 );
 
 insert into images (user_id, path, time, text) values (1, 'sample.jpg', now(), 'hello world #1');
+insert into images (user_id, path, time, text) values (1, 'mona_lisa.jpg', now(), 'Mona Lisa');
 
 insert into users (UserName, Password, photo_path, email) values ('sailormoon', 'abc999', '/photo.jpg', 'sailor@gmail.com' );
 
 insert into notifications(user_id, notifier_id, notifier_name, icon, details, read_status, follow_status) values (1, 2, 'some_company' ,'notific_sample.jpg', 'Thanks for all followers!' , FALSE, TRUE);
+insert into bids(header, details, image, current_price, seller_id, current_holder) values ('Mona Lisa', 'A classic picture of Mona Lisa', 2, 99.99, 1, 1);
 
 insert into comments(user_id,image_id,time,comment) values (1,1,now(),'Hey! This photo is awesome');
 
