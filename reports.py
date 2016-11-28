@@ -28,7 +28,7 @@ def report_content(content_id):
 def issue_approval(content_id):
     with psycopg2.connect(current_app.config['dsn']) as conn:
         crs = conn.cursor()
-        crs.execute("delete from content_reports where image_id=%s",(content_id))
+        #crs.execute("delete from content_reports where image_id=%s",(content_id))
         crs.execute("delete from images where image_id = %s",(content_id)) # delete sorgusunu yaz
         conn.commit()
     return render_template("message.html",message="Content removed successfully.")
