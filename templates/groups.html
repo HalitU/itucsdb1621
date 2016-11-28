@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-offset-4 col-md-4 well">
+    {% for group in groups %}
+         <div class="row well">
+            {{ group[0], group[0], group[1], group[2], group[3] }}
+             <a href="{{url_for('groups_app.show_group', group_id = group[0])}}">To group page</a>
+
+         </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,18 +1,17 @@
 import datetime
 import os
-import psycopg2
 
+import psycopg2
+from bids import bidding_app
+from comments import comment_app
+from directmessages import dmessage_app
+from flask import Flask, render_template, request
 from images import images_app
 from notifications import notific_app
 from register import RegisterForm
 from register import register_app
-from comments import comment_app
-from directmessages import dmessage_app
 from reports import reports_app
-from bids import bidding_app
-
-from flask import Flask, render_template, request
-
+from groups import groups_app
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = '/static/uploads'
@@ -24,7 +23,7 @@ app.register_blueprint(notific_app)
 app.register_blueprint(dmessage_app)
 app.register_blueprint(reports_app)
 app.register_blueprint(bidding_app)
-
+app.register_blueprint(groups_app)
 class DB_Error(Exception):
     pass
 try:
@@ -174,6 +173,19 @@ def bidPage():
 @app.route('/bidForm')
 def bidForm():
     return render_template('bidForm.html', bidding_app = bidding_app)
+
+@app.route('/group')
+def groups():
+    with psycopg2.connect(app.config['dsn']) as conn:
+        crs = conn.cursor()
+        crs.execute("select * from user_groups")
+        conn.commit()
+        data = crs.fetchall()
+        print(data)
+    return render_template('groups.html', groups=data, groups_app=groups_app)
+
+
+
 
 @app.route('/createDatabase')
 def createDatabase():
