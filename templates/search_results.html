@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-offset-4 col-md-4 well">
+        {% for user in result %}
+            <div class="row well">
+              {{ user[1] }} <img style="height:32px;width:32px" src="{{url_for('static', filename='uploads'+user[2]) }}" alt="Profile Photo"> <a href="{{ url_for('users_app.show_profile',user_id=user[0])}}"> To profile</a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

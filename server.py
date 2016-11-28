@@ -12,7 +12,7 @@ from register import RegisterForm
 from register import register_app
 from reports import reports_app
 from groups import groups_app
-
+from users import  users_app
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = '/static/uploads'
 app.register_blueprint(images_app)
@@ -24,6 +24,8 @@ app.register_blueprint(dmessage_app)
 app.register_blueprint(reports_app)
 app.register_blueprint(bidding_app)
 app.register_blueprint(groups_app)
+app.register_blueprint(users_app)
+
 class DB_Error(Exception):
     pass
 try:
@@ -111,14 +113,6 @@ def dmessage():
 
     return render_template('dmessage.html', current_time=now.ctime(), dmessage_app = dmessage_app, dmessage_list=dmessages)
 
-@app.route('/profile')
-def profile():
-
-    with psycopg2.connect(app.config['dsn']) as conn:
-        crs = conn.cursor()
-        crs.execute("select * from users order by username desc")
-        usernames = crs.fetchall()
-    return render_template('profile.html',usernames= usernames,register_app=register_app)
 
 @app.route('/remove')
 def remove():

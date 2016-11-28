@@ -29,14 +29,16 @@
 					</a>
 				</div>
                 <div class=" col-md-2">
-                    <input type="text" name="search" placeholder="Ara.." class="form-control">
+					<form action="{{ url_for('users_app.search_user') }}" method="get">
+						<input type="text" name="username" placeholder="Ara.." class="form-control">
+					</form>
                 </div>
 				<div class="col-md-offset-2 col-md-2">
 					<a href="{{url_for('home_page')}}" class="navlink"><span class="fa fa-home fa-2x"></span></a>
 					<a href="{{url_for('timeline')}}" class="navlink"><span class="fa fa-book fa-2x"></span></a>
 					<a href="{{url_for('activity')}}" class="navlink"><span class="fa fa-heart fa-2x"></span></a>
 					<a href="{{url_for('login')}}" class="navlink"><span class="fa fa-user fa-2x"></span> </a>
-                    <a href="{{url_for('profile')}}" class="navlink"><span class="fa fa-user-secret fa-2x"></span></a>
+                    <a href="{{url_for('users_app.show_profile',user_id=1)}}" class="navlink"><span class="fa fa-user-secret fa-2x"></span></a>
                     <a href="{{url_for('dmessage')}}" class="navlink"><span class="fa fa-comments fa-2x"></span> </a>
                     <a href="{{url_for('images_app.upload')}}" class="navlink"><span class="fa fa-upload fa-2x"></span> </a>
 					<a href="{{url_for('createDatabase')}}" class="navlink"><span class="fa fa-database"></span></a>

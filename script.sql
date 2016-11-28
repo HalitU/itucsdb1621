@@ -21,6 +21,7 @@ DROP TABLE IF EXISTS locations CASCADE;
 
 DROP TABLE IF EXISTS images CASCADE;
 DROP TABLE IF EXISTS content_reports CASCADE;
+DROP TABLE IF EXISTS user_follow CASCADE;
 
 CREATE TABLE IF NOT EXISTS images(
     image_id serial primary key,
@@ -107,6 +108,13 @@ CREATE TABLE IF NOT EXISTS user_likes(
     primary key(image_id, user_id)
 );
 
+CREATE TABLE IF NOT EXISTS user_follow(
+    follower_id int REFERENCES users (ID) ON DELETE CASCADE,
+    followed_id int REFERENCES users (ID)   ON DELETE CASCADE,
+    time date,
+    primary key(follower_id,followed_id)
+);
+
 CREATE TABLE IF NOT EXISTS locations(
     Id serial primary key,
     name text,
@@ -137,8 +145,10 @@ insert into images (user_id, path, time, text) values (1, 'mona_lisa.jpg', now()
 
 insert into users (username, password, photo_path, email) values ('sailormoon', 'abc999', '/photo.jpg', 'sailor@gmail.com' );
 insert into users (username, password, photo_path, email) values ('kcolak', 'dts213', '/photo1.jpg', 'kclk@gmail.com' );
+insert into users (username, password, photo_path, email) values ('kinomiya_takao','dragonunkilici','photo2.jpg','takao@gmail.com');
 
 insert into user_groups(group_name, gp_path, group_exp ) values  ('First', '/group_pp.jpg', 'First group in the PostItu');
+
 insert into group_members(group_id, user_id, time, member_status, role) values (1, 1, now(), 'active', 'admin');
 insert into group_members(group_id, user_id, time, member_status, role) values (1, 2, now(), 'active', 'pending');
 

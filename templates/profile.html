@@ -1,4 +1,3 @@
-
 {% extends "layout.html" %}
 {% block head %}
 {{ super() }}
@@ -9,64 +8,59 @@ border-radius:300px;
 }
 </style>
 {% endblock %}
+
 {% block content %}
 <br>
 <br>
 <div class="col-md-3">
     <div class="col-md-offset-1  row">
-    <img id="profile_photo" class="img-responsive center-block" src="http://lorempixel.com/300/300/" class="img-responsive" />
+    <img  alt="Profile Picture" id="profile_photo" class="img-responsive center-block" src="{{ url_for('static', filename='uploads/'+result[2]) }}" class="img-responsive" />
     </div>
      <div class="col-md-offset-1 row">
          <br>
         <p class="lead">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            {{ result[1] }}
         </p>
     </div>
      <div class="col-md-offset-1 row">
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dapibus sodales leo vitae ultricies. Nam tincidunt luctus diam sed congue. Donec sodales ut dui sit amet aliquet
-        </p>
+         {% if is_self %}
+
+         {% else %}
+         {% if is_following %} <a href="{{ url_for('users_app.user_unfollow',follower= 1, followed= result[0])}}">
+            <button type="button" class="btn btn-danger" >
+                Unfollow!
+            </button>
+         </a>
+
+         {% else %}
+        <a href="{{url_for('users_app.user_follow',follower = 1, followed= result[0])}}">
+            <button type="button" class="btn btn-primary" >
+                Follow!
+            </button>
+         </a>
+        {% endif %}
+        {% endif %}
     </div>
+     <div class="col-md-offset-1 row">
+       <a href="{{ url_for('users_app.show_followers',user_id=result[0])}}"> Followers</a>
+     </div>
+    <div class="col-md-offset-1 row">
+       <a href="{{ url_for('users_app.show_followed',user_id=result[0])}}"> Follows</a>
+     </div>
 
 </div>
 <div class="col-md-9">
+    {% for photopaths in list_photos %}
+    {% if loop.index is divisibleby 3 %}
     <div class="row">
+    {% endif %}
         <div class="col-md-3">
-           <img src="http://lorempixel.com/600/450/" class="img-responsive" />
+           <img src="{{ url_for('static', filename='uploads/'+photopaths[0]) }}" class="img-responsive" />
         </div>
-         <div class="col-md-3">
-           <img src="http://lorempixel.com/600/450/" class="img-responsive" />
-        </div>
-         <div class="col-md-3">
-           <img src="http://lorempixel.com/600/450/" class="img-responsive" />
-        </div>
+    {% if loop.index is divisibleby 3 %}
     </div>
     <br>
-    <div class="row">
-        <div class="col-md-3">
-           <img src="http://lorempixel.com/600/450/" class="img-responsive" />
-        </div>
-         <div class="col-md-3">
-           <img src="http://lorempixel.com/600/450/" class="img-responsive" />
-        </div>
-         <div class="col-md-3">
-           <img src="http://lorempixel.com/600/450/" class="img-responsive" />
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-md-3">
-           <img src="http://lorempixel.com/600/450/" class="img-responsive" />
-        </div>
-         <div class="col-md-3">
-           <img src="http://lorempixel.com/600/450/" class="img-responsive" />
-        </div>
-    </div>
-
-    <div class="row" >
-        {% for username in usernames %}
-        <p> {{username[1]}} {{username[4]}} </p>
-        {% endfor %}
-    </div>
+    {% endif %}
+    {% endfor %}
 </div>
 {% endblock %}
