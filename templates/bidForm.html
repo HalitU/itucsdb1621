@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+<style type="text/css">
+
+</style>
+{% endblock %}
+{% block content %}
+<div id="container-fluid">
+		<div class="col-md-offset-4  col-md-5">
+			<h1>Place a new item on Market</h1>
+            <form method="POST" action="{{url_for('bidding_app.add_new_bid')}}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="item_name">Item Name</label>
+                    <input type="text" class="form-control" id="item_name" name="item_name" placeholder="Enter item name">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="">Item Image</label>
+                    <input type="file" class="file" name="image" placeholder="image">
+                </div>
+                <div class="form-group">
+                    <label for="price">Set Initial Price</label>
+                    <input type="number" step="0.01" id="price" name="price" placeholder="price">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+		</div>
+</div>
+{% endblock %}
+{% block footer %}
+{{ super()}}
+{% endblock %}

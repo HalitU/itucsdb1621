@@ -9,6 +9,8 @@ from register import register_app
 from comments import comment_app
 from directmessages import dmessage_app
 from reports import reports_app
+from bids import bidding_app
+
 from flask import Flask, render_template, request
 
 
@@ -21,6 +23,8 @@ app.register_blueprint(comment_app) ## added comment bluprint
 app.register_blueprint(notific_app)
 app.register_blueprint(dmessage_app)
 app.register_blueprint(reports_app)
+app.register_blueprint(bidding_app)
+
 class DB_Error(Exception):
     pass
 try:
@@ -150,6 +154,26 @@ def issues():
             data.append(tmplist)
         print(data)
     return render_template("issues.html",data=data)
+
+@app.route('/bidPage')
+def bidPage():
+    with psycopg2.connect(app.config['dsn']) as conn:
+        crs = conn.cursor()
+        crs.execute("select * from bids")
+        data = crs.fetchall()
+        all_data = []
+        for d in data:
+            inner_data = []
+            crs.execute("select path from images where image_id=%s", [d[3]])
+            inner_data.append(crs.fetchone())
+            inner_data.append(d)
+            all_data.append(inner_data)
+    
+    return render_template('bidPage.html', allBids = all_data, bidding_app = bidding_app)
+
+@app.route('/bidForm')
+def bidForm():
+    return render_template('bidForm.html', bidding_app = bidding_app)
 
 @app.route('/createDatabase')
 def createDatabase():
