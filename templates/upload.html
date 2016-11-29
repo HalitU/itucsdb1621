@@ -16,6 +16,42 @@
                 <label for="">Location</label>
 				<input type="text" data-role="tagsinput" class="form-control" id="location" name="location" placeholder="Location..">
             </div> 
+            <div class="form-group">
+                <label for="">Settings</label>
+                <select name="filters" id="filters">
+                {% if filters %}
+                    {% for filter in filters %}
+                        <option value="{{filter.id}}">{{filter.name}}</option>
+                    {% endfor %}
+                {% else %}
+                    <option value="0">No filter settings</option>
+                {% endif %}
+                </select> 
+                <a href="{{url_for('filter_app.index')}}">Edit</a>
+            </div> 
+
+
+            <div class="form-group">
+                <label for="">Contrast</label>
+				<input type="range" class="form-control" id="contrast" name="contrast" value="0" min="0" max="100">
+            </div> 
+            <div class="form-group">
+                <label for="">Brightness</label>
+				<input type="range" class="form-control" id="Brightness" name="Brightness" value="0" min="0" max="100">
+            </div> 
+            <div class="form-group">
+                <label for="">Sharpness</label>
+				<input type="range" class="form-control" id="Sharpness" name="Sharpness" value="0" min="0" max="100">
+            </div> 
+            <div class="form-group">
+                <label for="">Blur</label>
+				<input type="range" class="form-control" id="Blur" name="Blur" value="0" min="0" max="3">
+            </div> 
+
+            <div class="form-group">
+                <label for="">UnsharpMask</label>
+				<input type="range" class="form-control" id="UnsharpMask" name="UnsharpMask" value="0" min="0" max="3">
+            </div> 
             <div class="pull-right">
                  <button type="submit" class="btn btn-success">Upload</button>
             </div>

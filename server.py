@@ -13,6 +13,7 @@ from register import register_app
 from reports import reports_app
 from groups import groups_app
 from users import  users_app
+from filters import filters_app
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = '/static/uploads'
 app.register_blueprint(images_app)
@@ -25,6 +26,7 @@ app.register_blueprint(reports_app)
 app.register_blueprint(bidding_app)
 app.register_blueprint(groups_app)
 app.register_blueprint(users_app)
+app.register_blueprint(filters_app)
 
 class DB_Error(Exception):
     pass

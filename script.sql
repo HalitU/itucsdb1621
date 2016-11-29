@@ -22,6 +22,9 @@ DROP TABLE IF EXISTS locations CASCADE;
 DROP TABLE IF EXISTS images CASCADE;
 DROP TABLE IF EXISTS content_reports CASCADE;
 DROP TABLE IF EXISTS user_follow CASCADE;
+DROP TABLE IF EXISTS user_block CASCADE;
+DROP TABLE IF EXISTS image_filter CASCADE;
+
 
 CREATE TABLE IF NOT EXISTS images(
     image_id serial primary key,
@@ -115,6 +118,14 @@ CREATE TABLE IF NOT EXISTS user_follow(
     primary key(follower_id,followed_id)
 );
 
+CREATE TABLE IF NOT EXISTS user_block(
+    user_id int REFERENCES users (ID) ON DELETE CASCADE,
+    blocked_id int REFERENCES users (ID) ON DELETE CASCADE,
+    time date,
+    primary key(user_id, blocked_id)
+);
+
+
 CREATE TABLE IF NOT EXISTS locations(
     Id serial primary key,
     name text,
@@ -138,6 +149,18 @@ CREATE TABLE IF NOT EXISTS content_reports(
     report_comment text,
     status text,
     time date
+);
+
+CREATE TABLE IF NOT EXISTS image_filter(
+    id serial primary key,
+    name text,
+    user_id int REFERENCES users (ID) ON DELETE CASCADE,
+    image_id int REFERENCES images (image_id) ON DELETE CASCADE,
+    Contrast int,
+    Brightness int,
+    Sharpness int,
+    Blur int,
+    UnsharpMask int
 );
 
 insert into images (user_id, path, time, text) values (1, 'sample.jpg', now(), 'hello world #1');

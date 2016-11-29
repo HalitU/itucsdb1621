@@ -75,3 +75,35 @@ def show_followed(user_id):
         conn.commit()
         ulist =crs.fetchall()
     return render_template('user_list.html',ulist=ulist,user_id=user_id)
+
+@users_app.route('/user_block/<user_id>')
+def user_block(user_id):
+    session_userid = 1 # it will be change when the session is implemented
+    with psycopg2.connect(current_app.config['dsn']) as conn:
+        crs = conn.cursor()
+        crs.execute("select * from users_block where user_id = %s and blocked_id = %s",(session_userid, user_id))
+        conn.commit()
+        fetched =crs.fetchone()
+        if fetched:
+            return render_template('message.html', message="already blocked.")
+        else:
+            crs.execute("insert into user_block (user_id, blocked_id, time) values (%s, %s, now())", (session_userid, user_id))
+            conn.commit()
+        
+    return render_template('message.html', message = "user_blocked")
+
+@users_app.route('/user_deblock/<user_id>')
+def user_deblock(user_id):
+    session_userid = 1 # it will be change when the session is implemented
+    with psycopg2.connect(current_app.config['dsn']) as conn:
+        crs = conn.cursor()
+        crs.execute("select * from users_block where user_id = %s and blocked_id = %s",(session_userid, user_id))
+        conn.commit()
+        fetched =crs.fetchone()
+        if fetched:
+            crs.execute("delete from user_block where user_id = %s and blocked_id = %s", (session_userid, user_id))
+            conn.commit()    
+        else:
+            return render_template('message.html', message="you can't unblock user until block him")
+    
+    return render_template('message.html', message= "user_unblocked")
