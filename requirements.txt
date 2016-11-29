@@ -2,3 +2,4 @@ Flask
 psycopg2
 flask_wtf
 googlemaps
+pillow
