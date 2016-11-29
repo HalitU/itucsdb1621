@@ -4,6 +4,7 @@ import googlemaps
 from flask import Flask
 from flask import render_template, request, jsonify
 from flask import Blueprint, current_app
+from PIL import Image, ImageFilter, ImageEnhance
 
 #declaring sub app with blueprint
 images_app = Blueprint('images_app', __name__)
@@ -13,9 +14,8 @@ def upload():
     session_user_id = 1 #it will be change when session of user is implemented.
     with psycopg2.connect(current_app.config['dsn']) as conn:           
         crs = conn.cursor()
-        crs.execute("select id, name from image_filter where user_id = %s", (session_user_id,))
+        crs.execute("select id, name from filter where user_id = %s", (session_user_id,))
         data = crs.fetchall()
-            
 
     return render_template('upload.html', filters = data)
 
@@ -25,15 +25,61 @@ def upload_post():
     comment = request.form['comment']
     location = request.form['location']
     upload_file = request.files['image']
+    filters = request.form['filters']
+    contrast = request.form['contrast']
+    brightness = request.form['brightness']
+    sharpness = request.form['sharpness']
+    blur = request.form['blur']
+    unsharpmask = request.form['unsharpmask']
+    session_user_id = 1
     if upload_file:
         upload_file.save(os.path.join('static/uploads', upload_file.filename))
     else:
         return render_template('message.html', message = "Please select an image..")
 
+    img = Image.open(os.path.join('static/uploads', upload_file.filename))
+    
+    needToSave = 0
+    if blur != "0":
+        img = img.filter(ImageFilter.GaussianBlur(float(blur)))
+        needToSave = 1
+    
+    if unsharpmask != "0":
+        img = img.filter(ImageFilter.UnsharpMask(float(unsharpmask)))
+        needToSave = 1
+    
+    if sharpness != "0" :
+        enhancer = ImageEnhance.Sharpness(img)
+        img = enhancer.enhance(float(sharpness))
+        needToSave = 1
+
+    if contrast != "0" :
+        enhancer = ImageEnhance.Contrast(img)
+        img = enhancer.enhance(float(contrast))
+        needToSave = 1
+
+    if brightness != "0" :
+        enhancer = ImageEnhance.Brightness(img)
+        img = enhancer.enhance(float(brightness))
+        needToSave = 1
+
+    if needToSave == 1:
+        img.save(os.path.join('static/uploads', upload_file.filename))
+
+    print(filters)
     gmaps = googlemaps.Client(key='AIzaSyDurbt3tU9F8lDMqyHAnXVjCPphapNu0FM')
     with psycopg2.connect(current_app.config['dsn']) as conn:
         crs=conn.cursor()
-        crs.execute("insert into images (user_id, path, time, text) values (%s, %s, now(), %s) RETURNING image_id", (2, upload_file.filename, comment))
+
+        #filter part
+        if filters == "0":
+            crs.execute('insert into filter (name, user_id, contrast, Brightness, Sharpness, Blur, UnsharpMask) values (%s, %s, %s, %s, %s, %s, %s) RETURNING id',  ("Saved Settings", session_user_id,contrast, brightness, sharpness, blur, unsharpmask))
+            filter_id = crs.fetchone()[0]
+        else:
+            crs.execute('update filter set contrast = %s, brightness = %s, sharpness = %s, blur = %s, unsharpmask = %s where id = %s and user_id = %s', (contrast, brightness, sharpness, blur, unsharpmask, filters, session_user_id))
+            filter_id = filters
+
+        crs.execute("insert into images (user_id, path, time, text, filter_id) values (%s,%s, now(), %s,%s) RETURNING image_id", (session_user_id, upload_file.filename, comment, filter_id))
         image_id = crs.fetchone()[0] #Get image id
         locs = location.split(',')
         order = 0
@@ -59,7 +105,7 @@ def upload_post():
             #add it to image_locations relation table
             crs.execute('insert into image_locations (image_id, location_id, order_val) values (%s, %s, %s)', (image_id, loc_id, order))
             order = order + 1
-
+            
         #notification insertion will use the logged user's information after the respective functionality is added - Halit
         crs.execute("insert into notifications(user_id, notifier_id, notifier_name, icon, details, read_status, follow_status) values (%s, %s, %s, %s, %s, %s, %s)", (1, 2, 'some_company' ,'notific_sample.jpg', 'Thanks for all followers!' , 'FALSE', 'TRUE'))
         data = conn.commit()

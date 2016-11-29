@@ -34,8 +34,12 @@ def show_profile(user_id):
         follow_query=crs.fetchone()
         print(follow_query)
         is_following = False if follow_query == None else True
-        is_self = False if (user_id==1) else True # can not follow oneself
+        is_self = False 
+        if user_id == 1:
+            is_self = True # can not follow oneself
         print(is_following)
+        print("isself :")
+        print(user_id)
         crs.execute("select path from images where user_id =%s",(user_id))
         conn.commit()
         list_photos = crs.fetchall()

@@ -23,16 +23,7 @@ DROP TABLE IF EXISTS images CASCADE;
 DROP TABLE IF EXISTS content_reports CASCADE;
 DROP TABLE IF EXISTS user_follow CASCADE;
 DROP TABLE IF EXISTS user_block CASCADE;
-DROP TABLE IF EXISTS image_filter CASCADE;
-
-
-CREATE TABLE IF NOT EXISTS images(
-    image_id serial primary key,
-    user_id int ,
-    path text ,
-    time date ,
-    text text
-);
+DROP TABLE IF EXISTS filter CASCADE;
 
 CREATE TABLE IF NOT EXISTS users(
     ID serial primary key,
@@ -40,6 +31,26 @@ CREATE TABLE IF NOT EXISTS users(
     password text NOT NULL,
     photo_path text,
     email text NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS filter(
+    id serial primary key,
+    name text,
+    user_id int REFERENCES users (ID) ON DELETE CASCADE,
+    Contrast int,
+    Brightness int,
+    Sharpness int,
+    Blur int,
+    UnsharpMask int
+);
+
+CREATE TABLE IF NOT EXISTS images(
+    image_id serial primary key,
+    user_id int REFERENCES users(ID) ON DELETE CASCADE,
+    path text ,
+    time date ,
+    text text,
+    filter_id int REFERENCES filter(id) ON DELETE CASCADE DEFAULT(1)
 );
 
 CREATE TABLE IF NOT EXISTS user_groups(
@@ -151,24 +162,14 @@ CREATE TABLE IF NOT EXISTS content_reports(
     time date
 );
 
-CREATE TABLE IF NOT EXISTS image_filter(
-    id serial primary key,
-    name text,
-    user_id int REFERENCES users (ID) ON DELETE CASCADE,
-    image_id int REFERENCES images (image_id) ON DELETE CASCADE,
-    Contrast int,
-    Brightness int,
-    Sharpness int,
-    Blur int,
-    UnsharpMask int
-);
-
-insert into images (user_id, path, time, text) values (1, 'sample.jpg', now(), 'hello world #1');
-insert into images (user_id, path, time, text) values (1, 'mona_lisa.jpg', now(), 'Mona Lisa');
-
 insert into users (username, password, photo_path, email) values ('sailormoon', 'abc999', '/photo.jpg', 'sailor@gmail.com' );
 insert into users (username, password, photo_path, email) values ('kcolak', 'dts213', '/photo1.jpg', 'kclk@gmail.com' );
 insert into users (username, password, photo_path, email) values ('kinomiya_takao','dragonunkilici','photo2.jpg','takao@gmail.com');
+
+insert into filter (name, user_id, Contrast, Brightness, Sharpness, Blur, UnsharpMask) values ('Default', 1, 0, 0, 0, 0, 0);
+
+insert into images (user_id, filter_id, path, time, text) values (1, 1, 'sample.jpg', now(), 'hello world #1');
+insert into images (user_id, filter_id, path, time, text) values (1, 1, 'mona_lisa.jpg', now(), 'Mona Lisa');
 
 insert into user_groups(group_name, gp_path, group_exp ) values  ('First', '/group_pp.jpg', 'First group in the PostItu');
 
