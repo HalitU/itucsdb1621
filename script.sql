@@ -24,6 +24,9 @@ DROP TABLE IF EXISTS content_reports CASCADE;
 DROP TABLE IF EXISTS user_follow CASCADE;
 DROP TABLE IF EXISTS user_block CASCADE;
 DROP TABLE IF EXISTS filter CASCADE;
+DROP TABLE IF EXISTS messages CASCADE;
+DROP TABLE IF EXISTS senders CASCADE;
+DROP TABLE IF EXISTS receivers CASCADE;
 
 CREATE TABLE IF NOT EXISTS users(
     ID serial primary key,
@@ -160,6 +163,21 @@ CREATE TABLE IF NOT EXISTS content_reports(
     report_comment text,
     status text,
     time date
+);
+CREATE TABLE IF NOT EXISTS messages (
+    message_id serial primary key,
+    time date,
+    message text
+);
+
+CREATE TABLE IF NOT EXISTS senders (
+    sender_id int REFERENCES users (ID) ON DELETE CASCADE,
+    message_id int REFERENCES messages (message_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS receivers (
+    receiver_id int REFERENCES users (ID) ON DELETE CASCADE,
+    message_id int REFERENCES messages (message_id) ON DELETE CASCADE
 );
 
 insert into users (username, password, photo_path, email) values ('sailormoon', 'abc999', '/photo.jpg', 'sailor@gmail.com' );

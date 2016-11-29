@@ -14,6 +14,7 @@ from reports import reports_app
 from groups import groups_app
 from users import  users_app
 from filters import filters_app
+from gmessages import gmessage_app
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = '/static/uploads'
 app.register_blueprint(images_app)
@@ -27,6 +28,7 @@ app.register_blueprint(bidding_app)
 app.register_blueprint(groups_app)
 app.register_blueprint(users_app)
 app.register_blueprint(filters_app)
+app.register_blueprint(gmessage_app)
 
 class DB_Error(Exception):
     pass
@@ -54,7 +56,7 @@ def home_page():
         crs=conn.cursor()
         crs.execute("select * from images order by time desc")
         data = crs.fetchall()
-        
+
         for img in data:
             #get all locations in one string that the image have
             crs.execute("select string_agg(locations.name, ',') from image_locations inner join locations on locations.id = image_locations.location_id where image_id = %s group by image_id", ([img[0]]))
@@ -65,7 +67,7 @@ def home_page():
                 marks = locs[0].split(',')
                 for i in range(len(marks)):
                     marks[i] = '<a href="/location/{}">{}</a>'.format(marks[i], marks[i])
-                
+
                 locs = ','.join(marks)
                 img = img + (locs,) #add new value to tuple
                 images.append(img)
@@ -115,6 +117,19 @@ def dmessage():
 
     return render_template('dmessage.html', current_time=now.ctime(), dmessage_app = dmessage_app, dmessage_list=dmessages)
 
+@app.route('/gmessage')
+def gmessage():
+    with psycopg2.connect(app.config['dsn']) as conn:
+        crs=conn.cursor()
+        #crs.execute("select * from directmessages order by time desc")
+        crs.execute("select sender_id,receiver_id,time,message from messages JOIN senders ON senders.message_id = messages.message_id JOIN receivers ON receivers.message_id = senders.message_id order by time desc")
+        dmessages = crs.fetchall()
+        crs.execute("select username from users")
+        usernamess = crs.fetchall()
+    now =datetime.datetime.now()
+
+    return render_template('gmessage.html', current_time=now.ctime(), dmessage_app = dmessage_app, dmessage_list=dmessages, usernamess_list = usernamess)
+
 
 @app.route('/remove')
 def remove():
@@ -163,7 +178,7 @@ def bidPage():
             inner_data.append(crs.fetchone())
             inner_data.append(d)
             all_data.append(inner_data)
-    
+
     return render_template('bidPage.html', allBids = all_data, bidding_app = bidding_app)
 
 @app.route('/bidForm')
