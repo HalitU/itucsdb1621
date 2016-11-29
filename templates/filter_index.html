@@ -13,7 +13,7 @@
                     console.log(data)
                     $("#contrast").val(data[3]);
                     $("#brightness").val(data[4]);
-                    $("#sharpnesss").val(data[5]);
+                    $("#sharpness").val(data[5]);
                     $("#blur").val(data[6]);
                     $("#unsharpmask").val(data[7]);
 
@@ -29,14 +29,9 @@
                 data : { id : _id},
                 type : 'POST',
                 success:function(data){
-                    if(data) {
+                     $("#filters option[value='" + _id + "']").remove(); //remove visualy
+                     alert("saved");
 
-                        $("#filters option[value='" + _id + "']").remove(); //remove visualy
-                        alert("saved");
-
-                    }
-                    else
-                        alert("something goes wrong");
                 }
             });
 
