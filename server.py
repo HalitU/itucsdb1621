@@ -5,16 +5,17 @@ import psycopg2
 from bids import bidding_app
 from comments import comment_app
 from directmessages import dmessage_app
-from flask import Flask, render_template, request
+from flask import Flask, render_template,session
 from images import images_app
 from notifications import notific_app
-from register import RegisterForm
 from register import register_app
 from reports import reports_app
 from groups import groups_app
 from users import  users_app
 from filters import filters_app
 from gmessages import gmessage_app
+
+
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = '/static/uploads'
 app.register_blueprint(images_app)
@@ -92,19 +93,18 @@ def activity():
 def timeline():
     now =datetime.datetime.now()
     return render_template('timeline.html', current_time=now.ctime())
+@app.route('/loginpage')
+def loginpage():
+    return render_template('login.html')
+@app.route('/signup_page')
+def signup_page():
+    return render_template('signup.html')
 
-@app.route('/login')
-def login():
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
     return render_template('login.html')
 
-@app.route('/signup', methods = ['GET', 'POST'])
-def signup():
-    form = RegisterForm()
-    if request.method == 'POST':
-        return 'Registered.'
-
-    elif request.method == 'GET':
-        return render_template('signup.html', form=form,current_app=app)
 
 @app.route('/dmessage')
 def dmessage():

@@ -2,7 +2,7 @@
 {% block content %}
 <div class="row">
     <div class="col-md-offset-4 col-md-4 well">
-        <form class="form-horizontal" action="{{ url_for('signup') }}" method=post>
+        <form class="form-horizontal" action="{{ url_for('register_app.signup') }}" method="post">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input name="username" type="username" class="form-control" id="username" placeholder="Username">

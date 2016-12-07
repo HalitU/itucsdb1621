@@ -75,6 +75,7 @@ CREATE TABLE IF NOT EXISTS group_posts(
     group_id int REFERENCES user_groups(group_id) ON DELETE CASCADE,
     image_id int REFERENCES images(image_id) ON DELETE CASCADE
 );
+
 CREATE TABLE IF NOT EXISTS notifications(
     notification_id serial primary key,
     user_id int,
