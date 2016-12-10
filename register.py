@@ -1,6 +1,6 @@
 
 import psycopg2
-from flask import Blueprint, current_app, render_template, request, session, redirect, url_for, flash
+from flask import Blueprint, current_app, render_template, request, session, redirect, url_for
 
 register_app = Blueprint('register_app', __name__)
 
@@ -48,11 +48,12 @@ def login():
 
     with psycopg2.connect(current_app.config['dsn']) as conn:
         crs = conn.cursor()
-        crs.execute("select password from users where username = %s", (data_username,))
+        crs.execute("select password, id from users where username = %s", (data_username,))
         conn.commit()
-        pw = crs.fetchone()
-        if pw[0] == data_password:
+        data = crs.fetchone()
+        if data[0] == data_password:
             session['logged_in'] = True
+            session['user_id'] = data[1]
             return redirect(url_for('home_page'))
         else:
             return render_template('login.html')
