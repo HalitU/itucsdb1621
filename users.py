@@ -1,7 +1,7 @@
 import psycopg2
 from flask import Flask
 from flask import render_template, request
-from flask import Blueprint, current_app
+from flask import Blueprint, current_app,session,redirect, url_for
 
 #declaring sub app with blueprint
 users_app = Blueprint('users_app', __name__)
@@ -85,7 +85,7 @@ def user_block(user_id):
     session_userid = 1 # it will be change when the session is implemented
     with psycopg2.connect(current_app.config['dsn']) as conn:
         crs = conn.cursor()
-        crs.execute("select * from users_block where user_id = %s and blocked_id = %s",(session_userid, user_id))
+        crs.execute("select * from user_block where user_id = %s and blocked_id = %s",(session_userid, user_id))
         conn.commit()
         fetched =crs.fetchone()
         if fetched:
@@ -94,14 +94,14 @@ def user_block(user_id):
             crs.execute("insert into user_block (user_id, blocked_id, time) values (%s, %s, now())", (session_userid, user_id))
             conn.commit()
         
-    return render_template('message.html', message = "user_blocked")
+    return redirect(url_for('users_app.users_all'))
 
 @users_app.route('/user_deblock/<user_id>')
 def user_deblock(user_id):
     session_userid = 1 # it will be change when the session is implemented
     with psycopg2.connect(current_app.config['dsn']) as conn:
         crs = conn.cursor()
-        crs.execute("select * from users_block where user_id = %s and blocked_id = %s",(session_userid, user_id))
+        crs.execute("select * from user_block where user_id = %s and blocked_id = %s",(session_userid, user_id))
         conn.commit()
         fetched =crs.fetchone()
         if fetched:
@@ -110,4 +110,29 @@ def user_deblock(user_id):
         else:
             return render_template('message.html', message="you can't unblock user until block him")
     
-    return render_template('message.html', message= "user_unblocked")
+    return redirect(url_for('users_app.users_all'))
+
+@users_app.route('/users_all')
+def users_all():
+    
+    with psycopg2.connect(current_app.config['dsn']) as conn:
+        crs = conn.cursor()
+        if session.get('logged_in') == True:
+            session_userid = session['user_id']
+            crs.execute("select Id, username from users where Id != %s",(session_userid, ))            
+        else:
+            crs.execute("select Id, username from users")
+        
+        conn.commit()
+        fetched = crs.fetchall()
+        blocked = None
+
+        if session.get('logged_in') == True:
+            session_userid = session['user_id']
+            crs.execute("select blocked_id from user_block where user_id = %s", (session_userid,))
+            conn.commit()
+            blocked = crs.fetchall()
+            blocked = [user[0] for user in blocked]
+
+
+    return render_template('users_all.html', data = fetched, blockdata = blocked)

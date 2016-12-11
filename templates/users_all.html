@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-offset-4 col-md-4">
+
+<h2>List registered users</h2>
+        
+        {% for user in data %}
+            <div class="row well">
+                {{user[1]}}
+                {% if session['logged_in'] %}
+                <div class="pull-right">
+                    <a href="#" class = "btn btn-info">Follow</a>
+                    {% if user[0] in blockdata %}
+                        <a href="{{url_for('users_app.user_deblock', user_id=user[0])}}" class = "btn btn-warning">REMOVE BLOCK</a>
+                    {% else %}
+                        <a href="{{url_for('users_app.user_block', user_id=user[0])}}" class = "btn btn-danger">BLOCK</a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
