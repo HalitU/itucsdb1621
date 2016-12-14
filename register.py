@@ -1,13 +1,13 @@
 
 import psycopg2
 from flask import Blueprint, current_app, render_template, request, session, redirect, url_for
-
+from passlib.hash import sha256_crypt
 register_app = Blueprint('register_app', __name__)
 
 @register_app.route('/signup', methods = ['POST'])
 def signup():
     data_username = request.form["username"]
-    data_password = request.form["password"]
+    data_password = sha256_crypt.encrypt(request.form["password"])
     data_email = request.form["email"]
 
     with psycopg2.connect(current_app.config['dsn']) as conn:
@@ -44,14 +44,15 @@ def removeUser():
 @register_app.route('/login', methods=["POST"])
 def login():
     data_username = request.form["username"]
-    data_password = request.form["password"]
+    data_password = sha256_crypt.encrypt(request.form["password"])
 
     with psycopg2.connect(current_app.config['dsn']) as conn:
         crs = conn.cursor()
         crs.execute("select password, id from users where username = %s", (data_username,))
         conn.commit()
         data = crs.fetchone()
-        if data[0] == data_password:
+
+        if (sha256_crypt.verify(request.form["password"],data_password)):
             session['logged_in'] = True
             session['user_id'] = data[1]
             return redirect(url_for('home_page'))
