@@ -39,17 +39,17 @@ def addtogroup():
 def show_group(group_id):
     with psycopg2.connect(current_app.config['dsn']) as conn:
         crs = conn.cursor()
-        crs.execute("select u.username from group_members as g inner join users as u on u.id = g.user_id where group_id = %s", (group_id, ))
+        crs.execute("select u.username, u.id from group_members as g inner join users as u on u.id = g.user_id where group_id = %s", (group_id, ))
         memberdata = crs.fetchall()
         crs.execute("select group_name, gp_path, group_exp from user_groups where group_id = %s", (group_id,))
         data = crs.fetchone()
         conn.commit()
     return render_template('groupinfo.html', data=data, memberdata=memberdata)    # bu rotaya gelen kişiler şablonun içinin veri tabanından alınmış verilerle doldurulmuş halini görsünler
 
-@groups_app.route('/delete_member/<user_id>')
-def delete_member(user_id):
+@groups_app.route('/delete_member/<id>')
+def delete_member(id):
     with psycopg2.connect(current_app.config['dsn']) as conn:
         crs = conn.cursor()
-        crs.execute("delete from group_members where user_id = %s", (user_id, ))
+        crs.execute("delete from group_members where user_id = %s", id)
         conn.commit()
     return render_template('message.html', message="Successfully removed.")
