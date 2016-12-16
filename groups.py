@@ -49,7 +49,7 @@ def show_group(group_id):
 def allgroups():
     with psycopg2.connect(current_app.config['dsn']) as conn:
         crs = conn.cursor()
-        crs.execute("select group_name, group_exp from user_groups")
+        crs.execute("select group_name, group_exp, group_id from user_groups")
         data = crs.fetchall()
         crs.execute("select u.username, u.id from group_members as g inner join users as u on u.id = g.user_id")
         memberdata = crs.fetchall()
@@ -61,3 +61,10 @@ def delete_member(id):
         crs.execute("delete from group_members where user_id = %s", id)
         conn.commit()
     return render_template('message.html', message="Successfully removed.")
+@groups_app.route('/delete_group/<id>')
+def delete_group(id):
+    with psycopg2.connect(current_app.config['dsn']) as conn:
+        crs = conn.cursor()
+        crs.execute("delete from user_groups where group_id = %s", (id, ))
+        conn.commit()
+    return redirect(url_for('groups_app.allgroups'))
