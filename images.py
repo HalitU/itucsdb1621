@@ -2,7 +2,7 @@ import os
 import psycopg2
 import googlemaps
 from flask import Flask
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, redirect, session
 from flask import Blueprint, current_app
 from PIL import Image, ImageFilter, ImageEnhance
 
@@ -11,7 +11,10 @@ images_app = Blueprint('images_app', __name__)
 
 @images_app.route('/upload')
 def upload():
-    session_user_id = 1 #it will be change when session of user is implemented.
+    if not session.get('user_id'):
+        return redirect(url_for('home_page'))
+
+    session_user_id = session['user_id'] #it will be change when session of user is implemented.
     with psycopg2.connect(current_app.config['dsn']) as conn:           
         crs = conn.cursor()
         crs.execute("select id, name from filter where user_id = %s", (session_user_id,))
@@ -21,6 +24,8 @@ def upload():
 
 @images_app.route('/upload', methods = ['POST'])
 def upload_post():
+    if not session.get('user_id'):
+        return redirect(url_for('home_page'))
 
     comment = request.form['comment']
     location = request.form['location']
@@ -31,7 +36,7 @@ def upload_post():
     sharpness = request.form['sharpness']
     blur = request.form['blur']
     unsharpmask = request.form['unsharpmask']
-    session_user_id = 1
+    session_user_id = session['user_id']
     if upload_file:
         upload_file.save(os.path.join('static/uploads', upload_file.filename))
     else:
@@ -139,9 +144,12 @@ def image_update():
 
 @images_app.route('/image_like', methods = ['POST'])
 def image_like():
+    if not session.get('user_id'):
+        return redirect(url_for('home_page'))
+
     id = request.form['id']
-    user_id = 1 #since there is no user system yet, it is 1 for now.
-    #after user system it will be something like that user_id = session['user_id']
+    user_id = session['user_id']
+
     with psycopg2.connect(current_app.config['dsn']) as conn:           
         crs=conn.cursor()
         crs.execute("select * from user_likes where user_id = %s and image_id = %s", (user_id, id))
@@ -155,9 +163,11 @@ def image_like():
 
 @images_app.route('/image_unlike', methods = ['POST'])
 def image_unlike():
+    if not session.get('user_id'):
+        return redirect(url_for('home_page'))
     id = request.form['id']    
-    user_id = 1 #since there is no user system yet, it is 1 for now.
-    #after user system it will be something like that user_id = session['user_id']
+    user_id = session['user_id'] 
+
     with psycopg2.connect(current_app.config['dsn']) as conn:           
         crs=conn.cursor()
         crs.execute("select * from user_likes where user_id = %s and image_id = %s", (user_id, id))
