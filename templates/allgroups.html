@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-offset-4 col-md-4 well">
+            <div class="row well">
+            <h3>Groups</h3>
+             {% for groups in data %}
+                <h4><b><font color="black">Group Name: {{groups[0]}}</font></b></h4>
+                <font color="red">{{groups[1]}}</font>
+                 <br>
+                <h4>Group Members</h4>
+                {% for members in memberdata %}
+                    {{ members[0]}}
+                    <br>
+                {% endfor %}
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

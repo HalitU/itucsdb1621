@@ -82,7 +82,10 @@
 								<a href="{{url_for('users_app.show_profile',user_id=session['user_id'])}}" class="navlink no-link-a"><span class="fa fa-user-secret fa-2x"></span> show_profile</a>
 							</li>
 							<li>
-								<a href="{{url_for('groups_app.create_group')}}" class="navlink no-link-a"><span class="fa fa-users fa-2x"></span> groups</a>
+								<a href="{{url_for('groups_app.allgroups')}}" class="navlink no-link-a"><span style="color:green !important" class="fa fa-users fa-2x"></span> groups</a>
+							</li>
+							<li>
+								<a href="{{url_for('groups_app.create_group')}}" class="navlink no-link-a"><span class="fa fa-users fa-2x"></span> new group</a>
 							</li>
 							<li>
 								<a href="{{url_for('logout')}}" class="navlink no-link-a" title="Logout" ><span style="color:red !important" class="fa fa-sign-out fa-2x"></span> logout</a>
