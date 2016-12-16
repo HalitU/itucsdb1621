@@ -115,6 +115,7 @@ def signup_page():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
+    session.pop('user_id', None)
     return render_template('login.html')
 
 
