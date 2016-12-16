@@ -59,6 +59,10 @@ def home_page():
         data = crs.fetchall()
 
         for img in data:
+            crs.execute("select count(*) from user_likes where image_id = %s", ([img[0]]))
+            count_likes = crs.fetchone()
+            img = img + (count_likes[0],)
+            
             #get all locations in one string that the image have
             crs.execute("select string_agg(locations.name, ',') from image_locations inner join locations on locations.id = image_locations.location_id where image_id = %s group by image_id", ([img[0]]))
             locs = crs.fetchone()
@@ -79,10 +83,18 @@ def home_page():
         crs.execute("select * from comments order by time desc")
         ## group by then 2ds array
         comments = crs.fetchall()
+        userlikes = []
+        
+        if session.get('user_id'):
+            userid = session['user_id']
+            crs.execute("select image_id from user_likes where user_id = %s", (userid, ))
+            likes = crs.fetchall()
+            for like in likes:
+                userlikes.append(like[0])
 
     now =datetime.datetime.now()
     ## pass values
-    return render_template('home.html', current_time=now.ctime(), list = images, images_app = images_app, comment_app = comment_app,comment_list=comments)
+    return render_template('home.html', current_time=now.ctime(), list = images, images_app = images_app, comment_app = comment_app,comment_list=comments, likes = userlikes)
 
 @app.route('/activity')
 def activity():

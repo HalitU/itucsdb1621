@@ -23,8 +23,8 @@
 			<div class="col-md-offset-4 col-xs-offset-4 col-md-4 well col-xs-12 col-xs-offset-0">
 				<p class="pull-left">
 					{{i[3]}}
-				{% if i[6] %}
-					<span class="fa fa-map-marker"></span> {{i[6] | safe}}
+				{% if i[7] %}
+					<span class="fa fa-map-marker"></span> {{i[7] | safe}}
 				{% endif %}
 				</p>
 				<div class="dropdown pull-right">
@@ -59,11 +59,16 @@
 					<hr />
 					
 					<div class="likes">
-						@User{{i[1]}}  
+						@User{{i[1]}}
 						<div class="pull-right">
-							<a href="javascript:;" class="like" data-id="{{i[0]}}"><span class="fa fa-heart-o fa-2x"></span></a>
-							<a href="javascript:;" class="unlike" data-id="{{i[0]}}"><span class="fa fa-heart fa-2x"></span></a>
-							<span>3 Kişi beğendi.</span>
+							{% if i[0] in likes %}
+							<a href="javascript:;" class="like" data-id="{{i[0]}}"><span class="fa fa-heart fa-2x"></span></a>
+
+							{% else %}
+								<a href="javascript:;" class="like" data-id="{{i[0]}}" data-type="1"><span class="fa fa-heart-o fa-2x"></span></a>
+							
+							{% endif %}
+							<span>{{i[6]}} Kişi beğendi.</span>
 						</div>
 					</div>
 					<div class="clearfix"></div>
@@ -155,36 +160,40 @@
 				var link = $(this);
 				var imageid = link.data('id');
 				link.attr("disabled", true);
+				var url = "";
+				var type = false;
+				if(link.data("type")){
+				
+					url = "{{url_for('images_app.image_like')}}";					
+					type = true;
+				}
+				else{
+					
+					url = "{{url_for('images_app.image_unlike')}}";
+					type = false;
+				}
+
 				$.ajax({
-					url: "{{url_for('images_app.image_like')}}",
+					url: url,
 					data : {id : imageid },
 					type : 'POST',
 					success:function(result){
 						if(result == -1)
-							alert('Already liked.');
-						else
-							alert('Liked.');
+							alert('Something goes wrong..');
+						
+						if(type){
 
-						link.removeAttr("disabled");
-					}
-				})
-
-			});
-
-			$(document).on("click", ".unlike", function(){
-				var link = $(this);
-				var imageid = link.data('id');
-				link.attr("disabled", true);
-				$.ajax({
-					url: "{{url_for('images_app.image_unlike')}}",
-					data : {id : imageid },
-					type : 'POST',
-					success:function(result){
-						if(result == -1)
-							alert('Image is not liked yet.');
-						else
-							alert('Unliked.');
-
+							$("span", link)
+								.removeClass("fa-heart-o")
+								.addClass("fa-heart");
+							link.data("type", null);
+						}
+						else{							
+							$("span", link)
+								.removeClass("fa-heart")
+								.addClass("fa-heart-o");
+							link.data("type", "1");
+						}
 						link.removeAttr("disabled");
 					}
 				})
