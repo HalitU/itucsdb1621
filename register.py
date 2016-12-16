@@ -48,7 +48,7 @@ def login():
 
     with psycopg2.connect(current_app.config['dsn']) as conn:
         crs = conn.cursor()
-        crs.execute("select password, id from users where username = %s", (data_username,))
+        crs.execute("select password, ID from users where username = %s", (data_username,))
         conn.commit()
         data = crs.fetchone()
 

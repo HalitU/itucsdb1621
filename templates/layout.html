@@ -67,9 +67,7 @@
 						<li>
 							<a href="{{url_for('bidPage')}}"  class="navlink no-link-a"><span class="fa fa fa-balance-scale fa-2x"></span> bidPage</a>
 						</li>
-						<li>
-							<a href="{{url_for('groups')}}" class="navlink no-link-a"><span class="fa fa-users fa-2x"></span> groups</a>
-						</li>
+
 						<li>
 							<a href="{{url_for('gmessage')}}" class="navlink no-link-a"><span class="fa fa-comments-o fa-2x"></span> gmessage</a>
 						</li>
@@ -82,6 +80,9 @@
 						{% if session['logged_in'] %}
 							<li>
 								<a href="{{url_for('users_app.show_profile',user_id=session['user_id'])}}" class="navlink no-link-a"><span class="fa fa-user-secret fa-2x"></span> show_profile</a>
+							</li>
+							<li>
+								<a href="{{url_for('groups_app.create_group')}}" class="navlink no-link-a"><span class="fa fa-users fa-2x"></span> groups</a>
 							</li>
 							<li>
 								<a href="{{url_for('logout')}}" class="navlink no-link-a" title="Logout" ><span style="color:red !important" class="fa fa-sign-out fa-2x"></span> logout</a>

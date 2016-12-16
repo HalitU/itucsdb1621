@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-offset-4 col-md-4">
+        <form method="post" action="{{url_for('groups_app.addtogroup')}}" id="form">
+            <p>Group Name</p>
+            <input type="text" class="form-control" name="name" />
+            <p>Group Description</p>
+
+            <input type="text" class="form-control" name="desc" />
+            <hr>
+            <p>Members</p>
+            {% for users in data %}
+                <div class="row well">
+                    {{ users[1] }}
+                    <img style="" src="{{url_for('static', filename='uploads/'+users[3]) }}" width="60" alt="Profile Photo" class="">
+                    <div class="pull-right">
+
+                        <input type="checkbox" name="members" value="{{users[0]}}" />
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="pull-right">
+                <button type="submit" class="btn btn-success">Save</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+	<script src="{{ url_for('static', filename='plugins/jquery-3.1.1.min.js') }}"></script>
+	<script>
+		$(document).ready(function(){
+
+			$(document).on("click", ".add-group", function(){
+				var link = $(this);
+				var id = link.data('id');
+				link.attr("disabled", true);
+                var form = $("#form");
+
+                $("<input type='hidden' value='" + id + "' />")
+                    .prependTo("#form");
+
+				link.removeAttr("disabled");
+			});
+
+
+		});
+
+	</script>
+{% endblock %}

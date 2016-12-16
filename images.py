@@ -139,7 +139,7 @@ def image_update():
 
 @images_app.route('/image_like', methods = ['POST'])
 def image_like():
-    id = request.form['id']    
+    id = request.form['id']
     user_id = 1 #since there is no user system yet, it is 1 for now.
     #after user system it will be something like that user_id = session['user_id']
     with psycopg2.connect(current_app.config['dsn']) as conn:           
