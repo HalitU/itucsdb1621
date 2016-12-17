@@ -5,7 +5,7 @@ import psycopg2
 from bids import bidding_app
 from comments import comment_app
 from directmessages import dmessage_app
-from flask import Flask, render_template,session
+from flask import Flask, render_template,session, redirect, url_for
 from images import images_app
 from notifications import notific_app
 from register import register_app
@@ -57,10 +57,13 @@ except DB_Error:
 
 @app.route('/')
 def home_page():
+    if session.get('logged_in')== None:
+        return redirect(url_for("loginpage"))
+
     images = []
     with psycopg2.connect(app.config['dsn']) as conn:
         crs=conn.cursor()
-        crs.execute("select * from images  where user_id in(select followed_id from user_follow where follower_id=%s) order by time desc",(session["user_id"],))
+        crs.execute("select * from images  where user_id in(select followed_id from user_follow where follower_id=%s) order by time desc",(session.get("user_id"),))
         data = crs.fetchall()
 
         for img in data:
