@@ -60,7 +60,7 @@ def home_page():
     images = []
     with psycopg2.connect(app.config['dsn']) as conn:
         crs=conn.cursor()
-        crs.execute("select * from images order by time desc")
+        crs.execute("select * from images  where user_id in(select followed_id from user_follow where follower_id=%s) order by time desc",(session["user_id"],))
         data = crs.fetchall()
 
         for img in data:

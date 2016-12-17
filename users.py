@@ -45,19 +45,19 @@ def show_profile(user_id):
         list_photos = crs.fetchall()
     return render_template('profile.html',result=result,is_following=is_following,is_self=is_self,list_photos=list_photos)
 
-@users_app.route('/user_follow/<follower>/<followed>')
-def user_follow(follower,followed):
+@users_app.route('/user_follow/<followed>')
+def user_follow(followed):
      with psycopg2.connect(current_app.config['dsn']) as conn:
         crs = conn.cursor()
-        crs.execute("insert into user_follow (follower_id,followed_id,time) values (%s,%s,now())",(follower,followed))
+        crs.execute("insert into user_follow (follower_id,followed_id,time) values (%s,%s,now())",(session["user_id"],followed))
         conn.commit()
      return render_template('message.html',message="Successfully followed")
 
-@users_app.route('/user_unfollow/<follower>/<followed>')
-def user_unfollow(follower,followed):
+@users_app.route('/user_unfollow/<followed>')
+def user_unfollow(followed):
     with psycopg2.connect(current_app.config['dsn']) as conn:
         crs = conn.cursor()
-        crs.execute("delete from user_follow where follower_id=%s and followed_id=%s",(follower,followed))
+        crs.execute("delete from user_follow where follower_id=%s and followed_id=%s",(session["user_id"],followed))
         conn.commit()
     return render_template('message.html',message="Successfully unfollowed")
 #DONE
@@ -82,7 +82,7 @@ def show_followed(user_id):
 
 @users_app.route('/user_block/<user_id>')
 def user_block(user_id):
-    session_userid = 1 # it will be change when the session is implemented
+    session_userid = session["user_id"] # it will be change when the session is implemented
     with psycopg2.connect(current_app.config['dsn']) as conn:
         crs = conn.cursor()
         crs.execute("select * from user_block where user_id = %s and blocked_id = %s",(session_userid, user_id))
@@ -98,7 +98,7 @@ def user_block(user_id):
 
 @users_app.route('/user_deblock/<user_id>')
 def user_deblock(user_id):
-    session_userid = 1 # it will be change when the session is implemented
+    session_userid = session["user_id"] # it will be change when the session is implemented
     with psycopg2.connect(current_app.config['dsn']) as conn:
         crs = conn.cursor()
         crs.execute("select * from user_block where user_id = %s and blocked_id = %s",(session_userid, user_id))
