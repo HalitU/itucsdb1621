@@ -11,7 +11,11 @@
                 {{user[1]}}
                 {% if session['logged_in'] %}
                 <div class="pull-right">
-                    <a href="#" class = "btn btn-info">Follow</a>
+                    {% if user[0] in follows %}
+                        <a href="{{url_for('users_app.user_unfollow',followed=user[0])}}" class="btn btn-danger">UNFOLLOW</a>
+                    {% else %}
+                        <a href="{{url_for('users_app.user_follow',followed=user[0])}}" class="btn btn-info">FOLLOW</a>
+                    {% endif %}
                     {% if user[0] in blockdata %}
                         <a href="{{url_for('users_app.user_deblock', user_id=user[0])}}" class = "btn btn-warning">REMOVE BLOCK</a>
                     {% else %}

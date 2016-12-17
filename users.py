@@ -119,12 +119,18 @@ def users_all():
         crs = conn.cursor()
         if session.get('logged_in') == True:
             session_userid = session['user_id']
-            crs.execute("select Id, username from users where Id != %s",(session_userid, ))            
+            crs.execute("select Id, username from users where Id !=%s",(session_userid,))
         else:
             crs.execute("select Id, username from users")
         
         conn.commit()
         fetched = crs.fetchall()
+        print(fetched)
+        crs.execute("select followed_id from user_follow where follower_id=%s",(session_userid,))
+        conn.commit()
+        follows=crs.fetchall()
+        follows = [user[0] for user in follows]
+        print(follows)
         blocked = None
 
         if session.get('logged_in') == True:
@@ -135,4 +141,4 @@ def users_all():
             blocked = [user[0] for user in blocked]
 
 
-    return render_template('users_all.html', data = fetched, blockdata = blocked)
+    return render_template('users_all.html', data = fetched, blockdata = blocked,follows=follows)
