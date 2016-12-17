@@ -165,12 +165,22 @@
 								<button style="display:none;" id="button_{{comment[0]}}">Edit!</button>
 							</form>
 						</div>
-						<div class="col-md-1 col-xs-1 ">
-							<a href="#" onclick="showUpdateDialog({{comment[0]}})" class="pull-right"><span class="fa fa-pencil-square-o"></span> </a>
-						</div>
-						<div class="col-md-1 col-xs-1 ">
-							<a href="{{url_for('comment_app.comment_delete',id=comment[0])}}" class="pull-right"><span class="fa fa-close"></span> </a>
-						</div>
+                        {% if comment[1]== session["user_id"] %}
+                        <div class="dropdown ">
+							<button class="btn btn-primary-outline dropdown-toggle " type="button" data-toggle="dropdown">
+								<span class="caret"></span>
+							</button>
+            				<ul class="dropdown-menu pull-right">
+						        <li>
+							        <a href="#" onclick="showUpdateDialog({{comment[0]}})" class="no-link-a pull-right">Edit <span class="fa fa-pencil-square-o"></span></a>
+                                </li>
+
+						        <li>
+							        <a href="{{url_for('comment_app.comment_delete',id=comment[0])}}" class="no-link-a pull-right">Delete <span class="fa fa-close"></span></a>
+						        </li>
+                            </ul>
+                        </div>
+                        {% endif %}
 						<hr />
 						</div>
 						{% endfor %}

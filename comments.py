@@ -1,7 +1,7 @@
 import os
 import psycopg2
 from flask import Flask
-from flask import render_template, request
+from flask import render_template, request, session
 from flask import Blueprint, current_app
 
 #declaring sub app with blueprint
@@ -15,7 +15,7 @@ def comment(image_id):
     comment = request.form['comment']
     with psycopg2.connect(current_app.config['dsn']) as conn:
             crs=conn.cursor()
-            crs.execute("insert into comments (user_id, image_id, time, comment) values (%s, %s, now(), %s)", (1, image_id, comment))
+            crs.execute("insert into comments (user_id, image_id, time, comment) values (%s, %s, now(), %s)", (session.get("user_id"), image_id, comment))
             data = conn.commit()
 
     return render_template('message.html', message = "Successfully commented..")
