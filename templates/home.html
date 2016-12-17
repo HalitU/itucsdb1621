@@ -58,7 +58,7 @@
 					<img src="static/uploads/{{i[2]}}" class="img-responsive" />
 
 
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_tag_modal">Add Tag!</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_tag_modal_{{i[0]}}">Add Tag!</button>
                     <div id="add_tag_modal_{{i[0]}}" class="modal fade" role="dialog">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -127,7 +127,7 @@
 								<span class="caret"></span>
 							</button>
             				<ul class="dropdown-menu">
-								{% for tag in tags %}
+								{% for tag in tags[loop.index-1] %}
 								<li>
                                     {{ tag[3]}} {{tag[4]}} {{ tag[5] }}
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update_tag_modal{{i[0]}}" onclick="passuID({{i[0]}},{{tag[1]}})"><span class="fa fa-pencil-square-o"></span> Edit</button>
@@ -156,10 +156,10 @@
 					<a href="javascript:;" data-type="textarea" id="editable_comment_{{i[0]}}" data-pk="{{i[0]}}">{{i[4]}}</a>
 					
 					<hr style="border-color:#ccc" />
-						{% for comment in comment_list %}
+						{% for comment in comment_list[loop.index-1] %}
 						<div class="row commentDiv ">
 						<div class="col-md-10 col-xs-10 ">
-							<p id="p_{{comment[0]}}">{{ comment[0]}} {{comment[1]}} {{comment[3]}} {{comment[4]}}</p>
+							<p id="p_{{comment[0]}}"> {{comment[3]}} {{comment[4]}}</p>
 							<form method="post" action="{{url_for('comment_app.comment_update',id=comment[0])}}">
 								<textarea name="new_comment" style="display:none;" id="text_{{comment[0]}}"></textarea>
 								<button style="display:none;" id="button_{{comment[0]}}">Edit!</button>

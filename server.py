@@ -87,16 +87,18 @@ def home_page():
             else:
                 images.append(img)
 
-        ## get all comment need to change this sql statement later
-        crs.execute("select * from comments order by time desc")
-        ## group by then 2ds array
-        comments = crs.fetchall()
-        ## same as above group comments and tags according to image_id
-        ## send usernames associated with user_id
-        crs.execute("select * from tags")
-        tags = crs.fetchall()
+        comments= []
+        tags=[]
+        for img in data:
+            crs.execute("select comment_id, user_id,image_id,time,comment,username from comments join users on comments.user_id = users.ID where image_id=%s",(img[0],))
+            conn.commit()
+            comments.append(crs.fetchall())
+            crs.execute("select username,time,x,y from tags join users on users.ID = tags.tagger_id where photo_id=%s",(img[0],))
+            conn.commit()
+            tags.append(crs.fetchall())
         userlikes = []
-        
+        print(comments)
+        print(tags)
         if session.get('user_id'):
             userid = session['user_id']
             crs.execute("select image_id from user_likes where user_id = %s", (userid, ))
