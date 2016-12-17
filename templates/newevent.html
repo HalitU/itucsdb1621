@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-offset-4 col-md-4 well">
+        <form class="form-horizontal" action="{{ url_for('events_app.create_event') }}" method="post">
+            <div class="form-group">
+                <label for="event-name">Event Name</label>
+                <input name="event-name" type="text" class="form-control" id="event-name" placeholder="Event Name">
+            </div>
+            <div class="form-group">
+                <label for="event-exp">Explanation</label>
+                <input name="event-exp" type="text" class="form-control" id="event-exp" placeholder="Explanation">
+            </div>
+            <div class="form-group">
+                <label for="event-time">Time</label>
+                <input name="event-time" type="text" class="form-control" id="event-time" placeholder="Time">
+            </div>
+             <div class="form-group">
+                  <button type="submit" class="btn btn-default"> Submit</button>
+             </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

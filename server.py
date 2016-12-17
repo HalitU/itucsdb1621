@@ -120,7 +120,9 @@ def logout():
     session.pop('user_id', None)
     return render_template('login.html')
 
-
+@app.route('/newevent_page')
+def newevent_page():
+    return render_template('newevent.html')
 @app.route('/dmessage')
 def dmessage():
     with psycopg2.connect(app.config['dsn']) as conn:

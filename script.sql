@@ -87,7 +87,6 @@ CREATE TABLE IF NOT EXISTS events(
     event_name text,
     event_time text,
     event_exp text,
-    ep_path text
 );
 CREATE TABLE IF NOT EXISTS event_posts(
     event_id int REFERENCES events(event_id) ON DELETE CASCADE,
@@ -210,7 +209,7 @@ insert into user_groups(group_name, gp_path, group_exp ) values  ('First', '/gro
 insert into group_members(group_id, user_id, time, member_status, role) values (1, 1, now(), 'active', 'admin');
 insert into group_members(group_id, user_id, time, member_status, role) values (1, 2, now(), 'active', 'pending');
 
-insert into events(event_name, event_time, event_exp, ep_path) values ('Snowball', 'This Night', 'First snow', '/photo.jpg');
+insert into events(event_name, event_time, event_exp) values ('Snowball', 'This Night', 'First snow');
 
 insert into notifications(user_id, notifier_id, notifier_name, icon, details, read_status, follow_status) values (1, 2, 'some_company' ,'notific_sample.jpg', 'Thanks for all followers!' , FALSE, TRUE);
 insert into bids(header, details, image, current_price, seller_id, current_holder) values ('Mona Lisa', 'A classic picture of Mona Lisa', 2, 99.99, 1, 1);
