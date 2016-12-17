@@ -77,6 +77,9 @@
 						<li>
 							<a href="{{url_for('createDatabase')}}" class="navlink no-link-a"><span style="color:gold !important" class="fa fa-database fa-2x"></span> createDatabase</a>
 						</li>
+						<li>
+							<a href="{{url_for('events_app.show_events')}}" class="navlink no-link-a"><span class="fa fa-calendar fa-2x"></span> events</a>
+						</li>
 						{% if session['logged_in'] %}
 							<li>
 								<a href="{{url_for('users_app.show_profile',user_id=session['user_id'])}}" class="navlink no-link-a"><span class="fa fa-user-secret fa-2x"></span> show_profile</a>
