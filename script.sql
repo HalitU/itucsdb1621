@@ -28,6 +28,7 @@ DROP TABLE IF EXISTS filter CASCADE;
 DROP TABLE IF EXISTS messages CASCADE;
 DROP TABLE IF EXISTS senders CASCADE;
 DROP TABLE IF EXISTS receivers CASCADE;
+DROP TABLE IF EXISTS tags CASCADE;
 
 CREATE TABLE IF NOT EXISTS users(
     ID serial primary key,
@@ -184,6 +185,15 @@ CREATE TABLE IF NOT EXISTS senders (
 CREATE TABLE IF NOT EXISTS receivers (
     receiver_id int REFERENCES users (ID) ON DELETE CASCADE,
     message_id int REFERENCES messages (message_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS tags(
+    tagger_id INT REFERENCES users (ID) ON DELETE CASCADE,
+    tagged_id INT REFERENCES users(ID) ON DELETE CASCADE,
+    photo_id INT REFERENCES images(image_id) ON DELETE CASCADE,
+    time date,
+    x INT,
+    y INT
 );
 
 insert into users (username, password, photo_path, email) values ('sailormoon', 'abc999', '/photo.jpg', 'sailor@gmail.com' );
