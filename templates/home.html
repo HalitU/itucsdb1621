@@ -17,12 +17,13 @@
  	 background-color: transparent;
 	}
 </style>
+{% if session["logged_in"]%}
 {% if list %}
 	 {% for i in list %}
 		<div class="row" id="{{i[0]}}">
 			<div class="col-md-offset-4 col-xs-offset-4 col-md-4 well col-xs-12 col-xs-offset-0">
 				<p class="pull-left">
-					{{i[3]}}
+                    {{i[3]}}
 				{% if i[6] %}
 					<span class="fa fa-map-marker"></span> {{i[6] | safe}}
 				{% endif %}
@@ -56,8 +57,88 @@
 					</div>
 					<img src="static/uploads/{{i[2]}}" class="img-responsive" />
 
+
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_tag_modal">Add Tag!</button>
+                    <div id="add_tag_modal_{{i[0]}}" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times</button>
+                                    <h3 class="modal-title">Add Tag!</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{url_for('tags_app.add_tag',photo_id=i[0])}}" method="post">
+                                        <label>Username:</label>
+                                        <input type="text" name="username">
+                                        <label>X Coordinate:</label>
+                                        <input type="text" name="x">
+                                        <label>Y Coordinate:</label>
+                                        <input type="text" name="y">
+                                        <button type="submit">Add!</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <div id="update_tag_modal{{i[0]}}" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times</button>
+                                    <h3 class="modal-title">Add Tag!</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{url_for('tags_app.update_tag',photo_id=i[0])}}" method="post">
+                                        <label>Username:</label>
+                                        <input type="text" name="username">
+                                        <label>X Coordinate:</label>
+                                        <input type="text" name="x">
+                                        <label>Y Coordinate:</label>
+                                        <input type="text" name="y">
+                                        <input type="hidden" id="update_id_holder_{{i[0]}}" name="_id">
+
+                                        <button type="submit">Update!</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="delete_tag_modal{{i[0]}}" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times</button>
+                                    <h3 class="modal-title">Delete Tag!</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{url_for('tags_app.delete_tag',photo_id=i[0])}}" method="post">
+                                        <label>Are you sure you want to delete?</label>
+                                         <input type="hidden" id="delete_id_holder_{{i[0]}}" name="_id">
+                                        <button type="submit" class="btn btn-primary">Yes.</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tags" >
+						<div class="dropdown ">
+							<button class="btn btn-primary-outline dropdown-toggle " type="button" data-toggle="dropdown">
+								<span class="caret"></span>
+							</button>
+            				<ul class="dropdown-menu">
+								{% for tag in tags %}
+								<li>
+                                    {{ tag[3]}} {{tag[4]}} {{ tag[5] }}
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update_tag_modal{{i[0]}}" onclick="passuID({{i[0]}},{{tag[1]}})"><span class="fa fa-pencil-square-o"></span> Edit</button>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete_tag_modal{{i[0]}}" onclick="passdID({{i[0]}},{{tag[1]}})"><span class="fa fa-close"></span> Delete</button>
+								</li>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+
 					<hr />
-					
 					<div class="likes">
 						@User{{i[1]}}
 						<div class="pull-right">
@@ -112,6 +193,19 @@
 
 	{% endfor %}
 {% endif %}
+{%else %}
+<div class="row">
+
+	<div class="col-md-offset-3 col-md-6">
+
+		<div class="alert alert-info text-center" role="alert">
+			<strong>Please login</strong>
+		</div>
+
+	</div>
+
+</div>
+{% endif %}
 		<script type="text/javascript">
 			function showUpdateDialog(id){
 				var idStr=id.toString();
@@ -154,6 +248,7 @@
 				rows: 5
 			});
 		});
+
 		$(document).ready(function(){
 
 			$(document).on("click", ".like", function(){
@@ -201,6 +296,15 @@
 			});
 
 		});
+        function passuID(photo_id,id){
+            var name = "#update_id_holder_"+photo_id;
+            $(name).val(id)
 
+        }
+
+        function passdID(photo_id,id){
+            var name = "#delete_id_holder_"+photo_id;
+            $(name).val(id)
+        }
 	</script>
 {% endblock %}

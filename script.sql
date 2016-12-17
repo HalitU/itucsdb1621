@@ -193,7 +193,8 @@ CREATE TABLE IF NOT EXISTS tags(
     photo_id INT REFERENCES images(image_id) ON DELETE CASCADE,
     time date,
     x INT,
-    y INT
+    y INT,
+    primary key (tagged_id,tagged_id,photo_id)
 );
 
 insert into users (username, password, photo_path, email) values ('sailormoon', 'abc999', '/photo.jpg', 'sailor@gmail.com' );

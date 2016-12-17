@@ -14,6 +14,7 @@ from groups import groups_app
 from users import  users_app
 from filters import filters_app
 from gmessages import gmessage_app
+from tags import tags_app
 
 
 app = Flask(__name__)
@@ -30,6 +31,7 @@ app.register_blueprint(groups_app)
 app.register_blueprint(users_app)
 app.register_blueprint(filters_app)
 app.register_blueprint(gmessage_app)
+app.register_blueprint(tags_app)
 
 class DB_Error(Exception):
     pass
@@ -83,6 +85,10 @@ def home_page():
         crs.execute("select * from comments order by time desc")
         ## group by then 2ds array
         comments = crs.fetchall()
+        ## same as above group comments and tags according to image_id
+        ## send usernames associated with user_id
+        crs.execute("select * from tags")
+        tags = crs.fetchall()
         userlikes = []
         
         if session.get('user_id'):
@@ -94,7 +100,7 @@ def home_page():
 
     now =datetime.datetime.now()
     ## pass values
-    return render_template('home.html', current_time=now.ctime(), list = images, images_app = images_app, comment_app = comment_app,comment_list=comments, likes = userlikes)
+    return render_template('home.html', current_time=now.ctime(), list = images, images_app = images_app, comment_app = comment_app,comment_list=comments, likes = userlikes,tags_app=tags_app,tags=tags)
 
 @app.route('/activity')
 def activity():
