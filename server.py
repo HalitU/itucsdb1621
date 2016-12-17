@@ -14,6 +14,7 @@ from groups import groups_app
 from users import  users_app
 from filters import filters_app
 from gmessages import gmessage_app
+from events import events_app
 
 
 app = Flask(__name__)
@@ -30,6 +31,7 @@ app.register_blueprint(groups_app)
 app.register_blueprint(users_app)
 app.register_blueprint(filters_app)
 app.register_blueprint(gmessage_app)
+app.register_blueprint(events_app)
 
 class DB_Error(Exception):
     pass

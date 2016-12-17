@@ -7,6 +7,8 @@ DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS user_groups CASCADE;
 DROP TABLE IF EXISTS group_members CASCADE;
 DROP TABLE IF EXISTS group_posts CASCADE;
+DROP TABLE IF EXISTS events CASCADE;
+DROP TABLE IF EXISTS event_posts CASCADE;
 DROP TABLE IF EXISTS notifications CASCADE;
 DROP TABLE IF EXISTS comments CASCADE;
 DROP TABLE IF EXISTS upload CASCADE;
@@ -80,7 +82,17 @@ CREATE TABLE IF NOT EXISTS group_posts(
     group_id int REFERENCES user_groups(group_id) ON DELETE CASCADE,
     image_id int REFERENCES images(image_id) ON DELETE CASCADE
 );
-
+CREATE TABLE IF NOT EXISTS events(
+    event_id serial primary key,
+    event_name text,
+    event_time text,
+    event_exp text,
+    ep_path text
+);
+CREATE TABLE IF NOT EXISTS event_posts(
+    event_id int REFERENCES events(event_id) ON DELETE CASCADE,
+    user_id int REFERENCES users(ID) ON DELETE CASCADE
+);
 CREATE TABLE IF NOT EXISTS notifications(
     notification_id serial primary key,
     user_id int,
@@ -197,6 +209,8 @@ insert into user_groups(group_name, gp_path, group_exp ) values  ('First', '/gro
 
 insert into group_members(group_id, user_id, time, member_status, role) values (1, 1, now(), 'active', 'admin');
 insert into group_members(group_id, user_id, time, member_status, role) values (1, 2, now(), 'active', 'pending');
+
+insert into events(event_name, event_time, event_exp, ep_path) values ('Snowball', 'This Night', 'First snow', '/photo.jpg');
 
 insert into notifications(user_id, notifier_id, notifier_name, icon, details, read_status, follow_status) values (1, 2, 'some_company' ,'notific_sample.jpg', 'Thanks for all followers!' , FALSE, TRUE);
 insert into bids(header, details, image, current_price, seller_id, current_holder) values ('Mona Lisa', 'A classic picture of Mona Lisa', 2, 99.99, 1, 1);
