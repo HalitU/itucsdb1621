@@ -76,16 +76,20 @@ def upload_post():
     with psycopg2.connect(current_app.config['dsn']) as conn:
         crs=conn.cursor()
 
+        crs.execute("insert into images (user_id, path, time, text) values (%s,%s, now(), %s) RETURNING image_id", (session_user_id, upload_file.filename, comment))
+        image_id = crs.fetchone()[0] #Get image id
         #filter part
         if filters == "0":
             crs.execute('insert into filter (name, user_id, contrast, Brightness, Sharpness, Blur, UnsharpMask) values (%s, %s, %s, %s, %s, %s, %s) RETURNING id',  ("Saved Settings", session_user_id,contrast, brightness, sharpness, blur, unsharpmask))
             filter_id = crs.fetchone()[0]
+            crs.execute('insert into image_filters (image_id, filter_id) values (%s, %s)', (image_id, filter_id))
+            conn.commit()
         else:
             crs.execute('update filter set contrast = %s, brightness = %s, sharpness = %s, blur = %s, unsharpmask = %s where id = %s and user_id = %s', (contrast, brightness, sharpness, blur, unsharpmask, filters, session_user_id))
             filter_id = filters
+            crs.execute('insert into image_filters (image_id, filter_id) values (%s, %s)', (image_id, filter_id))
+            conn.commit()
 
-        crs.execute("insert into images (user_id, path, time, text, filter_id) values (%s,%s, now(), %s,%s) RETURNING image_id", (session_user_id, upload_file.filename, comment, filter_id))
-        image_id = crs.fetchone()[0] #Get image id
         locs = location.split(',')
         order = 0
         #location check
