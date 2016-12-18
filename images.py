@@ -116,7 +116,9 @@ def upload_post():
             order = order + 1
             
         #notification insertion will use the logged user's information after the respective functionality is added - Halit
-        crs.execute("insert into notifications(user_id, notifier_id, notifier_name, icon, details, read_status, follow_status) values (%s, %s, %s, %s, %s, %s, %s)", (1, 2, 'some_company' ,'notific_sample.jpg', 'Thanks for all followers!' , 'FALSE', 'TRUE'))
+        crs.execute("select photo_path, username from users where Id !=%s",(session['user_id'],))
+        data = crs.fetchone()
+        crs.execute("insert into notifications(user_id, notifier_id, notifier_name, icon, details, read_status, follow_status) values (%s, %s, %s, %s, %s, %s, %s)", (session['user_id'], session['user_id'], data[1] ,data[0], comment , 'FALSE', 'TRUE'))
         data = conn.commit()
 
     return render_template('message.html', message = "Uploaded..")
