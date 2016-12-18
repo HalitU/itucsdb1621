@@ -223,7 +223,7 @@ CREATE TABLE IF NOT EXISTS tags(
 
 insert into users (username, password, photo_path, email) values ('sailormoon', '$5$rounds=535000$giVku.lTkFqwnPTL$L89MFPZceTw7z0QqH9fR8XKK3PxIpxqHttqgOAWymz0', '/photo.jpg', 'sailor@gmail.com' );
 insert into users (username, password, photo_path, email) values ('kcolak', '$5$rounds=535000$giVku.lTkFqwnPTL$L89MFPZceTw7z0QqH9fR8XKK3PxIpxqHttqgOAWymz0', '/photo1.jpg', 'kclk@gmail.com' );
-insert into users (username, password, photo_path, email) values ('kinomiya_takao','$5$rounds=535000$giVku.lTkFqwnPTL$L89MFPZceTw7z0QqH9fR8XKK3PxIpxqHttqgOAWymz0','photo2.jpg','takao@gmail.com');
+insert into users (username, password, photo_path, email) values ('kinomiya_takao','$5$rounds=535000$giVku.lTkFqwnPTL$L89MFPZceTw7z0QqH9fR8XKK3PxIpxqHttqgOAWymz0','/photo2.jpg','takao@gmail.com');
 
 insert into images (user_id, path, time, text) values (1, 'sample.jpg', now(), 'hello world #1');
 insert into images (user_id, path, time, text) values (1, 'mona_lisa.jpg', now(), 'Mona Lisa');

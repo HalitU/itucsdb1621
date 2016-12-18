@@ -29,17 +29,13 @@ def show_profile(user_id):
         crs.execute("select ID,username,photo_path,email from users where ID = %s",(user_id))
         conn.commit()
         result = crs.fetchone()
-        crs.execute("select * from user_follow where follower_id=1 and  followed_id=%s",(user_id))
+        crs.execute("select * from user_follow where follower_id=%s and  followed_id=%s",(session.get("user_id"),user_id))
         conn.commit()
         follow_query=crs.fetchone()
-        print(follow_query)
         is_following = False if follow_query == None else True
         is_self = False 
-        if user_id == 1:
+        if int(user_id) == session.get("user_id"):
             is_self = True # can not follow oneself
-        print(is_following)
-        print("isself :")
-        print(user_id)
         crs.execute("select path from images where user_id =%s",(user_id))
         conn.commit()
         list_photos = crs.fetchall()
