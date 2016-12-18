@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-offset-4 col-md-4">
+        <form method="post" action="{{url_for('groups_app.update_group')}}" id="form">
+            <p>Old Group Name</p>
+            <input type="text" class="form-control" name="oldname" />
+            <p>Group Name</p>
+            <input type="text" class="form-control" name="name" />
+            <p>Group Description</p>
+            <input type="text" class="form-control" name="desc" />
+            <hr>
+            <div class="pull-right">
+                <button type="submit" class="btn btn-success">Save</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

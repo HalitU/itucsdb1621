@@ -68,3 +68,18 @@ def delete_group(id):
         crs.execute("delete from user_groups where group_id = %s", (id, ))
         conn.commit()
     return redirect(url_for('groups_app.allgroups'))
+
+@groups_app.route('/updateform')
+def updateform():
+    return render_template('update_group.html')
+
+@groups_app.route('/update_group',methods=["POST"])
+def update_group():
+    old_name = request.form['oldname']
+    new_name = request.form['name']
+    desc = request.form['desc']
+    with psycopg2.connect(current_app.config['dsn']) as conn:
+        crs = conn.cursor()
+        crs.execute("update user_groups set group_name=%s, group_exp=%s where group_name = %s", (new_name, desc, old_name, ))
+
+    return redirect(url_for('groups_app.allgroups'))
