@@ -211,7 +211,7 @@ def issues():
         return redirect(url_for("loginpage"))
     with psycopg2.connect(app.config['dsn']) as conn:
         crs = conn.cursor()
-        crs.execute("select (user_id,image_id,report_comment,status,time) from content_reports order by time")
+        crs.execute("select (username,image_id,report_comment,status,time) from content_reports join users on content_reports.user_id= users.ID order by time")
         conn.commit()
         data = []
         ret = crs.fetchall()
