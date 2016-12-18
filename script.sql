@@ -220,8 +220,8 @@ CREATE TABLE IF NOT EXISTS tags(
     primary key (tagger_id,tagged_id,photo_id)
 );
 
-insert into users (username, password, photo_path, email) values ('sailormoon', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', '/photo.jpg', 'sailor@gmail.com' );
-insert into users (username, password, photo_path, email) values ('kcolak', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', '/photo1.jpg', 'kclk@gmail.com' );
+insert into users (username, password, photo_path, email) values ('sailormoon', '$5$rounds=535000$giVku.lTkFqwnPTL$L89MFPZceTw7z0QqH9fR8XKK3PxIpxqHttqgOAWymz0', '/photo.jpg', 'sailor@gmail.com' );
+insert into users (username, password, photo_path, email) values ('kcolak', '$5$rounds=535000$giVku.lTkFqwnPTL$L89MFPZceTw7z0QqH9fR8XKK3PxIpxqHttqgOAWymz0', '/photo1.jpg', 'kclk@gmail.com' );
 insert into users (username, password, photo_path, email) values ('kinomiya_takao','dragonunkilici','photo2.jpg','takao@gmail.com');
 
 insert into images (user_id, path, time, text) values (1, 'sample.jpg', now(), 'hello world #1');
