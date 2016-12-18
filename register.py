@@ -15,10 +15,11 @@ def signup():
         crs.execute("insert into users (username, password, email) values (%s, %s, %s)",(data_username,data_password,data_email))
         conn.commit()
 
-    return render_template("message.html",message="Successfully registered")
+    return render_template('message.html', message="Successfully registered.")
 
 @register_app.route('/update_user',methods=["POST"])
 def updateUser():
+    id=session['user_id']
     data_username = request.form["username"]
     data_password = request.form["password"]
     data_email = request.form["email"]
@@ -26,9 +27,9 @@ def updateUser():
 
     with psycopg2.connect(current_app.config['dsn']) as conn:
         crs = conn.cursor()
-        crs.execute("update users set username=%s, password=%s,email=%s where username = %s",(data_username,data_password,data_email,data_username))
+        crs.execute("update users set username=%s, password=%s,email=%s where ID = %s",(data_username,data_password,data_email,id))
 
-    return render_template('update.html',message="Successfully updated")
+    return render_template('message.html',message="Successfully updated")
 
 
 @register_app.route('/remove_user',methods=["POST"])
@@ -39,7 +40,7 @@ def removeUser():
         crs.execute("delete from users where username = %s",(data_username,))
         data = conn.commit()
 
-    return render_template('message.html', message="Account deleted")
+    return render_template('login.html')
 
 @register_app.route('/login', methods=["POST"])
 def login():
@@ -48,10 +49,16 @@ def login():
 
     with psycopg2.connect(current_app.config['dsn']) as conn:
         crs = conn.cursor()
-        crs.execute("select password, ID from users where username = %s", (data_username,))
-        conn.commit()
-        data = crs.fetchone()
-
+        crs.execute("select ID from users where username = %s", (data_username, ))
+        userid=crs.fetchone()
+        print('USER ID')
+        print(userid)
+        if userid:
+            crs.execute("select password, ID from users where username = %s", (data_username,))
+            conn.commit()
+            data = crs.fetchone()
+        else:
+            return render_template('message.html', message="Invalid Credentials")
         if (sha256_crypt.verify(request.form["password"],data_password)):
             session['logged_in'] = True
             session['user_id'] = data[1]

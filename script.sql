@@ -93,7 +93,8 @@ CREATE TABLE IF NOT EXISTS events(
 );
 CREATE TABLE IF NOT EXISTS event_posts(
     event_id int REFERENCES events(event_id) ON DELETE CASCADE,
-    user_id int REFERENCES users(ID) ON DELETE CASCADE
+    user_id int REFERENCES users(ID) ON DELETE CASCADE,
+    image_id int REFERENCES images(image_id) ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS notifications(
     notification_id serial primary key,

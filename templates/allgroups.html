@@ -6,11 +6,11 @@
             <div class="row well">
             <h3>Groups</h3>
              {% for groups in data %}
-                <h4><b><font color="black">Group Name: {{groups[0]}}</font></b></h4>
-                <font color="red">{{groups[1]}}</font>
                 <div class="pull-right">
                      <a href="{{url_for('groups_app.delete_group',id=groups[2])}}"><span class="glyphicon glyphicon-remove"></span></a>
                  </div>
+                <h4><b><font color="black">Group Name: {{groups[0]}}</font></b></h4>
+                <font color="red">{{groups[1]}}</font>
                  <br>
                 <h4>Group Members</h4>
                 {% for members in memberdata %}

@@ -191,6 +191,7 @@ def remove():
 def update():
     if session.get('logged_in')== None:
         return redirect(url_for("loginpage"))
+    print('NOOOOOOOOOOOOO')
     return render_template("update.html",register_app=register_app)
 
 @app.route('/notification')
