@@ -254,7 +254,8 @@ def update_delete_loc_save():
 
 @images_app.route("/locations")
 def locations():
-    
+    if not session.get('user_id'):
+        return redirect(url_for('home_page'))
     with psycopg2.connect(current_app.config['dsn']) as conn:           
         crs=conn.cursor()
         crs.execute('select * from locations order by rating desc')
