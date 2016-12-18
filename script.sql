@@ -32,6 +32,8 @@ DROP TABLE IF EXISTS senders CASCADE;
 DROP TABLE IF EXISTS receivers CASCADE;
 DROP TABLE IF EXISTS tags CASCADE;
 
+DROP TABLE IF EXISTS premadeLayouts CASCADE;
+
 CREATE TABLE IF NOT EXISTS users(
     ID serial primary key,
     username VARCHAR(50) NOT NULL,
@@ -87,7 +89,7 @@ CREATE TABLE IF NOT EXISTS events(
     event_id serial primary key,
     event_name text,
     event_time text,
-    event_exp text,
+    event_exp text
 );
 CREATE TABLE IF NOT EXISTS event_posts(
     event_id int REFERENCES events(event_id) ON DELETE CASCADE,
@@ -95,8 +97,8 @@ CREATE TABLE IF NOT EXISTS event_posts(
 );
 CREATE TABLE IF NOT EXISTS notifications(
     notification_id serial primary key,
-    user_id int,
-    notifier_id int,
+    user_id int REFERENCES users(ID) ON DELETE CASCADE,
+    notifier_id int REFERENCES users(ID) ON DELETE CASCADE,
     notifier_name text,
     icon text,
     details text,
@@ -112,6 +114,15 @@ CREATE TABLE IF NOT EXISTS bids(
     current_price numeric,
     seller_id int REFERENCES users(ID) ON DELETE RESTRICT,
     current_holder int REFERENCES users(ID) ON DELETE RESTRICT
+);
+
+CREATE TABLE IF NOT EXISTS premadelayouts(
+    layout_id serial primary key,
+    name text,
+    detail text,
+    font text,
+    font_size int,
+    bg_image_url text
 );
 
 CREATE TABLE IF NOT EXISTS comments (
@@ -205,11 +216,11 @@ CREATE TABLE IF NOT EXISTS tags(
     time date,
     x INT,
     y INT,
-    primary key (tagged_id,tagged_id,photo_id)
+    primary key (tagger_id,tagged_id,photo_id)
 );
 
-insert into users (username, password, photo_path, email) values ('sailormoon', 'abc999', '/photo.jpg', 'sailor@gmail.com' );
-insert into users (username, password, photo_path, email) values ('kcolak', 'dts213', '/photo1.jpg', 'kclk@gmail.com' );
+insert into users (username, password, photo_path, email) values ('sailormoon', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', '/photo.jpg', 'sailor@gmail.com' );
+insert into users (username, password, photo_path, email) values ('kcolak', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', '/photo1.jpg', 'kclk@gmail.com' );
 insert into users (username, password, photo_path, email) values ('kinomiya_takao','dragonunkilici','photo2.jpg','takao@gmail.com');
 
 insert into images (user_id, path, time, text) values (1, 'sample.jpg', now(), 'hello world #1');
@@ -224,6 +235,7 @@ insert into events(event_name, event_time, event_exp) values ('Snowball', 'This 
 
 insert into notifications(user_id, notifier_id, notifier_name, icon, details, read_status, follow_status) values (1, 2, 'some_company' ,'notific_sample.jpg', 'Thanks for all followers!' , FALSE, TRUE);
 insert into bids(header, details, image, current_price, seller_id, current_holder) values ('Mona Lisa', 'A classic picture of Mona Lisa', 2, 99.99, 1, 1);
+insert into premadelayouts(name, detail, font, font_size, bg_image_url) values ('Default', 'The default layout', 'Verdana', 100, '');
 
 insert into comments(user_id,image_id,time,comment) values (1,1,now(),'Hey! This photo is awesome');
 

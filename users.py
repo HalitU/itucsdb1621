@@ -114,7 +114,8 @@ def user_deblock(user_id):
 
 @users_app.route('/users_all')
 def users_all():
-    
+    if session.get('logged_in')== None:
+        return redirect(url_for("loginpage"))
     with psycopg2.connect(current_app.config['dsn']) as conn:
         crs = conn.cursor()
         if session.get('logged_in') == True:
@@ -125,12 +126,12 @@ def users_all():
         
         conn.commit()
         fetched = crs.fetchall()
-        print(fetched)
+        #print(fetched)
         crs.execute("select followed_id from user_follow where follower_id=%s",(session_userid,))
         conn.commit()
         follows=crs.fetchall()
         follows = [user[0] for user in follows]
-        print(follows)
+        #print(follows)
         blocked = None
 
         if session.get('logged_in') == True:

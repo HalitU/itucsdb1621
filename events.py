@@ -6,6 +6,8 @@ events_app = Blueprint('events_app', __name__)
 
 @events_app.route('/show_events')
 def show_events():
+    if session.get('logged_in')== None:
+        return redirect(url_for("loginpage"))
     with psycopg2.connect(current_app.config['dsn']) as conn:
         crs = conn.cursor()
         crs.execute("select event_name, event_exp, event_time from events")

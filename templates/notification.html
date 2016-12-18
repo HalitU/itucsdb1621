@@ -43,7 +43,7 @@
 	{% if image %}
 		{% for im in image %}
 		<div class="row">
-			<div class="col-md-offset-4 col-md-5 well">
+			<div class="col-md-offset-4 col-md-4 well">
 				<div id="notific_upper">
 					<img src="static/uploads/{{im[4]}}" id="notific" />
 					<p id="notes">{{im[3]}}</p>
@@ -52,7 +52,7 @@
 					{% else %}
 					<a href="{{ url_for('notific_app.status_update',id = im[0], status = True) }}" class="btn btn-info">Mark As Unread</a>
 					{% endif %}
-					<a href="{{ url_for('notific_app.notification_delete',id = im[0]) }}" class="btn btn-info">Unfollow</a>
+					<a href="{{ url_for('notific_app.notification_delete',id = im[0]) }}" class="btn btn-info">Delete</a>
 				</div>
 				<div id="notific_down">
 					{{im[5]}}

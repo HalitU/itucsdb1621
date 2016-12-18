@@ -16,7 +16,7 @@ from filters import filters_app
 from gmessages import gmessage_app
 from tags import tags_app
 from events import events_app
-
+from layoutOrg import layout_app
 
 
 app = Flask(__name__)
@@ -35,6 +35,7 @@ app.register_blueprint(filters_app)
 app.register_blueprint(gmessage_app)
 app.register_blueprint(tags_app)
 app.register_blueprint(events_app)
+app.register_blueprint(layout_app)
 
 class DB_Error(Exception):
     pass
@@ -63,6 +64,14 @@ def home_page():
     images = []
     with psycopg2.connect(app.config['dsn']) as conn:
         crs=conn.cursor()
+        #set default session layout variables if not set yet
+        if 'bimg' not in session:
+            crs.execute("select * from premadeLayouts where name='Default'")
+            data = crs.fetchone()
+            session['bimg'] = data[5]
+            session['font'] = data[3]
+            session['font-size'] = data[4]
+
         crs.execute("select * from images  where user_id in(select followed_id from user_follow where follower_id=%s) order by time desc",(session.get("user_id"),))
         data = crs.fetchall()
 
@@ -97,8 +106,8 @@ def home_page():
             conn.commit()
             tags.append(crs.fetchall())
         userlikes = []
-        print(comments)
-        print(tags)
+        #print(comments)
+        #print(tags)
         if session.get('user_id'):
             userid = session['user_id']
             crs.execute("select image_id from user_likes where user_id = %s", (userid, ))
@@ -112,11 +121,15 @@ def home_page():
 
 @app.route('/activity')
 def activity():
+    if session.get('logged_in')== None:
+        return redirect(url_for("loginpage"))    
     return render_template('activity.html')
 
 #test page to obtain some design ideas
 @app.route('/timeline')
 def timeline():
+    if session.get('logged_in')== None:
+        return redirect(url_for("loginpage"))
     now =datetime.datetime.now()
     return render_template('timeline.html', current_time=now.ctime())
 @app.route('/loginpage')
@@ -128,15 +141,21 @@ def signup_page():
 
 @app.route('/logout')
 def logout():
+    if session.get('logged_in')== None:
+        return redirect(url_for("loginpage"))
     session.pop('logged_in', None)
     session.pop('user_id', None)
     return render_template('login.html')
 
 @app.route('/newevent_page')
 def newevent_page():
+    if session.get('logged_in')== None:
+        return redirect(url_for("loginpage"))
     return render_template('newevent.html')
 @app.route('/dmessage')
 def dmessage():
+    if session.get('logged_in')== None:
+        return redirect(url_for("loginpage"))
     with psycopg2.connect(app.config['dsn']) as conn:
         crs=conn.cursor()
         crs.execute("select * from directmessages order by time desc")
@@ -148,6 +167,8 @@ def dmessage():
 
 @app.route('/gmessage')
 def gmessage():
+    if session.get('logged_in')== None:
+        return redirect(url_for("loginpage"))
     with psycopg2.connect(app.config['dsn']) as conn:
         crs=conn.cursor()
         #crs.execute("select * from directmessages order by time desc")
@@ -162,23 +183,31 @@ def gmessage():
 
 @app.route('/remove')
 def remove():
+    if session.get('logged_in')== None:
+        return redirect(url_for("loginpage"))
     return render_template("remove.html",register_app=register_app)
 
 @app.route('/update')
 def update():
+    if session.get('logged_in')== None:
+        return redirect(url_for("loginpage"))
     return render_template("update.html",register_app=register_app)
 
 @app.route('/notification')
 def notification():
+    if session.get('logged_in')== None:
+        return redirect(url_for("loginpage"))
     with psycopg2.connect(app.config['dsn']) as conn:
         crs=conn.cursor()
-        crs.execute("select * from notifications")
+        crs.execute("select * from notifications where user_id = %s", [session['user_id']])
         data = crs.fetchall()
 
     return render_template('notification.html', image = data, notific_app = notific_app)
 
 @app.route('/issues')
 def issues():
+    if session.get('logged_in')== None:
+        return redirect(url_for("loginpage"))
     with psycopg2.connect(app.config['dsn']) as conn:
         crs = conn.cursor()
         crs.execute("select (user_id,image_id,report_comment,status,time) from content_reports order by time")
@@ -196,6 +225,8 @@ def issues():
 
 @app.route('/bidPage')
 def bidPage():
+    if session.get('logged_in')== None:
+        return redirect(url_for("loginpage"))
     with psycopg2.connect(app.config['dsn']) as conn:
         crs = conn.cursor()
         crs.execute("select * from bids")
@@ -212,10 +243,37 @@ def bidPage():
 
 @app.route('/bidForm')
 def bidForm():
+    if session.get('logged_in')== None:
+        return redirect(url_for("loginpage"))
     return render_template('bidForm.html', bidding_app = bidding_app)
+
+@app.route('/changeLayout')
+def changeLayout():
+    if session.get('logged_in')== None:
+        return redirect(url_for("loginpage"))
+    with psycopg2.connect(app.config['dsn']) as conn:
+        crs = conn.cursor()
+        crs.execute("select * from premadelayouts")
+        data = crs.fetchall()
+        all_data = []
+        for d in data:
+            all_data.append(d)
+    return render_template('changeLayout.html', layout_data = all_data, layout_app = layout_app)
+
+@app.route('/updateLayout/<id>')
+def updateLayout(id):
+    if session.get('logged_in')== None:
+        return redirect(url_for("loginpage"))
+    with psycopg2.connect(app.config['dsn']) as conn:
+        crs = conn.cursor()
+        crs.execute("select * from premadelayouts where layout_id = %s", id)
+        data = crs.fetchone()
+    return render_template('layoutEdit.html', layout = data)
 
 @app.route('/group')
 def groups():
+    if session.get('logged_in')== None:
+        return redirect(url_for("loginpage"))
     with psycopg2.connect(app.config['dsn']) as conn:
         crs = conn.cursor()
         crs.execute("select * from user_groups")
