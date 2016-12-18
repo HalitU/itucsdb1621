@@ -83,6 +83,7 @@ CREATE TABLE IF NOT EXISTS group_members(
 
 CREATE TABLE IF NOT EXISTS group_posts(
     group_id int REFERENCES user_groups(group_id) ON DELETE CASCADE,
+    user_id int REFERENCES users(ID) ON DELETE CASCADE,
     image_id int REFERENCES images(image_id) ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS events(
