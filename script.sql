@@ -34,6 +34,8 @@ DROP TABLE IF EXISTS tags CASCADE;
 
 DROP TABLE IF EXISTS premadeLayouts CASCADE;
 
+DROP TABLE IF EXISTS premadeLayouts CASCADE;
+
 CREATE TABLE IF NOT EXISTS users(
     ID serial primary key,
     username VARCHAR(50) NOT NULL,

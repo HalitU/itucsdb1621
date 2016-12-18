@@ -73,6 +73,7 @@ def home_page():
             session['font-size'] = data[4]
 
         crs.execute("select images.*, u.username from images inner join users as u on u.Id = user_id where user_id in(select followed_id from user_follow where follower_id=%s) or user_id = %s order by time desc",(session.get("user_id"),session.get("user_id")))
+
         data = crs.fetchall()
 
         for img in data:
@@ -250,8 +251,10 @@ def bidForm():
 
 @app.route('/changeLayout')
 def changeLayout():
+
     if session.get('logged_in')== None:
         return redirect(url_for("loginpage"))
+
     with psycopg2.connect(app.config['dsn']) as conn:
         crs = conn.cursor()
         crs.execute("select * from premadelayouts")
@@ -265,6 +268,7 @@ def changeLayout():
 def updateLayout(id):
     if session.get('logged_in')== None:
         return redirect(url_for("loginpage"))
+
     with psycopg2.connect(app.config['dsn']) as conn:
         crs = conn.cursor()
         crs.execute("select * from premadelayouts where layout_id = %s", id)
