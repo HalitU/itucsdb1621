@@ -38,6 +38,7 @@
 								<span class="fa fa-envelope-o"></span> Report
 							</a>
 						</li>
+                        {% if i[1]== session["user_id"] %}
 						<li>
 							<a href="{{url_for('images_app.update_delete_loc', id = i[0])}}" class="no-link-a">
 								<span class="fa fa-pencil-square-o"></span> Edit
@@ -48,6 +49,7 @@
 								<span class="fa fa-close"></span> Delete
 							</a>
 						</li>
+                        {% endif %}
 					</ul>
 				</div>
 
@@ -129,9 +131,11 @@
             				<ul class="dropdown-menu">
 								{% for tag in tags[loop.index-1] %}
 								<li>
-                                    {{ tag[3]}} {{tag[4]}} {{ tag[5] }}
+                                    {{ tag[0]}} {{ tag[2]}} {{tag[3]}} {{ tag[4] }}
+                                     {% if tag[1]== session["user_id"] %}
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update_tag_modal{{i[0]}}" onclick="passuID({{i[0]}},{{tag[1]}})"><span class="fa fa-pencil-square-o"></span> Edit</button>
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete_tag_modal{{i[0]}}" onclick="passdID({{i[0]}},{{tag[1]}})"><span class="fa fa-close"></span> Delete</button>
+                                    {% endif %}
 								</li>
 								{% endfor %}
 							</ul>
@@ -159,7 +163,7 @@
 						{% for comment in comment_list[loop.index-1] %}
 						<div class="row commentDiv ">
 						<div class="col-md-10 col-xs-10 ">
-							<p id="p_{{comment[0]}}"> {{comment[3]}} {{comment[4]}}</p>
+							<p id="p_{{comment[0]}}"> {{comment[3]}} {{comment[5]}} {{comment[4]}} </p>
 							<form method="post" action="{{url_for('comment_app.comment_update',id=comment[0])}}">
 								<textarea name="new_comment" style="display:none;" id="text_{{comment[0]}}"></textarea>
 								<button style="display:none;" id="button_{{comment[0]}}">Edit!</button>

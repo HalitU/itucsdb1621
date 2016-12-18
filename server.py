@@ -93,7 +93,7 @@ def home_page():
             crs.execute("select comment_id, user_id,image_id,time,comment,username from comments join users on comments.user_id = users.ID where image_id=%s",(img[0],))
             conn.commit()
             comments.append(crs.fetchall())
-            crs.execute("select username,time,x,y from tags join users on users.ID = tags.tagger_id where photo_id=%s",(img[0],))
+            crs.execute("select username,tagged_id,time,x,y from tags join users on users.ID = tags.tagger_id where photo_id=%s",(img[0],))
             conn.commit()
             tags.append(crs.fetchall())
         userlikes = []
