@@ -33,8 +33,8 @@ def delete_event(id):
         crs.execute("delete from events where event_id = %s", (id, ))
         conn.commit()
     return redirect(url_for('events_app.show_events'))
-@events_app.route('/updateform')
-def updateform():
+@events_app.route('/updateEvent')
+def updateEvent():
     return render_template('update_event.html')
 
 @events_app.route('/update_event',methods=["POST"])
