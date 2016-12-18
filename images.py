@@ -89,31 +89,31 @@ def upload_post():
             filter_id = filters
             crs.execute('insert into image_filters (image_id, filter_id) values (%s, %s)', (image_id, filter_id))
             conn.commit()
-
-        locs = location.split(',')
-        order = 0
-        #location check
-        for loc in locs:
-            #print(loc)
-            crs.execute("select * from locations where name = %s", (loc,))
-            loc_data = crs.fetchone()
-            loc_id = 0
-            #get location id with insert or select
-            if loc_data:
-                crs.execute('update locations set rating = rating + 1 where Id=%s', ([loc_data[0]]))
-                loc_id = loc_data[0]
-            else:
-                gcode = gmaps.geocode(loc)
-                formatted = gcode[0]['formatted_address']
-                location = gcode[0]['geometry']['location']
-                lng = location['lng']
-                lat = location['lat']
-                crs.execute('insert into locations (name, latitude, longitude, formatted_address, rating) values (%s, %s, %s, %s, %s) RETURNING Id', (loc, lat, lng, formatted, 1))
-                loc_id = crs.fetchone()[0] #Get last insertion id
-                
-            #add it to image_locations relation table
-            crs.execute('insert into image_locations (image_id, location_id, order_val) values (%s, %s, %s)', (image_id, loc_id, order))
-            order = order + 1
+        if location:
+            locs = location.split(',')
+            order = 0
+            #location check
+            for loc in locs:
+                #print(loc)
+                crs.execute("select * from locations where name = %s", (loc,))
+                loc_data = crs.fetchone()
+                loc_id = 0
+                #get location id with insert or select
+                if loc_data:
+                    crs.execute('update locations set rating = rating + 1 where Id=%s', ([loc_data[0]]))
+                    loc_id = loc_data[0]
+                else:
+                    gcode = gmaps.geocode(loc)
+                    formatted = gcode[0]['formatted_address']
+                    location = gcode[0]['geometry']['location']
+                    lng = location['lng']
+                    lat = location['lat']
+                    crs.execute('insert into locations (name, latitude, longitude, formatted_address, rating) values (%s, %s, %s, %s, %s) RETURNING Id', (loc, lat, lng, formatted, 1))
+                    loc_id = crs.fetchone()[0] #Get last insertion id
+                    
+                #add it to image_locations relation table
+                crs.execute('insert into image_locations (image_id, location_id, order_val) values (%s, %s, %s)', (image_id, loc_id, order))
+                order = order + 1
             
         #notification insertion will use the logged user's information after the respective functionality is added - Halit
         crs.execute("select photo_path, username from users where Id !=%s",(session['user_id'],))

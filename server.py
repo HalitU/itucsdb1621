@@ -72,7 +72,7 @@ def home_page():
             session['font'] = data[3]
             session['font-size'] = data[4]
 
-        crs.execute("select * from images  where user_id in(select followed_id from user_follow where follower_id=%s) order by time desc",(session.get("user_id"),))
+        crs.execute("select images.*, u.username from images inner join users as u on u.Id = user_id where user_id in(select followed_id from user_follow where follower_id=%s) or user_id = %s order by time desc",(session.get("user_id"),session.get("user_id")))
         data = crs.fetchall()
 
         for img in data:
