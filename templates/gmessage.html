@@ -3,20 +3,21 @@
 {{ super() }}
 						<h2 class="text-center">Send a message to a specific user</h2>
 						<div class="col-xs-12" style="height:50px;"></div>
-		{% for dmessage in dmessage_list %}
-						<div class="row dmessageDiv ">
+						<h3 class="text-left"> Sender | Receiver | Time | Message</h3>
+		{% for gmessage in gmessage_list %}
+						<div class="row gmessageDiv ">
 						<div class="col-md-10 col-xs-10 ">
-							<p id="p_{{dmessage[0]}}">{{ dmessage[0]}} {{dmessage[2]}} {{dmessage[3]}} {{dmessage[4]}}</p>
-							<form method="post" action="{{url_for('dmessage_app.dmessage_update',id=dmessage[0])}}">
-								<textarea name="new_dmessage" style="display:none;" id="text_{{dmessage[0]}}"></textarea>
-								<button style="display:none;" id="button_{{dmessage[0]}}">Update your message.</button>
+							<p id="p_{{gmessage[0]}}">{{ gmessage[1][0]}} | {{gmessage[2][0]}} | {{gmessage[3]}} | {{gmessage[4]}}</p>
+							<form method="post" action="{{url_for('gmessage_app.gmessage_update',id=gmessage[0])}}">
+								<textarea name="new_gmessage" style="display:none;" id="text_{{gmessage[0]}}"></textarea>
+								<button style="display:none;" id="button_{{gmessage[0]}}">Update your message.</button>
 							</form>
 						</div>
 						<div class="col-md-1 col-xs-1 ">
-							<a href="#" onclick="showUpdateDialog({{dmessage[0]}})" class="pull-right"><span class="fa fa-pencil"></span>Edit </a>
+							<a href="#" onclick="showUpdateDialog({{gmessage[0]}})" class="pull-right"><span class="fa fa-pencil"></span>Edit </a>
 						</div>
 						<div class="col-md-1 col-xs-1 ">
-							<a href="{{url_for('dmessage_app.dmessage_delete',id=dmessage[0])}}" class="pull-right"><span class="fa fa-trash"></span>Delete </a>
+							<a href="{{url_for('gmessage_app.gmessage_delete',id=gmessage[0])}}" class="pull-right"><span class="fa fa-trash"></span>Delete </a>
 						</div>
 						<hr />
 						</div>
@@ -25,12 +26,12 @@
 
 
 
-					<form method="post" action="{{url_for('dmessage_app.dmessage')}}">
+					<form method="post" action="{{url_for('gmessage_app.gmessage')}}">
 						<div class="form-group">
 								<label for="sel1">Select sender</label>
 					    	 	 <select class="form-control" id="sell" name="senders">
 					    	  {% for usernamess in usernamess_list %}
-					      		  <option>{{ usernamess}}</option>
+					      		  <option>{{ usernamess[0]}}</option>
 					      		  {% endfor %}
 					     	   </select>
 					    	</div>
@@ -38,12 +39,12 @@
 							<label for="sel1">Select receiver</label>
 					    	  <select class="form-control" id="sell" name="receivers">
 					    	  {% for usernamess in usernamess_list %}
-					      		  <option>{{ usernamess}}</option>
+					      		  <option>{{ usernamess[0]}}</option>
 					      		  {% endfor %}
 					     	   </select>
     						</div>
 						<div class ="form-group">
-							<textarea class="form-element form-control" name="dmessage">
+							<textarea class="form-element form-control" name="gmessage">
 							</textarea>
 						</div>
 						<div>
@@ -67,8 +68,8 @@
 				textarea_handle.style.display = "block";
 				button_handle.style.display = "block";
 				para_handle.style.display= "none";
-				var dmessage_split = para_handle.innerText.split(" ");
-				var text_to_render = dmessage_split[dmessage_split.length-1];
+				var gmessage_split = para_handle.innerText.split(" ");
+				var text_to_render = gmessage_split[gmessage_split.length-1];
 				textarea_handle.innerText=text_to_render;
 			}
 

@@ -80,7 +80,7 @@ def home_page():
             crs.execute("select count(*) from user_likes where image_id = %s", ([img[0]]))
             count_likes = crs.fetchone()
             img = img + (count_likes[0],)
-            
+
             #get all locations in one string that the image have
             crs.execute("select string_agg(locations.name, ',') from image_locations inner join locations on locations.id = image_locations.location_id where image_id = %s group by image_id", ([img[0]]))
             locs = crs.fetchone()
@@ -123,7 +123,7 @@ def home_page():
 @app.route('/activity')
 def activity():
     if session.get('logged_in')== None:
-        return redirect(url_for("loginpage"))    
+        return redirect(url_for("loginpage"))
     return render_template('activity.html')
 
 #test page to obtain some design ideas
@@ -172,14 +172,26 @@ def gmessage():
         return redirect(url_for("loginpage"))
     with psycopg2.connect(app.config['dsn']) as conn:
         crs=conn.cursor()
-        #crs.execute("select * from directmessages order by time desc")
-        crs.execute("select sender_id,receiver_id,time,message from messages JOIN senders ON senders.message_id = messages.message_id JOIN receivers ON receivers.message_id = senders.message_id order by time desc")
-        dmessages = crs.fetchall()
+        crs.execute("select messages.message_id,sender_id,receiver_id,time,message from messages JOIN senders ON senders.message_id = messages.message_id JOIN receivers ON receivers.message_id = senders.message_id order by time desc")
+        gmessages = crs.fetchall()
+        message_count = len(gmessages)
+        gmessages_l = [list(x) for x in gmessages]
+        for i in range(message_count):
+             sender_id = gmessages[i][1]
+             crs.execute("select username from users where ID=%s", (sender_id,))
+             sender_name = crs.fetchone()
+             gmessages_l[i][1] = sender_name
+        for j in range(message_count):
+             receiver_id = gmessages[j][2]
+             crs.execute("select username from users where ID=%s", (receiver_id,))
+             receiver_name = crs.fetchone()
+             gmessages_l[j][2] = receiver_name
+        new_gmessages = tuple(gmessages_l)
         crs.execute("select username from users")
         usernamess = crs.fetchall()
     now =datetime.datetime.now()
 
-    return render_template('gmessage.html', current_time=now.ctime(), dmessage_app = dmessage_app, dmessage_list=dmessages, usernamess_list = usernamess)
+    return render_template('gmessage.html', current_time=now.ctime(), gmessage_app = gmessage_app, gmessage_list=new_gmessages, usernamess_list = usernamess)
 
 
 @app.route('/remove')

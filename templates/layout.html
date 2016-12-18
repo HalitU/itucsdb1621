@@ -10,9 +10,9 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="{{ url_for('static', filename='font-awesome-4.6.3/css/font-awesome.min.css')}}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-	
+
 	<style type="text/css">
-		.bgimg {	
+		.bgimg {
 			background-image: url({{ session['bimg'] }});
 		}
 		.font{
@@ -75,7 +75,7 @@
 						</li>
 
 						<li>
-							<a href="{{url_for('gmessage')}}" class="navlink no-link-a"><span class="fa fa-comments-o fa-2x"></span> gmessage</a>
+							<a href="{{url_for('gmessage')}}" class="navlink no-link-a"><span class="fa fa-comments-o fa-2x"></span> Send Message</a>
 						</li>
 						<li>
 							<a href="{{url_for('changeLayout')}}" class="navlink no-link-a"><span class="fa fa-desktop fa-2x"></span> Change Layout</a>

@@ -248,3 +248,12 @@ insert into directmessages(sender_id,receiver_id,time,dmessage) values (1,1,now(
 insert into upload(time, description) values (now(), 'You should know that all your strength lies in sincerity and truth');
 
 insert into content_reports (report_id,user_id,image_id,report_comment,status,time) VALUES (DEFAULT,1,1,'Unsuitable','pending',now());
+
+insert into messages(time,message) values (now(),'Since everything will leave our hands, will perish and be lost, is there no way in which we can transform it into something eternal and preserve it?');
+insert into messages(time,message) values (now(),'Indeed there is, a beautiful and easy way which contains five profits within itself...To sell the trust received back to its true owner.');
+
+insert into senders(sender_id,message_id) values (1,1);
+insert into senders(sender_id,message_id) values (2,2);
+
+insert into receivers(receiver_id,message_id) values (2,1);
+insert into receivers(receiver_id,message_id) values (1,2);
