@@ -128,8 +128,8 @@ CREATE TABLE IF NOT EXISTS premadelayouts(
 
 CREATE TABLE IF NOT EXISTS comments (
     comment_id serial primary key,
-    user_id int,
-    image_id int,
+    user_id int REFERENCES users(ID) ON DELETE CASCADE,
+    image_id int REFERENCES images(image_id) ON DELETE CASCADE,
     time date,
     comment text
 );
