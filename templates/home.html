@@ -73,10 +73,10 @@
                                     <form action="{{url_for('tags_app.add_tag',photo_id=i[0])}}" method="post">
                                         <label>Username:</label>
                                         <input type="text" name="username">
-                                        <label>X Coordinate:</label>
-                                        <input type="text" name="x">
-                                        <label>Y Coordinate:</label>
-                                        <input type="text" name="y">
+                                        <label class="hidden_xl">X Coordinate:</label>
+                                        <input class="hidden_x" type="hidden" name="x">
+                                        <label class="hidden_yl">Y Coordinate:</label>
+                                        <input class="hidden_y" type="hidden" name="y">
                                         <button type="submit">Add!</button>
                                     </form>
                                 </div>
@@ -95,10 +95,10 @@
                                     <form action="{{url_for('tags_app.update_tag',photo_id=i[0])}}" method="post">
                                         <label>Username:</label>
                                         <input type="text" name="username">
-                                        <label>X Coordinate:</label>
-                                        <input type="text" name="x">
-                                        <label>Y Coordinate:</label>
-                                        <input type="text" name="y">
+                                        <label class="hidden_xl">X Coordinate:</label>
+                                        <input class="hidden_x" type="hidden" name="x">
+                                        <label class="hidden_yl">Y Coordinate:</label>
+                                        <input class="hidden_y" type="hidden" name="y">
                                         <input type="hidden" id="update_id_holder_{{i[0]}}" name="_id">
 
                                         <button type="submit">Update!</button>
@@ -330,8 +330,16 @@
             var left = Math.round( (e.clientX - offset_l) );
             var top = Math.round( (e.clientY - offset_t) );
 
-            alert("Left: " + left + " Top: " + top);
+            var width = $(this).width();
+            var height = $(this).height();
 
+            var wP=Math.round( 100*(left/width));
+            var hP=Math.round( 100*(top/height));
+            alert("Left: " + wP + " Top: " + hP);
+            $(".hidden_x").val(wP);
+            $(".hidden_y").val(hP);
+            $(".hidden_xl").append(wP);
+            $(".hidden_yl").append(hP);
         });
 	</script>
 {% endblock %}
