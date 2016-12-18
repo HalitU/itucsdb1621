@@ -189,9 +189,13 @@ def gmessage():
         new_gmessages = tuple(gmessages_l)
         crs.execute("select username from users")
         usernamess = crs.fetchall()
+        if session.get('user_id'):
+            userid = session['user_id']
+            crs.execute("select username from users where ID=%s", (userid,))
+            logged_user_name = crs.fetchone()
     now =datetime.datetime.now()
 
-    return render_template('gmessage.html', current_time=now.ctime(), gmessage_app = gmessage_app, gmessage_list=new_gmessages, usernamess_list = usernamess)
+    return render_template('gmessage.html', current_time=now.ctime(), gmessage_app = gmessage_app, gmessage_list=new_gmessages, usernamess_list = usernamess, l_user_name = logged_user_name)
 
 
 @app.route('/remove')

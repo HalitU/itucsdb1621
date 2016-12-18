@@ -28,12 +28,8 @@
 
 					<form method="post" action="{{url_for('gmessage_app.gmessage')}}">
 						<div class="form-group">
-								<label for="sel1">Select sender</label>
-					    	 	 <select class="form-control" id="sell" name="senders">
-					    	  {% for usernamess in usernamess_list %}
-					      		  <option>{{ usernamess[0]}}</option>
-					      		  {% endfor %}
-					     	   </select>
+								<label for="sel1">My Username is</label>
+					    	  <textarea name="senders" readonly>{{ l_user_name[0]}}</textarea>
 					    	</div>
 					    	<div class="form-group">
 							<label for="sel1">Select receiver</label>
