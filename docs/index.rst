@@ -1,17 +1,32 @@
-Welcome to itucsdb's documentation!
+Welcome to postITU's documentation!
 ===================================
 
-:Team: Team Name
+:Team: postITU
 
 :Members:
 
-   * Member 1
+   * Sıddık Açıl
    * Member 2
    * Member 3
    * Member 4
    * Member 5
 
-**project description goes here (a few paragraphs)**
+
+This project is a social networking website that enables its users to share photos momentarily and interact with each other.
+
+Features
+--------
+
+	* Users can post their photos.
+	* Users can apply image filtering to their photos to create effects.
+	* Users can share custom filters with other users.
+	* Users can comment on photos.
+	* Each photo has a comments section underneath itself.
+	* A comment can be edited or deleted by commenter.
+	* An image poster can tag location information to images.
+	* An image may have more than one location tags.
+	* A poster can tag other users to specific locations on images.
+	* A tag can be deleted or edited by tagged user.
 
 Contents:
 

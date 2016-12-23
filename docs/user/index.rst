@@ -13,7 +13,6 @@ screenshots whereever appropriate**
       This is the caption of the figure (a simple paragraph).
 
 .. toctree::
-
    member1
    member2
    member3
