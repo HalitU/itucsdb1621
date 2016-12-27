@@ -6,7 +6,7 @@ Welcome to postITU's documentation!
 :Members:
 
    * Sıddık Açıl
-   * Member 2
+   * Rumeysa Bulut
    * Member 3
    * Member 4
    * Member 5
@@ -17,6 +17,7 @@ This project is a social networking website that enables its users to share phot
 Features
 --------
 
+	* Users can register and sign in to this website.
 	* Users can post their photos.
 	* Users can apply image filtering to their photos to create effects.
 	* Users can share custom filters with other users.
@@ -27,6 +28,8 @@ Features
 	* An image may have more than one location tags.
 	* A poster can tag other users to specific locations on images.
 	* A tag can be deleted or edited by tagged user.
+	* Users can create new groups with the people they followed.
+    * Users can organize events.
 
 Contents:
 
