@@ -177,8 +177,8 @@ Database Design
 Controller Code
 ^^^^^^^^^^^^^^^
 
-Image Tags
-----------
+Events
+------
 
 Database Design
 ^^^^^^^^^^^^^^^
