@@ -26,8 +26,8 @@ How can I create a group and add participants to it?
 How can I update the group information?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-How can I delete the group?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+How can I delete a group?
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Events
 ------
@@ -35,8 +35,9 @@ Events
 How can I create an event?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-How can I update the event information?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+How can I update an event's information?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-How can I delete the event?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+How can I delete an event?
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
