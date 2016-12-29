@@ -1,7 +1,11 @@
 .. raw:: html
+
+	<style> .danger{color:red} </style>
+
 .. sectnum::
+
 Parts Implemented by Alim Özdemir
-================================
+=================================
 
 You can find all informations about images, locations and filters here.
 
@@ -9,7 +13,7 @@ General Database Design
 -----------------------
 
 ER DIAGRAM
-~~~~~~~~~~
+^^^^^^^^^^^^^^^
 .. figure:: member3er.png
 
 
@@ -17,9 +21,10 @@ Images
 ------
 
 Table
-^^^^^
+^^^^^^^^^^^^^^^
 
 .. code-block:: sql
+
     CREATE TABLE IF NOT EXISTS images(
         image_id serial primary key,
         user_id int REFERENCES users(ID) ON DELETE CASCADE,
@@ -34,6 +39,7 @@ Path field is the absolute url of uploaded image. Text field is description of t
 Associated tables
 
 .. code-block:: sql
+
     CREATE TABLE IF NOT EXISTS user_likes(
         user_id int REFERENCES users (ID) ON DELETE CASCADE,
         image_id int REFERENCES images (image_id) ON DELETE CASCADE,
@@ -54,9 +60,9 @@ Locations
 ---------
 
 Table
-^^^^^
-
+^^^^^^^^^^^^^^^
 .. code-block:: sql
+
     CREATE TABLE IF NOT EXISTS locations(
         Id serial primary key,
         name text,
@@ -79,9 +85,10 @@ Filters
 -------
 
 Table
-^^^^^
+^^^^^^^^^^^^^^^
 
 .. code-block:: sql
+
     CREATE TABLE IF NOT EXISTS filter(
         id serial primary key,
         name text,
@@ -105,11 +112,12 @@ Implementation using Flask on Python
 ------------------------------------
 
 Controllers
-~~~~~~~~~~~
+^^^^^^^^^^^^^^^
 
 Inserting of Image & Location & Filter
 
 .. code-block:: python
+
     @images_app.route('/upload', methods = ['POST'])
     def upload_post():
         if not session.get('user_id'):
@@ -213,19 +221,22 @@ Inserting of Image & Location & Filter
 
 
 This action is responsible for
-    *processing the image using `pillow`,
-        *using user's existing filters
-        *creating new filter data 
-    *getting geographic data from googlemaps REST API,
-    *uploading the image,
-    *storing its data to the database
-    *notifying the user/users about the image
+    #processing the image using `pillow`,
+        
+        #using user's existing filters
+        #creating new filter data 
+    
+    #getting geographic data from googlemaps REST API,
+    #uploading the image,
+    #storing its data to the database
+    #notifying the user/users about the image
 
 The user selects the image that should be filtered and uploaded to system along with the informations such as description about the image, location of the image,
 desired filter informations for `pillow` library to process, and then uploads the image.
 The action checks about if user is logged in, and if the file input isn't empty. Applies image processing via `pillow` library using submitted filter data. Gets geographic data sending a query to googlemaps API via location input.
 
 .. code-block:: python
+
     @images_app.route('/image_delete/<id>')
     def image_delete(id):
         #id = request.args.get('id')
@@ -239,6 +250,7 @@ The action checks about if user is logged in, and if the file input isn't empty.
 This action deletes the image and its associated relations that are cascade.
 
 .. code-block:: python
+
     @images_app.route('/image_update', methods = ['POST'])
     def image_update():
         #inline editable plugin gives pk and value
@@ -256,49 +268,52 @@ This action deletes the image and its associated relations that are cascade.
 This JSON action updates the text field of the image.
 
 .. code-block:: python
-@images_app.route('/image_like', methods = ['POST'])
-def image_like():
-    if not session.get('user_id'):
-        return redirect(url_for('home_page'))
 
-    id = request.form['id']
-    user_id = session['user_id']
+    @images_app.route('/image_like', methods = ['POST'])
+    def image_like():
+        if not session.get('user_id'):
+            return redirect(url_for('home_page'))
 
-    with psycopg2.connect(current_app.config['dsn']) as conn:           
-        crs=conn.cursor()
-        crs.execute("select * from user_likes where user_id = %s and image_id = %s", (user_id, id))
-        exist = crs.fetchone()
-        if exist:
-            return jsonify(-1) #already liked.
-        else:
-            crs.execute("insert into user_likes (user_id, image_id, time) values (%s, %s, now())", (user_id, id))
-            data = conn.commit()
-    return jsonify(1)
+        id = request.form['id']
+        user_id = session['user_id']
+
+        with psycopg2.connect(current_app.config['dsn']) as conn:           
+            crs=conn.cursor()
+            crs.execute("select * from user_likes where user_id = %s and image_id = %s", (user_id, id))
+            exist = crs.fetchone()
+            if exist:
+                return jsonify(-1) #already liked.
+            else:
+                crs.execute("insert into user_likes (user_id, image_id, time) values (%s, %s, now())", (user_id, id))
+                data = conn.commit()
+        return jsonify(1)
 
 This JSON action inserts a user like to the user_like table.
 
 .. code-block:: python
-@images_app.route('/image_unlike', methods = ['POST'])
-def image_unlike():
-    if not session.get('user_id'):
-        return redirect(url_for('home_page'))
-    id = request.form['id']    
-    user_id = session['user_id'] 
 
-    with psycopg2.connect(current_app.config['dsn']) as conn:           
-        crs=conn.cursor()
-        crs.execute("select * from user_likes where user_id = %s and image_id = %s", (user_id, id))
-        exist = crs.fetchone()
-        if exist:
-            crs.execute("delete from user_likes where user_id = %s and image_id = %s", (user_id, id))
-            data = conn.commit()
-        else:
-            return jsonify(-1)
-    return jsonify(1)
+    @images_app.route('/image_unlike', methods = ['POST'])
+    def image_unlike():
+        if not session.get('user_id'):
+            return redirect(url_for('home_page'))
+        id = request.form['id']    
+        user_id = session['user_id'] 
+
+        with psycopg2.connect(current_app.config['dsn']) as conn:           
+            crs=conn.cursor()
+            crs.execute("select * from user_likes where user_id = %s and image_id = %s", (user_id, id))
+            exist = crs.fetchone()
+            if exist:
+                crs.execute("delete from user_likes where user_id = %s and image_id = %s", (user_id, id))
+                data = conn.commit()
+            else:
+                return jsonify(-1)
+        return jsonify(1)
 
 This JSON action deletes a user like from the user_like table.
 
 .. code-block:: python
+
     @images_app.route('/update_delete_loc_save', methods = ['POST'])
     def update_delete_loc_save():
         id = request.form['id']
@@ -358,6 +373,7 @@ This JSON action deletes a user like from the user_like table.
 This action contains all operations ( such as updating, inserting, deleting ) about the location using `tagsinput` library.
 
 .. code-block:: python
+
     @images_app.route("/locations")
     def locations():
         if not session.get('user_id'):
@@ -371,6 +387,7 @@ This action contains all operations ( such as updating, inserting, deleting ) ab
 This action lists all locations that persisted on the database.
 
 .. code-block:: python
+
     @images_app.route('/remove_location/<id>')
     def remove_location(id):
 
@@ -384,6 +401,7 @@ This action lists all locations that persisted on the database.
 This action deletes given location with all of its associated data from the database.
 
 .. code-block:: python
+
     @images_app.route('/location/<name>')
     def location(name):
         with psycopg2.connect(current_app.config['dsn']) as conn:           
@@ -400,6 +418,7 @@ This action deletes given location with all of its associated data from the data
 This action used to show detailed view of the given location.
 
 .. code-block:: python
+
     @filters_app.route('/filter/index')
     def index():
         if not session.get('user_id'):
@@ -417,6 +436,7 @@ This action used to show detailed view of the given location.
 This action lists the saved filters of logged in user.
 
 .. code-block:: python
+
     @filters_app.route('/filter/fetch', methods = ['POST'])
     def fetch():
         if not session.get('user_id'):
@@ -435,6 +455,7 @@ This action lists the saved filters of logged in user.
 This JSON action gets a single existing filter.
 
 .. code-block:: python
+
     @filters_app.route('/filter/delete', methods = ['POST'])
     def delete():
         if not session.get('user_id'):
@@ -460,6 +481,7 @@ This JSON action gets a single existing filter.
 This action deletes the saved filter from the database.
 
 .. code-block:: python
+
     @filters_app.route('/filter/update', methods = ['POST'])
     def update():
         if not session.get('user_id'):
