@@ -18,10 +18,7 @@ ER DIAGRAM
 
 
 Images
-------
-
-Table
-^^^^^^^^^^^^^^^
+^^^^^^
 
 .. code-block:: sql
 
@@ -57,10 +54,8 @@ Associated tables
 The tables above are associated tables between users and images. 
 
 Locations
----------
+^^^^^^^^^
 
-Table
-^^^^^^^^^^^^^^^
 .. code-block:: sql
 
     CREATE TABLE IF NOT EXISTS locations(
@@ -82,10 +77,7 @@ Locations table represents of the geographic information of taken image. Sending
 Also, there exists many to many relationship between images and locations. (image_locations is the pivot table)
 
 Filters
--------
-
-Table
-^^^^^^^^^^^^^^^
+^^^^^^^
 
 .. code-block:: sql
 
@@ -221,15 +213,16 @@ Inserting of Image & Location & Filter
 
 
 This action is responsible for
-    #processing the image using `pillow`,
+
+1. processing the image using `pillow`,
         
-        #using user's existing filters
-        #creating new filter data 
+    a. using user's existing filters
+    b. creating new filter data 
     
-    #getting geographic data from googlemaps REST API,
-    #uploading the image,
-    #storing its data to the database
-    #notifying the user/users about the image
+2. getting geographic data from googlemaps REST API,
+3. uploading the image,
+4. storing its data to the database
+5. notifying the user/users about the image
 
 The user selects the image that should be filtered and uploaded to system along with the informations such as description about the image, location of the image,
 desired filter informations for `pillow` library to process, and then uploads the image.
@@ -509,3 +502,28 @@ This action deletes the saved filter from the database.
         return jsonify(True)
 
 This JSON action updates the existing filter data.
+
+Views
+^^^^^
+
+**Images Views**
+
+        /templates/home.html
+
+        /templates/upload.html
+
+**Location Views**
+
+        /templates/upload.html
+
+        /templates/locations.html
+
+        /templates/location.html
+
+        /templates/update_loc.html
+
+**Filter Views**
+
+        /templates/upload.html
+
+        /templates/filter_index.html
