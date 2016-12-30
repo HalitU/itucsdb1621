@@ -6,6 +6,11 @@
 Parts Implemented by Sıddık Açıl
 ================================
 
+.. role:: sql(code)
+	:language: sql
+.. role:: python(code)
+	:language: python
+
 Comments, content reporting, and image tagging is implemented by me.
 
 General Database Design
@@ -142,8 +147,7 @@ Database Design
 	    status text,
 	    time date
 	);
-.. role:: sql(code)
-	:language: sql
+
 
 Content report has 
 	* a unique surrogate key:  :sql:`report_id`
@@ -157,8 +161,6 @@ Content report has
 Controller Code
 ^^^^^^^^^^^^^^^
 
-.. role:: python(code)
-	:language: python
 
 .. code-block:: python
 
