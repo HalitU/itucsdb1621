@@ -1,4 +1,3 @@
-.. sectnum::
 Parts Implemented by Halit Uyanık
 =================================
 

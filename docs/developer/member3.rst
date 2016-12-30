@@ -2,8 +2,6 @@
 
 	<style> .danger{color:red} </style>
 
-.. sectnum::
-
 Parts Implemented by Alim Özdemir
 =================================
 

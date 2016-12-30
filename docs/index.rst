@@ -14,9 +14,6 @@ Welcome to postITU's documentation!
 
 This project is a social networking website that enables its users to share photos momentarily and interact with each other.
 
-Features
---------
-
 	* Users can register and sign in to this website.
 	* Users can post their photos.
 	* Users can apply image filtering to their photos to create effects.
@@ -29,12 +26,10 @@ Features
 	* A poster can tag other users to specific locations on images.
 	* A tag can be deleted or edited by tagged user.
 	* Users can create new groups with the people they followed.
-    * Users can organize events.
-
-Contents:
+	* Users can organize events.
 
 .. toctree::
-   :maxdepth: 1
-
+   
+   install
    user/index
    developer/index

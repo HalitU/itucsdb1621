@@ -2,7 +2,6 @@
 
 	<style> .danger{color:red} </style>
 
-.. sectnum::
 Parts Implemented by Sıddık Açıl
 ================================
 

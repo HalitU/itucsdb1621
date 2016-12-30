@@ -2,7 +2,6 @@
 
    <style> .danger{color:red} </style>
 
-.. sectnum::
 Parts Implemented by Ömer Faruk İNCİ
 ====================================
 
@@ -106,6 +105,7 @@ This function deletes the message, sender and the reciever information from the 
    * Creates a cursor.
    * Delete from messages, senders and receivers table.
    * Commits the changes to the database.
+
 If the function runs properly, rendered template message.html is returned with the information of result of action.
 
 .. code-block:: python
@@ -126,6 +126,7 @@ Uploading a message is enabled by this function with the given message id.
    * Creates a cursor.
    * Executes an SQL update with message id.
    * Commits the changes to the database.
+
 If the function runs properly, rendered template message.html is returned with the information of result of action.
 
 Direct Messages
@@ -167,6 +168,7 @@ This function routes the dmessage page and it also sends some data to the dmessa
    * If user is logged in, it connects to the database.
    * Creates a cursor.
    * Executes an SQL select query to list the followed users.
+
 Finally, it redirects to the dmessage.html.
 
 .. code-block:: python
@@ -186,6 +188,7 @@ This function adds a new message with the information of sender id, receiver id 
    * Then connects to the database and also generates a cursor.
    * Inserts the message to the directmessages table.
    * Commits the changes to the database.
+
 If the function runs properly, rendered template message.html is returned with the information of result of action.
 
 .. code-block:: python
@@ -203,6 +206,7 @@ This function deletes the existing message with given message id.
    * It connects to the database and also generates a cursor.
    * Deletes the message from directmessages table.
    * Commits the changes to the database.
+
 If the function runs properly, rendered template message.html is returned with the information of result of action.
 
 .. code-block:: python
@@ -221,4 +225,5 @@ This function updates the existing message with given message id.
    * It connects to the database and also generates a cursor.
    * Updates the message from directmessages table.
    * Commits the changes to the database.
+   
 If the function runs properly, rendered template message.html is returned with the information of result of action.

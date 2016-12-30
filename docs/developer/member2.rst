@@ -2,7 +2,7 @@
 
 	<style> .danger{color:red} </style>
 
-.. sectnum::
+
 Parts Implemented by Rumeysa Bulut
 ==================================
 
@@ -111,6 +111,7 @@ If the conditions fail in the control stage or the insertion is done successfull
 	* Executes an SQL select to check the user is registered before.
 	* If user is in the database, it gets the password and checks it.
 	* Makes session changes.
+
 The function returns the necessary pages under certain conditions. If username fails, a message says Invalid Credentials will be appear. If password fails, returns back to the login page. If entered information is true, directs users to the home page.
 
 .. code-block:: python
@@ -134,6 +135,7 @@ This register section gets user information from update.html. If users want to u
 	* The function connects to the database driver.
 	* Creates a cursor
 	* Executes an SQL update with id.
+
 Then returns a "message.html" template which says "Successfully updated."
 
 .. code-block:: python
@@ -153,6 +155,7 @@ Deleting an account almost follows the same process with update section.
 	* Creates a cursor.
 	* Executes an SQL delete with username.
 	* Commits the changes to the database.
+
 The function returns to the login page.
 
 
@@ -195,6 +198,7 @@ Creating groups feature is activated after users logged in. When users click the
 	* If user is logged in, it connects to the database.
 	* Creates a cursor.
 	* Executes an SQL select query to list the followed users.
+
 The function returns to the group creation page.
 
 .. code-block:: python
@@ -223,6 +227,7 @@ This function does the main job. Creating group with specified name and descript
 	* Then connects to the database and creates a cursor.
 	* It inserts the group with name and description with an SQL insert and gets the group id.
 	* At last, it inserts the selected users into the created group.
+
 After the operation is done, it returns to the page which shows the newly created group.
 
 .. code-block:: python
@@ -241,6 +246,7 @@ After the operation is done, it returns to the page which shows the newly create
 This function shows only the group which has been just created.
 	* It gets the group id from the previous function, addtogroup.
 	* The function does 2 SQL select query to list the group and its members.
+
 It returns to the groupinfo.html to display the group information with its members.
 
 .. code-block:: python
@@ -257,6 +263,7 @@ It returns to the groupinfo.html to display the group information with its membe
 
 Users can list the current groups by clicking the groups icon on the dropdown menu.
 	* The function selects all groups and their members.
+	
 It sends the group data and member data to allgroups.html.
 
 .. code-block:: python
@@ -272,6 +279,7 @@ It sends the group data and member data to allgroups.html.
 Users can delete a member from a group after they create the group by clicking cross sign.
 	* It gets id.
 	* Performs the delete operation according to the id.
+
 Then the function returns a rendered template message.html which gives a message that says removing is successful.
 
 .. code-block:: python
@@ -287,6 +295,7 @@ Then the function returns a rendered template message.html which gives a message
 Users also delete a group by clicking the cross sign in the page which lists all groups.
 	* It gets the id.
 	* Performs delete operation.
+
 Then it returns to the page lists all groups.
 
 .. code-block:: python
@@ -309,6 +318,7 @@ Then it returns to the page lists all groups.
 This 2 functions allow the users to update their groups name and description. First one returns to the update_group.html to get the current information. Second one gets the information from the update_group.html.
 	* Second one connects to the database.
 	* It performs the update operation with an SQL update.
+
 Then it redirects to the page that lists all groups.
 
 
@@ -348,6 +358,7 @@ create_event function allows the users to organize new events. It works quite si
 	* Connects to the database.
 	* Creates a cursor.
 	* Executes an SQL insertion to create the event.
+
 Then, the function redirects to the page which shows all events with their information.
 
 .. code-block:: python
@@ -366,6 +377,7 @@ Then, the function redirects to the page which shows all events with their infor
 Users can display the events they created. This feature is activated after users logged in as in the user groups sections.
 	* It controls the session.
 	* If the user is logged in, it executes an SQL select query.
+
 It sends the data to the allevents.html to show all events with their information.
 
 .. code-block:: python
@@ -382,6 +394,7 @@ Deleting an event is also possible. Users can delete the event by clicking the c
 	* Connects to the database.
 	* Creates a cursor.
 	* Executes an SQL deletion to remove the event from the database using id.
+
 Then, the function redirects to the page which shows all events with their information.
 
 .. code-block:: python
@@ -407,6 +420,7 @@ Updating the event also works very similar to the group section. After the penci
 	* Connects to the database.
 	* Creates a cursor.
 	* Executes an SQL update operation to renew the event.
+	
 Then, the function redirects to the page which shows all events with their information.
 
 

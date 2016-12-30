@@ -1,5 +1,3 @@
-.. sectnum::
-
 Parts Implemented by Alim Özdemir
 =================================
 

@@ -5,7 +5,6 @@
 					height:600px;}
 	</style>
 
-.. sectnum::
 Parts Implemented by Halit Uyanık
 =================================
 

@@ -2,6 +2,7 @@ Developer Guide
 ===============
 
 .. toctree::
+   :maxdepth: 1
 
    member1
    member2
