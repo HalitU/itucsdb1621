@@ -9,7 +9,7 @@ Welcome to postITU's documentation!
    * Rumeysa Bulut
    * Alim Özdemir
    * Member 4
-   * Member 5
+   * Ömer Faruk İNCİ
 
 
 This project is a social networking website that enables its users to share photos momentarily and interact with each other.
