@@ -63,7 +63,7 @@ You can see that your message is updated successfully by accesing the Send Messa
 Sending Direct Message
 ----------------------
 
-Direct Message page enables users to send a message, delete message or update an existing message.
+Direct Message page enables users to send a message, delete a message or update an existing message.
 
 Direct Message page can be accessed via:
 

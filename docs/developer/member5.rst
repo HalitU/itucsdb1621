@@ -78,7 +78,7 @@ Blueprint interface is used for this project. Blueprint make development easier 
        return render_template('message.html', message = "Message has been sent.")
 
 
-This function is for senfing message to a specific user. After getting the message, sender and receiver info, it adds their information to database.For gettind th id of user by giving its name, SQL seletion is used.
+This function is for sending message to a specific user. After getting the message, sender and receiver info, it adds their information to database.For getting the id of user by giving its name, SQL selection is used.
    * A disposable connection to database server is created via 'with' command which gets configuration from main application(current_app) settings.
    * Creates a cursor.
    * Insert into messages table.
@@ -101,12 +101,11 @@ If the function runs properly, rendered template message.html is returned with t
 
        return render_template('message.html', message = "Message has been deleted.")
 
- This function deletes the message, sender and the reciever information from the messages, receivers and senders table with given message id.
+This function deletes the message, sender and the reciever information from the messages, receivers and senders table with given message id.
+   * The function connects to the database.
    * Creates a cursor.
    * Delete from messages, senders and receivers table.
-   * Executes an SQL select to check the user is registered before.
-   * If user is in the database, it gets the password and checks it.
-   * Makes session changes.
+   * Commits the changes to the database.
 If the function runs properly, rendered template message.html is returned with the information of result of action.
 
 .. code-block:: python
@@ -123,7 +122,7 @@ If the function runs properly, rendered template message.html is returned with t
 
 
 Uploading a message is enabled by this function with the given message id.
-   * The function connects to the database driver.
+   * The function connects to the database.
    * Creates a cursor.
    * Executes an SQL update with message id.
    * Commits the changes to the database.
