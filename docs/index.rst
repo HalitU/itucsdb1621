@@ -8,7 +8,7 @@ Welcome to postITU's documentation!
    * Sıddık Açıl
    * Rumeysa Bulut
    * Alim Özdemir
-   * Member 4
+   * Halit Uyanık
    * Ömer Faruk İNCİ
 
 
