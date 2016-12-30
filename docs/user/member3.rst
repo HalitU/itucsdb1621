@@ -10,7 +10,7 @@ Image Operations
 How can I upload ?
 ~~~~~~~~~~~~~~~~~~
 
-Users can upload images via ~/upload~. This is the main part of the site, almost all thing based on this feature.
+Users can upload images via */upload*. This is the main part of the site, almost all thing based on this feature.
 
 .. image:: member3img/img_loc_filter.png
 
