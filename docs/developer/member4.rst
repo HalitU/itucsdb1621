@@ -53,6 +53,7 @@ Controller Code
 ^^^^^^^^^^^^^^^
 
 Notification pages uses 2 methods from controller.
+	
 	* Notification_delete_
 	* Status_update_
 
@@ -119,6 +120,7 @@ Controller Code
 ^^^^^^^^^^^^^^^
 
 Bidding page includes three controller:
+	
 	* Add_new_bid_
 	* Update_bid_
 	* Delete_bid_
@@ -215,6 +217,7 @@ Controller Code
 ^^^^^^^^^^^^^^^
 
 Premadelayout page includes 4 methods from its app.
+	
 	* Add_new_layout_
 	* Layout_delete_
 	* Layout_update_

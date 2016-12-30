@@ -71,6 +71,7 @@ We used Flask's Blueprint interface. Blueprint simplifies large application work
 
 
 This register section gets user information from signup.html. It hashes the password, and checks user name and email whether they exists or not. If information satisfy the conditions, it adds the user to the database.
+	
 	* A disposable connection to database server is created via 'with' command which gets configuration from main application(current_app) settings.
 	* Creates a cursor.
 	* Executes an SQL selection.
@@ -107,6 +108,7 @@ If the conditions fail in the control stage or the insertion is done successfull
 				return render_template('login.html')
 
  Login section proceeds in a similar way to sign up operation. It controls the username and password are registered.
+	
 	* Creates a cursor.
 	* Executes an SQL select to check the user is registered before.
 	* If user is in the database, it gets the password and checks it.
@@ -132,6 +134,7 @@ The function returns the necessary pages under certain conditions. If username f
 
 
 This register section gets user information from update.html. If users want to update their information, this function gets current information from the form and the user ID from session.
+
 	* The function connects to the database driver.
 	* Creates a cursor
 	* Executes an SQL update with id.
@@ -151,6 +154,7 @@ Then returns a "message.html" template which says "Successfully updated."
 		return render_template('login.html')
 
 Deleting an account almost follows the same process with update section.
+	
 	* The function connects to the database driver.
 	* Creates a cursor.
 	* Executes an SQL delete with username.
@@ -194,6 +198,7 @@ Controller Code
 		return render_template('listfollowed.html', data=data)
 
 Creating groups feature is activated after users logged in. When users click the new group icon on the dropdown menu, a new page will be appear. On this page, all people they followed will be listed. They can determine the group name and the group description. Then, they can select the members of the group among the listed people.
+	
 	* At first, the function controls the session.
 	* If user is logged in, it connects to the database.
 	* Creates a cursor.
@@ -223,6 +228,7 @@ The function returns to the group creation page.
 		return redirect(url_for('groups_app.show_group', group_id = id))
 
 This function does the main job. Creating group with specified name and description and adding the selected users to this group is processed in this function.
+	
 	* It gets the information from the form that is in the previous stage.
 	* Then connects to the database and creates a cursor.
 	* It inserts the group with name and description with an SQL insert and gets the group id.
@@ -244,6 +250,7 @@ After the operation is done, it returns to the page which shows the newly create
 		return render_template('groupinfo.html', data=data, memberdata=memberdata)
 
 This function shows only the group which has been just created.
+	
 	* It gets the group id from the previous function, addtogroup.
 	* The function does 2 SQL select query to list the group and its members.
 
@@ -262,6 +269,7 @@ It returns to the groupinfo.html to display the group information with its membe
 		return render_template('allgroups.html',data=data,memberdata=memberdata)
 
 Users can list the current groups by clicking the groups icon on the dropdown menu.
+	
 	* The function selects all groups and their members.
 	
 It sends the group data and member data to allgroups.html.
@@ -277,6 +285,7 @@ It sends the group data and member data to allgroups.html.
 		return render_template('message.html', message="Successfully removed.")
 
 Users can delete a member from a group after they create the group by clicking cross sign.
+	
 	* It gets id.
 	* Performs the delete operation according to the id.
 
@@ -293,6 +302,7 @@ Then the function returns a rendered template message.html which gives a message
 		return redirect(url_for('groups_app.allgroups'))
 
 Users also delete a group by clicking the cross sign in the page which lists all groups.
+	
 	* It gets the id.
 	* Performs delete operation.
 
@@ -316,6 +326,7 @@ Then it returns to the page lists all groups.
 		return redirect(url_for('groups_app.allgroups'))
 
 This 2 functions allow the users to update their groups name and description. First one returns to the update_group.html to get the current information. Second one gets the information from the update_group.html.
+	
 	* Second one connects to the database.
 	* It performs the update operation with an SQL update.
 
@@ -354,6 +365,7 @@ Controller Code
 		return redirect(url_for('events_app.show_events'))
 
 create_event function allows the users to organize new events. It works quite similar to the create_group function. Users can use this feature by clicking the new event icon on the dropdown menu.
+	
 	* It gets the data from the form.
 	* Connects to the database.
 	* Creates a cursor.
@@ -375,6 +387,7 @@ Then, the function redirects to the page which shows all events with their infor
 		return render_template('allevents.html', data=data)
 
 Users can display the events they created. This feature is activated after users logged in as in the user groups sections.
+	
 	* It controls the session.
 	* If the user is logged in, it executes an SQL select query.
 
@@ -391,6 +404,7 @@ It sends the data to the allevents.html to show all events with their informatio
 		return redirect(url_for('events_app.show_events'))
 
 Deleting an event is also possible. Users can delete the event by clicking the cross sign. Thus, the function gets the event id.
+	
 	* Connects to the database.
 	* Creates a cursor.
 	* Executes an SQL deletion to remove the event from the database using id.
@@ -416,6 +430,7 @@ Then, the function redirects to the page which shows all events with their infor
 		return redirect(url_for('events_app.show_events'))
 
 Updating the event also works very similar to the group section. After the pencil icon is clicked, a form page comes to the screen. Users can fulfill the form with current information. Second function does the main work.
+	
 	* It gets data from the from.
 	* Connects to the database.
 	* Creates a cursor.

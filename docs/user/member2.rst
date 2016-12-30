@@ -89,6 +89,7 @@ How can I delete an event?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As in the update event section, you should follow almost the same steps. After you listed all events, you can delete them by clicking the cross icon.
+	
 	Here is the page that lists all groups and shows the cross sign:
 
 .. image:: member2img/event_delete.png

@@ -10,11 +10,14 @@ How to comment?
 To comment click and fill the area below and press "Comment!" button.
 
 .. image:: member1img/before_comment.png
+    :height: 300pt
+    :width: 200pt
 
 Your comment can be viewed under the image.
 
 .. image:: member1img/after_comment.png
-
+    :height: 300pt
+    :width: 200pt
 
 How to edit comments?
 ~~~~~~~~~~~~~~~~~~~~~
@@ -22,14 +25,20 @@ How to edit comments?
 If you have made a mistake while commenting or if you want to add something more you can click the caret next to your comment and click  "Edit"
 
 .. image:: member1img/before_update.png
+    :height: 300pt
+    :width: 200pt
 
 You can edit your comment in the input field and press "Edit!" button to save changes.
 
 .. image:: member1img/currently_updating.png
+    :height: 300pt
+    :width: 200pt
 
 Your comment after the update.
 
 .. image:: member1img/after_update.png
+    :height: 300pt
+    :width: 200pt
 
 How to delete comments?
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -37,10 +46,14 @@ How to delete comments?
 If you want to delete a comment you have made click the caret next to your comment and click "Delete".
 
 .. image:: member1img/before_delete.png
+    :height: 300pt
+    :width: 200pt
 
 Viola! Your comment is gone.
 
 .. image:: member1img/after_delete.png
+    :height: 300pt
+    :width: 200pt
 
 
 Reporting Content
@@ -53,8 +66,12 @@ How to report a content?
 If you find a content unsuitable, you can issue a proposal for deletion by clicking the caret on upper right side of an image then click "Report".
 
 .. image:: member1img/after_delete.png
+    :height: 300pt
+    :width: 200pt
 
 .. image:: member1img/after_delete.png
+    :height: 300pt
+    :width: 200pt
 
 Image Tagging
 -------------
@@ -80,6 +97,8 @@ I am tagged to a photo. How do I update this tag?
 When you click the caret to show the tags of and image, you will find "Edit" button next to tags. If you want to update tag from photo click "Edit".
 
 .. image:: member1img/before_update.png
+    :height: 300pt
+    :width: 200pt
 
 Fill the form on the pop-up and click a new place on image if you want to, then press update.
 
@@ -96,6 +115,8 @@ I am tagged to a photo. How do I delete this tag?
 When you click the caret to show the tags of and image, you will find "Delete" button next to tags. If you want to remove tag from photo click "Delete".
 
 .. image:: member1img/before_delete.png
+    :height: 300pt
+    :width: 200pt
 
 A pop-up will show to make sure you want to remove the tag.
 
@@ -126,6 +147,8 @@ How to view followers?
 Click on "Followers" link to view the list of your followers.
 
 .. image:: member1img/show_followers.png
+    :height: 300pt
+    :width: 200pt
 
 How to view people I follow?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -133,3 +156,5 @@ How to view people I follow?
 Click on "Follows" link to view the list of the people you follow.
 
 .. image:: member1img/show_followed.png
+    :height: 300pt
+    :width: 200pt

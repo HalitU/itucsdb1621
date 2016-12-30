@@ -78,6 +78,7 @@ Blueprint interface is used for this project. Blueprint make development easier 
 
 
 This function is for sending message to a specific user. After getting the message, sender and receiver info, it adds their information to database.For getting the id of user by giving its name, SQL selection is used.
+  
    * A disposable connection to database server is created via 'with' command which gets configuration from main application(current_app) settings.
    * Creates a cursor.
    * Insert into messages table.
@@ -101,6 +102,7 @@ If the function runs properly, rendered template message.html is returned with t
        return render_template('message.html', message = "Message has been deleted.")
 
 This function deletes the message, sender and the reciever information from the messages, receivers and senders table with given message id.
+  
    * The function connects to the database.
    * Creates a cursor.
    * Delete from messages, senders and receivers table.
@@ -122,6 +124,7 @@ If the function runs properly, rendered template message.html is returned with t
 
 
 Uploading a message is enabled by this function with the given message id.
+   
    * The function connects to the database.
    * Creates a cursor.
    * Executes an SQL update with message id.
@@ -164,6 +167,7 @@ Controller Code
        return render_template('dmessage.html', current_time=now.ctime(), dmessage_app = dmessage_app, dmessage_list=dmessages)
 
 This function routes the dmessage page and it also sends some data to the dmessage page.
+  
    * Function looks at the seesion to see if the user is logged in or not.
    * If user is logged in, it connects to the database.
    * Creates a cursor.
@@ -184,6 +188,7 @@ Finally, it redirects to the dmessage.html.
        return render_template('message.html', message = "Message has been sent.")
 
 This function adds a new message with the information of sender id, receiver id and the time.
+   
    * It requests message info from the dmessage.html
    * Then connects to the database and also generates a cursor.
    * Inserts the message to the directmessages table.
@@ -203,6 +208,7 @@ If the function runs properly, rendered template message.html is returned with t
        return render_template('message.html', message = "Message has been deleted.")
 
 This function deletes the existing message with given message id.
+  
    * It connects to the database and also generates a cursor.
    * Deletes the message from directmessages table.
    * Commits the changes to the database.
@@ -222,6 +228,7 @@ If the function runs properly, rendered template message.html is returned with t
     return render_template("message.html",message="Message has been updated.")
 
 This function updates the existing message with given message id.
+ 
    * It connects to the database and also generates a cursor.
    * Updates the message from directmessages table.
    * Commits the changes to the database.

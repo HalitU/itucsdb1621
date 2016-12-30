@@ -68,6 +68,7 @@ As with other components this one uses Flask's Blueprint interface to modulate p
 
 
 This controller gets data from specific forms in image divs in home.html. Thus image_id parameter corresponds to the image_id parameter of the form action. Comment text is acquired via request api which parses request parameters and creates a dictionary named form. 
+
 	* A disposable connection to database server is created via 'with' command which gets configuration from main application(current_app) settings.  
 	* Create a cursor.
 	* Execute an SQL insertion.
@@ -149,6 +150,7 @@ Database Design
 
 
 Content report has 
+
 	* a unique surrogate key:  :sql:`report_id`
 	* a reference to the user who has issued the report :sql:`user_id`
 	* a reference to the image that has been reported :sql:`image_id`
@@ -198,6 +200,7 @@ The route :python:`initate_report/<content_id>` have an argument on which image 
 	    return render_template("message.html",message="Content successfully reported.")
 
 The next function in Content Report system gets the argument :python:`content_id` from the form on "Report" template page. 
+
 	* :python:`report_text = request.form['report']` gets users' report on the content.
 	* :python:`status ='pending` hold the initial status: pending
 
@@ -282,6 +285,7 @@ Database Design
 	:language: sql
 
 Image tags table consists of the following fields:
+
 	* a reference to the tagger's id:  :sql:`tagger_id`
 	* a reference to the id of the user who has been tagged on image :sql:`tagged_id`
 	* a reference to the image that has been tagged :sql:`image_id`
@@ -326,6 +330,7 @@ As with other components this one uses Flask's Blueprint interface to modulate p
 	    return render_template('message.html',message="Successfully added tag")
 
 :python:``add_tag/<photo_id>` route gets a photo_id argument which holds the id of the image to be tagged. Following parameters are acquired from the form
+
 	* :python:`username = request.form["username"]` holds the name of the user tagged.
 	* :python:`x = request.form["x"]` holds the x coordinate that is clicked by tagger.
 	* :python:`y = request.form["y"]` holds the y coordinate that is clicked by tagger.
@@ -359,6 +364,7 @@ Update user controller works in the same fashion as :python:`add_tag` does.
 
 
 :python:``update_tag/<photo_id>` route gets a photo_id argument which holds the id of the image to be tagged. Following parameters are acquired from the form
+
 	* :python:`username = request.form["username"]` holds the name of the user tagged.
 	* :python:`x = request.form["x"]` holds the x coordinate that is clicked by tagger.
 	* :python:`y = request.form["y"]` holds the y coordinate that is clicked by tagger.
@@ -466,6 +472,7 @@ Queries executed:
 	3. Third query selects paths to photos which are uploaded by the user with :python:`user_id`
 
 How is rendering modified:
+	
 	* :python:`is_following` variable change the rendering by changing between follow/unfollow buttons according to the current relation between current user and viewed user. If current user follows the viewed one than "Unfollow" button appears, otherwise a "Follow" button appears.
 	* :python:`is_self` variable removes follow/unfollow buttons altogether since a user cannot unfollow himself/herself.
 
